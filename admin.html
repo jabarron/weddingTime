@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<!--
+  ============================================================================
+  admin/index.html — RSVP dashboard
+  ============================================================================
+  This page (and everything under /admin) is only reachable after the
+  browser's basic-auth prompt succeeds — see adminAuth.js, which
+  server.js applies to the /admin path before this file is ever served.
+
+  It fetches its data from GET /api/admin/rsvps (routes-admin.js), which is
+  protected by the same middleware.
+  ============================================================================
+-->
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin · Ismeraí &amp; Jesús</title>
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="stylesheet" href="/admin.css" />
+</head>
+<body class="admin-body">
+
+  <header class="admin-header">
+    <h1>RSVP Dashboard — Ismeraí &amp; Jesús</h1>
+    <button id="refresh-btn" class="btn btn--primary">Refresh</button>
+  </header>
+
+  <section class="admin-summary" id="admin-summary">
+    <div class="admin-stat">
+      <span class="admin-stat__number" id="stat-attending">–</span>
+      <span class="admin-stat__label">Attending responses</span>
+    </div>
+    <div class="admin-stat">
+      <span class="admin-stat__number" id="stat-guests">–</span>
+      <span class="admin-stat__label">Total guests attending</span>
+    </div>
+    <div class="admin-stat">
+      <span class="admin-stat__number" id="stat-declined">–</span>
+      <span class="admin-stat__label">Declined responses</span>
+    </div>
+  </section>
+
+  <section class="admin-table-wrap">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Attending</th>
+          <th>Guests</th>
+          <th>Meal</th>
+          <th>Song</th>
+          <th>Message</th>
+          <th>Lang</th>
+          <th>Submitted</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="admin-table-body">
+        <tr><td colspan="10">Loading…</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <script src="/admin.js"></script>
+</body>
+</html>

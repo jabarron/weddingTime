@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<!--
+  ============================================================================
+  index.html — public wedding site
+  ============================================================================
+  This page has almost no hard-coded copy. Text comes from two places at
+  runtime (see main.js):
+    - data-i18n="key"     -> looked up in i18n.js (ES/EN labels)
+    - data-field="name"   -> filled in from GET /api/wedding-info
+                              (wedding-config.js on the server)
+  So to change the wedding date, names, or venue, edit ONLY
+  wedding-config.js — this file does not need to change.
+  ============================================================================
+-->
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ismeraí &amp; Jesús</title>
+  <meta name="description" content="Acompáñanos a celebrar la boda de Ismeraí y Jesús — 1 de mayo, 2027." />
+
+  <!-- Fonts: Cormorant Garamond (display) + Jost (body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Jost:wght@400;500;600&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+
+  <!-- ===================== Header ===================== -->
+  <header class="site-header">
+    <span class="site-header__monogram">I &amp; J</span>
+    <nav class="site-header__nav">
+      <a href="#story" data-i18n="nav_story">Nuestra Historia</a>
+      <a href="#details" data-i18n="nav_details">Detalles</a>
+      <a href="#dress-code" data-i18n="nav_dress">Código de Vestimenta</a>
+      <a href="#rsvp" data-i18n="nav_rsvp">Confirmar Asistencia</a>
+      <div class="lang-toggle" role="group" aria-label="Language / Idioma">
+        <button type="button" data-lang="es" aria-pressed="true">ES</button>
+        <button type="button" data-lang="en" aria-pressed="false">EN</button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ===================== Hero ===================== -->
+  <section class="hero">
+    <span class="hero__eyebrow" data-i18n="hero_eyebrow">Nos Casamos</span>
+    <h1 class="hero__names">
+      <span data-field="partner1">Ismeraí</span>
+      <span class="hero__ampersand">&amp;</span>
+      <span data-field="partner2">Jesús</span>
+    </h1>
+    <p class="hero__date" data-field="wedding-date-full">1 de mayo de 2027</p>
+    <p class="hero__venue">
+      <span data-field="venue-name">Jardín</span> ·
+      <span data-field="venue-address">Cd. Juárez, Chihuahua</span>
+    </p>
+
+    <div class="countdown" aria-label="Countdown to the wedding">
+      <div class="countdown__unit">
+        <span class="countdown__number" data-countdown="days">--</span>
+        <span class="countdown__label" data-i18n="countdown_days">Días</span>
+      </div>
+      <div class="countdown__unit">
+        <span class="countdown__number" data-countdown="hours">--</span>
+        <span class="countdown__label" data-i18n="countdown_hours">Horas</span>
+      </div>
+      <div class="countdown__unit">
+        <span class="countdown__number" data-countdown="minutes">--</span>
+        <span class="countdown__label" data-i18n="countdown_minutes">Min</span>
+      </div>
+      <div class="countdown__unit">
+        <span class="countdown__number" data-countdown="seconds">--</span>
+        <span class="countdown__label" data-i18n="countdown_seconds">Seg</span>
+      </div>
+    </div>
+
+    <div class="hero__actions">
+      <a href="#rsvp" class="btn btn--primary" data-i18n="hero_cta">Confirmar Asistencia</a>
+    </div>
+  </section>
+
+  <!-- ===================== Our Story ===================== -->
+  <section class="section story" id="story">
+    <div class="container story__grid">
+      <div class="story__photo" aria-hidden="true">
+        <!-- ✏️ EDIT ME: replace this placeholder with an <img src="/your-photo.jpg" alt="..."> -->
+        Photo placeholder — add an engagement photo here
+      </div>
+      <div class="story__text">
+        <span class="eyebrow" data-i18n="story_eyebrow">Nuestra Historia</span>
+        <h2 data-i18n="story_heading">Cómo empezó todo</h2>
+        <p data-i18n="story_body">
+          Lo que comenzó como una casualidad se convirtió en la certeza de querer construir una
+          vida juntos.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <div class="vine-divider" aria-hidden="true">
+    <svg viewBox="0 0 200 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 20 C 30 5, 40 35, 70 20 S 110 5, 140 20 S 180 35, 200 20" stroke-width="1.5" stroke-linecap="round"/>
+      <path d="M55 20 C 58 12, 65 10, 70 14" stroke-width="1.2" stroke-linecap="round"/>
+      <path d="M125 20 C 128 28, 135 30, 140 26" stroke-width="1.2" stroke-linecap="round"/>
+    </svg>
+  </div>
+
+  <!-- ===================== Details ===================== -->
+  <section class="section details" id="details">
+    <div class="container">
+      <div class="text-center">
+        <span class="eyebrow" data-i18n="details_eyebrow">Detalles</span>
+        <h2 data-i18n="details_heading">Cuándo y dónde</h2>
+      </div>
+      <div class="details__grid">
+        <div class="detail-card">
+          <h3 data-i18n="details_date_label">Fecha</h3>
+          <p data-field="wedding-date-full">1 de mayo de 2027</p>
+        </div>
+        <div class="detail-card">
+          <h3 data-i18n="details_venue_label">Lugar</h3>
+          <p>
+            <span data-field="venue-name">Jardín</span><br />
+            <span data-field="venue-address">Cd. Juárez, Chihuahua</span>
+          </p>
+          <a class="btn btn--ghost" data-field="venue-maps-link" href="#" target="_blank" rel="noopener" data-i18n="details_venue_cta">Ver en el mapa</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== Dress Code ===================== -->
+  <section class="section dress-code" id="dress-code">
+    <div class="container">
+      <span class="eyebrow" data-i18n="dress_eyebrow">Código de Vestimenta</span>
+      <h2 data-i18n="dress_heading">Formal / Elegante</h2>
+      <p data-i18n="dress_body">
+        Nos encantaría que nos acompañaran con un atuendo formal.
+      </p>
+      <div class="dress-code__swatches" aria-hidden="true">
+        <span class="dress-code__swatch" style="background:#48011F"></span>
+        <span class="dress-code__swatch" style="background:#9D3A56"></span>
+        <span class="dress-code__swatch" style="background:#B06F6B"></span>
+        <span class="dress-code__swatch" style="background:#C3634D"></span>
+        <span class="dress-code__swatch" style="background:#DFD8C6"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== RSVP ===================== -->
+  <section class="section rsvp" id="rsvp">
+    <div class="container text-center">
+      <span class="eyebrow" data-i18n="rsvp_eyebrow">RSVP</span>
+      <h2 data-i18n="rsvp_heading">Confirma tu asistencia</h2>
+      <p data-i18n="rsvp_intro">Por favor confirma antes de la fecha límite.</p>
+      <p class="field-hint">
+        <span data-i18n="details_rsvp_label">Confirmar antes del</span>
+        <strong data-field="rsvp-deadline">1 de abril de 2027</strong>
+      </p>
+    </div>
+
+    <form class="rsvp__form" id="rsvp-form" novalidate>
+      <div class="field">
+        <label for="fullName" data-i18n="rsvp_name">Nombre completo</label>
+        <input type="text" id="fullName" name="fullName" required autocomplete="name" />
+      </div>
+
+      <div class="field">
+        <label for="email" data-i18n="rsvp_email">Correo electrónico (opcional)</label>
+        <input type="email" id="email" name="email" autocomplete="email" />
+      </div>
+
+      <div class="field">
+        <label data-i18n="rsvp_attending">¿Podrás acompañarnos?</label>
+        <div class="field--radio-group">
+          <label class="radio-option">
+            <input type="radio" name="attending" value="yes" required />
+            <span data-i18n="rsvp_attending_yes">Sí, ahí estaré</span>
+          </label>
+          <label class="radio-option">
+            <input type="radio" name="attending" value="no" />
+            <span data-i18n="rsvp_attending_no">No podré asistir</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="guestCount" data-i18n="rsvp_guest_count">Número de personas</label>
+        <input type="number" id="guestCount" name="guestCount" min="1" max="10" value="1" />
+      </div>
+
+      <div class="field">
+        <label for="mealChoice" data-i18n="rsvp_meal">Elección de platillo</label>
+        <select id="mealChoice" name="mealChoice" data-field="meal-select"></select>
+      </div>
+
+      <div class="field">
+        <label for="songRequest" data-i18n="rsvp_song">Una canción que no puede faltar (opcional)</label>
+        <input type="text" id="songRequest" name="songRequest" />
+      </div>
+
+      <div class="field">
+        <label for="message" data-i18n="rsvp_message">Mensaje para los novios (opcional)</label>
+        <textarea id="message" name="message"></textarea>
+      </div>
+
+      <button type="submit" class="btn btn--primary rsvp__submit" data-i18n="rsvp_submit">Enviar confirmación</button>
+      <p class="rsvp__status" role="status" aria-live="polite"></p>
+    </form>
+  </section>
+
+  <!-- ===================== Footer ===================== -->
+  <footer class="site-footer">
+    <div class="site-footer__monogram">I &amp; J</div>
+    <p>
+      <span data-i18n="footer_contact">Preguntas</span>:
+      <a href="mailto:ismerai.jesus.boda@example.com">ismerai.jesus.boda@example.com</a>
+      <!-- ✏️ EDIT ME: this address is duplicated from wedding-config.js for the mailto: link.
+           If you change contactEmail in the config, update this href too. -->
+    </p>
+  </footer>
+
+  <!-- Scripts load in this order: dictionary first, then page logic, then the form handler. -->
+  <script src="/i18n.js"></script>
+  <script src="/main.js"></script>
+  <script src="/rsvp-form.js"></script>
+</body>
+</html>

@@ -1,0 +1,100 @@
+/* ============================================================================
+   admin.css — small set of extra styles for the RSVP dashboard.
+   Reuses the color tokens defined in /css/styles.css (loaded first).
+   ============================================================================ */
+
+.admin-body {
+  padding: var(--space-md);
+  background: var(--color-cream-soft);
+}
+
+.admin-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-md);
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+
+.admin-header h1 {
+  font-size: 1.5rem;
+}
+
+.admin-summary {
+  display: flex;
+  gap: var(--space-md);
+  margin-bottom: var(--space-md);
+  flex-wrap: wrap;
+}
+
+.admin-stat {
+  background: var(--color-white);
+  border: 1px solid var(--color-mauve);
+  border-radius: var(--radius);
+  padding: var(--space-sm) var(--space-md);
+  min-width: 180px;
+}
+
+.admin-stat__number {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 2rem;
+  color: var(--color-wine);
+}
+
+.admin-stat__label {
+  font-size: 0.8rem;
+  color: var(--color-berry);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.admin-table-wrap {
+  overflow-x: auto;
+  background: var(--color-white);
+  border-radius: var(--radius);
+  border: 1px solid var(--color-mauve);
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.admin-table th,
+.admin-table td {
+  text-align: left;
+  padding: 0.6rem 0.8rem;
+  border-bottom: 1px solid var(--color-cream-soft);
+  white-space: nowrap;
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.admin-table th {
+  background: var(--color-wine);
+  color: var(--color-white);
+  position: sticky;
+  top: 0;
+}
+
+.admin-table tr:hover td {
+  background: var(--color-cream-soft);
+}
+
+.admin-delete-btn {
+  background: transparent;
+  border: 1px solid var(--color-terracotta);
+  color: var(--color-terracotta);
+  border-radius: var(--radius);
+  padding: 0.3rem 0.6rem;
+  font-size: 0.75rem;
+}
+
+.admin-delete-btn:hover {
+  background: var(--color-terracotta);
+  color: var(--color-white);
+}
