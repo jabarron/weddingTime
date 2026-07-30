@@ -3,7 +3,7 @@
  *  ✏️  EDIT ME — WEDDING CONFIG
  * ============================================================================
  *  This is the ONE file you should need to touch to update the facts of the
- *  wedding (names, date, venue, colors, RSVP deadline, meal choices).
+ *  wedding (names, date, venue, colors, RSVP deadline).
  *
  *  Everything in this file is loaded by the server and sent to the public
  *  website through the `GET /api/wedding-info` endpoint (see routes-info.js),
@@ -50,14 +50,20 @@ module.exports = {
   rsvpDeadlineISO: '2027-04-01',
 
   // ---------------------------------------------------------------------
-  // ✏️ EDIT ME: Meal choices offered on the RSVP form.
-  // `value` is what gets stored in the database; `es` / `en` are the
-  // labels shown to guests depending on the selected site language.
+  // ✏️ EDIT ME: The day's itinerary, shown as a timeline. Add, remove, or
+  // reorder events freely — the site renders whatever's in this array, in
+  // this order. `time` is shown as-is (any format you like); `es`/`en` are
+  // the event name in each language.
   // ---------------------------------------------------------------------
-  mealOptions: [
-    { value: 'beef', es: 'Res', en: 'Beef' },
-    { value: 'chicken', es: 'Pollo', en: 'Chicken' },
-    { value: 'vegetarian', es: 'Vegetariano', en: 'Vegetarian' },
+  itinerary: [
+    { time: '12:00 PM', es: 'Ceremonia Civil', en: 'Civil Ceremony' },
+    { time: '5:00 PM', es: 'Ceremonia Religiosa', en: 'Religious Ceremony' },
+    { time: '6:30 PM', es: 'Cóctel de Bienvenida', en: 'Welcome Cocktail' },
+    { time: '7:30 PM', es: 'Recepción y Cena', en: 'Reception & Dinner' },
+    { time: '8:30 PM', es: 'Primer Baile', en: 'First Dance' },
+    { time: '9:00 PM', es: 'Brindis', en: 'Toasts' },
+    { time: '10:00 PM', es: 'Corte de Pastel', en: 'Cake Cutting' },
+    { time: '10:30 PM', es: 'Fiesta y Baile', en: 'Party & Dancing' },
   ],
 
   // ---------------------------------------------------------------------

@@ -52,11 +52,11 @@
     renderWeddingFacts(lang);
   }
 
-  /** Fills in names, formatted date, venue, meal options, RSVP deadline. */
+  /** Fills in names, formatted date, venue, and RSVP deadline. */
   function renderWeddingFacts(lang) {
     if (!weddingInfo) return;
 
-    const { couple, weddingDateISO, venue, rsvpDeadlineISO, mealOptions } = weddingInfo;
+    const { couple, weddingDateISO, venue, rsvpDeadlineISO, itinerary } = weddingInfo;
 
     document.querySelectorAll('[data-field="partner1"]').forEach((el) => {
       el.textContent = couple.partner1;
@@ -105,17 +105,18 @@
       }).format(rsvpDeadline);
     });
 
-    // Meal options -> <select> in the RSVP form
-    const mealSelect = document.querySelector('[data-field="meal-select"]');
-    if (mealSelect) {
-      const placeholder = window.DICTIONARY[lang].rsvp_meal_placeholder;
-      mealSelect.innerHTML = `<option value="" disabled selected>${placeholder}</option>`;
-      mealOptions.forEach((opt) => {
-        const option = document.createElement('option');
-        option.value = opt.value;
-        option.textContent = opt[lang];
-        mealSelect.appendChild(option);
-      });
+    // Itinerary timeline — one <li> per event in wedding-config.js.
+    const itineraryList = document.querySelector('[data-field="itinerary-list"]');
+    if (itineraryList && Array.isArray(itinerary)) {
+      itineraryList.innerHTML = itinerary
+        .map(
+          (event) => `
+        <li class="timeline__item">
+          <span class="timeline__time">${event.time}</span>
+          <span class="timeline__title">${event[lang]}</span>
+        </li>`
+        )
+        .join('');
     }
   }
 

@@ -2,9 +2,14 @@
  * ============================================================================
  *  routes-rsvp.js — POST /api/rsvp
  * ============================================================================
- *  Handles guest RSVP submissions from the public site (rsvp-form.js
- *  posts here). Validates the payload, then inserts a row into the `rsvps`
- *  table via db-pool.js.
+ *  Handles guest RSVP submissions from the public site (rsvp-form.js posts
+ *  here). Validates the payload, then inserts a row into the `rsvps` table
+ *  via db-pool.js.
+ *
+ *  Required fields: fullName, phone, attending. Everything else is optional.
+ *  This mirrors the required-field check done client-side in rsvp-form.js —
+ *  that one gives the guest instant feedback, this one is the safety net
+ *  in case the request didn't come through the form (or JS was bypassed).
  *
  *  Access model: open to anyone with the link (no guest-list validation),
  *  per the site's current requirements. If you later want to restrict who
@@ -17,22 +22,15 @@ const router = express.Router();
 const { query } = require('./db-pool');
 
 router.post('/', async (req, res) => {
-  const {
-    fullName,
-    email,
-    attending,
-    guestCount,
-    mealChoice,
-    songRequest,
-    message,
-    language,
-  } = req.body || {};
+  const { fullName, phone, attending, guestCount, songRequest, message } =
+    req.body || {};
 
   // --- Validation -----------------------------------------------------
-  // Keep this strict but simple: only full name and attending are truly
-  // required to record a response.
   if (typeof fullName !== 'string' || fullName.trim().length === 0) {
     return res.status(400).json({ error: 'Full name is required.' });
+  }
+  if (typeof phone !== 'string' || phone.trim().length === 0) {
+    return res.status(400).json({ error: 'Phone is required.' });
   }
   if (typeof attending !== 'boolean') {
     return res
@@ -42,23 +40,20 @@ router.post('/', async (req, res) => {
 
   const safeGuestCount =
     Number.isInteger(guestCount) && guestCount > 0 ? guestCount : 1;
-  const safeLanguage = language === 'en' ? 'en' : 'es';
 
   try {
     const result = await query(
       `INSERT INTO rsvps
-        (full_name, email, attending, guest_count, meal_choice, song_request, message, language)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+        (full_name, phone, attending, guest_count, song_request, message)
+       VALUES ($1, $2, $3, $4, $5, $6)
        RETURNING id, submitted_at`,
       [
         fullName.trim(),
-        email ? String(email).trim() : null,
+        phone.trim(),
         attending,
         safeGuestCount,
-        mealChoice ? String(mealChoice).trim() : null,
         songRequest ? String(songRequest).trim() : null,
         message ? String(message).trim() : null,
-        safeLanguage,
       ]
     );
 

@@ -4,7 +4,7 @@
    ============================================================================ */
 
 .admin-body {
-  padding: var(--space-md);
+  padding: var(--space-sm);
   background: var(--color-cream-soft);
 }
 
@@ -12,19 +12,42 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: var(--space-md);
+  margin-bottom: var(--space-sm);
   flex-wrap: wrap;
   gap: var(--space-sm);
 }
 
 .admin-header h1 {
-  font-size: 1.5rem;
+  font-size: 1.2rem;
+}
+
+.admin-header__actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.admin-export-btn {
+  background: var(--color-white);
+  color: var(--color-wine);
+  border: 1px solid var(--color-wine);
+}
+
+.admin-export-btn:hover {
+  background: var(--color-wine);
+  color: var(--color-white);
+}
+
+.admin-scroll-hint {
+  font-size: 0.75rem;
+  color: var(--color-berry);
+  margin: 0 0 0.4rem;
 }
 
 .admin-summary {
   display: flex;
-  gap: var(--space-md);
-  margin-bottom: var(--space-md);
+  gap: 0.6rem;
+  margin-bottom: var(--space-sm);
   flex-wrap: wrap;
 }
 
@@ -32,19 +55,20 @@
   background: var(--color-white);
   border: 1px solid var(--color-mauve);
   border-radius: var(--radius);
-  padding: var(--space-sm) var(--space-md);
-  min-width: 180px;
+  padding: 0.6rem 0.8rem;
+  min-width: 0;
+  flex: 1 1 30%;
 }
 
 .admin-stat__number {
   display: block;
   font-family: var(--font-display);
-  font-size: 2rem;
+  font-size: 1.6rem;
   color: var(--color-wine);
 }
 
 .admin-stat__label {
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   color: var(--color-berry);
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -52,6 +76,7 @@
 
 .admin-table-wrap {
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   background: var(--color-white);
   border-radius: var(--radius);
   border: 1px solid var(--color-mauve);
@@ -60,16 +85,16 @@
 .admin-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.85rem;
+  font-size: 0.78rem;
 }
 
 .admin-table th,
 .admin-table td {
   text-align: left;
-  padding: 0.6rem 0.8rem;
+  padding: 0.5rem 0.6rem;
   border-bottom: 1px solid var(--color-cream-soft);
   white-space: nowrap;
-  max-width: 220px;
+  max-width: 180px;
   overflow: hidden;
   text-overflow: ellipsis;
 }
@@ -85,6 +110,18 @@
   background: var(--color-cream-soft);
 }
 
+.admin-actions {
+  white-space: nowrap;
+}
+
+.admin-actions button {
+  margin-right: 0.35rem;
+}
+
+.admin-actions button:last-child {
+  margin-right: 0;
+}
+
 .admin-delete-btn {
   background: transparent;
   border: 1px solid var(--color-terracotta);
@@ -97,4 +134,90 @@
 .admin-delete-btn:hover {
   background: var(--color-terracotta);
   color: var(--color-white);
+}
+
+.admin-edit-btn,
+.admin-save-btn,
+.admin-cancel-btn {
+  background: transparent;
+  border: 1px solid var(--color-berry);
+  color: var(--color-berry);
+  border-radius: var(--radius);
+  padding: 0.3rem 0.6rem;
+  font-size: 0.75rem;
+}
+
+.admin-edit-btn:hover,
+.admin-save-btn:hover,
+.admin-cancel-btn:hover {
+  background: var(--color-berry);
+  color: var(--color-white);
+}
+
+/* Highlight the row currently being edited. */
+tr.is-editing td {
+  background: var(--color-cream-soft);
+}
+
+.admin-table td input,
+.admin-table td select {
+  width: 100%;
+  min-width: 90px;
+  padding: 0.35rem 0.5rem;
+  border: 1px solid var(--color-mauve);
+  border-radius: 4px;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  background: var(--color-white);
+}
+
+/* ----------------------------------------------------------------------- */
+/* Desktop: restore the original, more spacious sizing. The scroll hint is
+   mobile-only — on wider screens the table just fits without scrolling. */
+/* ----------------------------------------------------------------------- */
+@media (min-width: 700px) {
+  .admin-body {
+    padding: var(--space-md);
+  }
+
+  .admin-header {
+    margin-bottom: var(--space-md);
+  }
+
+  .admin-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .admin-scroll-hint {
+    display: none;
+  }
+
+  .admin-summary {
+    gap: var(--space-md);
+    margin-bottom: var(--space-md);
+  }
+
+  .admin-stat {
+    padding: var(--space-sm) var(--space-md);
+    flex: 0 1 auto;
+    min-width: 180px;
+  }
+
+  .admin-stat__number {
+    font-size: 2rem;
+  }
+
+  .admin-stat__label {
+    font-size: 0.8rem;
+  }
+
+  .admin-table {
+    font-size: 0.85rem;
+  }
+
+  .admin-table th,
+  .admin-table td {
+    padding: 0.6rem 0.8rem;
+    max-width: 220px;
+  }
 }

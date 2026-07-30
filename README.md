@@ -17,7 +17,7 @@ wedding-website/
 ├── server.js            Express app entry point — start here to understand
 │                         the request flow.
 ├── wedding-config.js     ✏️ THE file to edit: names, date, venue, colors,
-│                         RSVP deadline, meal options.
+│                         RSVP deadline.
 ├── db-pool.js            PostgreSQL connection + schema init.
 ├── schema.sql            Table definition.
 ├── adminAuth.js          Password-protects /admin.
@@ -36,8 +36,8 @@ wedding-website/
 ```
 
 **To customize the wedding details, you should only need to edit two
-files:** `wedding-config.js` (facts: names, date, venue, colors, meal
-choices) and `i18n.js` (the "Our story" and "Dress code" paragraphs). Both
+files:** `wedding-config.js` (facts: names, date, venue, colors, RSVP
+deadline) and `i18n.js` (the "Our story" and "Dress code" paragraphs). Both
 are marked with `✏️ EDIT ME` comments.
 
 ### A note on the flat layout and security
@@ -109,10 +109,11 @@ migration step needed (see `db-pool.js` → `initDb()`).
 |----------------------------------------|-----------------------------------------------|
 | Names, wedding date/time, venue        | `wedding-config.js`                            |
 | RSVP deadline                          | `wedding-config.js`                            |
-| Meal choices                           | `wedding-config.js`                            |
+| Itinerary (event list, times)          | `wedding-config.js` (`itinerary` array — add/remove/reorder freely) |
 | Colors                                 | `wedding-config.js` **and** the `:root` block at the top of `styles.css` (both must match — see comment in the config file) |
 | "Our story" paragraph (ES & EN)        | `i18n.js`                                      |
 | Dress code paragraph (ES & EN)         | `i18n.js`                                      |
+| Gifts / envelope box message (ES & EN) | `i18n.js`                                      |
 | Interface button/label text            | `i18n.js`                                      |
 | Engagement photo                       | Add an image file to this same root folder (e.g. `photo1.jpg`), then update the placeholder `<div class="story__photo">` in `index.html` with an `<img src="/photo1.jpg" alt="...">` tag (instructions are commented right above it) |
 | Admin login credentials                | `.env` locally, or Railway's Variables tab in production — never commit these |
@@ -127,6 +128,29 @@ migration step needed (see `db-pool.js` → `initDb()`).
 - **Admin auth:** simple HTTP basic-auth (one shared username/password).
   Good enough for a small wedding admin panel; let me know if you'd rather
   have individual accounts later.
+- **Required fields:** name, phone, and attendance (yes/no) are required on
+  the public RSVP form — marked with a `*` and enforced both client-side
+  (instant feedback, no page reload) and server-side (`routes-rsvp.js`).
+  Guest count, song request, and message stay optional.
+- **Admin editing:** click "Edit" on any row in `/admin` to edit it inline;
+  "Save" sends the changes to `PATCH /api/admin/rsvps/:id`, "Cancel"
+  discards them. The same required-field rules apply.
+- **Header shortcut:** the "I & J" monogram in the site header links to
+  `/admin` (still requires the admin login) — a quick way in without typing
+  the URL, without looking like a button.
+- **Mobile nav:** below 900px wide, the header nav shows icons only (no
+  text) so it fits on one line — the labels are still there for screen
+  readers, and switch back to full text above 900px. Icons and section IDs
+  live in `index.html`; if you reorder sections, update both the nav link
+  `href`s and the matching `id` on each `<section>`.
+- **Itinerary:** fully data-driven from the `itinerary` array in
+  `wedding-config.js` — add, remove, or reorder events there and the
+  timeline on the site updates automatically, no HTML editing needed.
+- **Excel export:** the "Download Excel" button in `/admin` hits
+  `GET /api/admin/rsvps/export` (protected by the same admin login) and
+  streams a real `.xlsx` file built with the `exceljs` package — that's a
+  new dependency added to `package.json`, so make sure `npm install` runs
+  again (Railway does this automatically on deploy).
 - **Language default:** Spanish, with an EN toggle in the header. The
   visitor's choice is remembered in their browser (`localStorage`) between
   visits.

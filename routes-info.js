@@ -4,7 +4,7 @@
  * ============================================================================
  *  Public, read-only endpoint. Serves the non-secret contents of
  *  wedding-config.js as JSON so the frontend (main.js) can
- *  render the names, date, venue, colors, RSVP deadline, and meal options
+ *  render the names, date, venue, colors, and RSVP deadline
  *  without duplicating them inside the HTML.
  *
  *  This is intentionally the ONLY thing this route does — no database, no

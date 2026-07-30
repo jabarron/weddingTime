@@ -6,12 +6,23 @@
  *  one table row per response. The browser automatically attaches the
  *  basic-auth credentials it collected on page load to these fetch() calls,
  *  since they're same-origin requests — no extra auth code needed here.
+ *
+ *  Inline editing: clicking "Edit" on a row swaps that row's read-only
+ *  cells for input fields (see renderEditRow), and its buttons for
+ *  Save/Cancel. Only one row can be in edit mode at a time — tracked by
+ *  `editingId`. Save sends a PATCH to /api/admin/rsvps/:id (routes-admin.js)
+ *  with the edited values; the same required-field rules as the public
+ *  RSVP form apply (full name, phone, attending).
  * ============================================================================
  */
 
 (function () {
   const tableBody = document.getElementById('admin-table-body');
   const refreshBtn = document.getElementById('refresh-btn');
+
+  let currentData = []; // last-loaded responses, cached so re-rendering
+                         // during edit mode doesn't require another fetch
+  let editingId = null; // id of the row currently being edited, or null
 
   function escapeHtml(value) {
     if (value == null) return '';
@@ -21,6 +32,12 @@
       .replace(/>/g, '&gt;');
   }
 
+  // Same as escapeHtml but also escapes quotes, for safe use inside a
+  // value="..." HTML attribute.
+  function escapeAttr(value) {
+    return escapeHtml(value).replace(/"/g, '&quot;');
+  }
+
   function formatDate(isoString) {
     return new Date(isoString).toLocaleString('en-US', {
       dateStyle: 'medium',
@@ -28,8 +45,61 @@
     });
   }
 
+  /** Normal, read-only row. */
+  function renderReadRow(r) {
+    return `
+      <tr data-id="${r.id}">
+        <td>${escapeHtml(r.full_name)}</td>
+        <td>${escapeHtml(r.phone)}</td>
+        <td>${r.attending ? 'Yes' : 'No'}</td>
+        <td>${escapeHtml(r.guest_count)}</td>
+        <td>${escapeHtml(r.song_request)}</td>
+        <td>${escapeHtml(r.message)}</td>
+        <td>${formatDate(r.submitted_at)}</td>
+        <td class="admin-actions">
+          <button class="admin-edit-btn" data-id="${r.id}">Edit</button>
+          <button class="admin-delete-btn" data-id="${r.id}">Delete</button>
+        </td>
+      </tr>`;
+  }
+
+  /** Row in edit mode — inputs pre-filled with the current values. */
+  function renderEditRow(r) {
+    return `
+      <tr data-id="${r.id}" class="is-editing">
+        <td><input type="text" class="edit-fullName" value="${escapeAttr(r.full_name)}" /></td>
+        <td><input type="tel" class="edit-phone" value="${escapeAttr(r.phone)}" /></td>
+        <td>
+          <select class="edit-attending">
+            <option value="true" ${r.attending ? 'selected' : ''}>Yes</option>
+            <option value="false" ${!r.attending ? 'selected' : ''}>No</option>
+          </select>
+        </td>
+        <td><input type="number" min="1" class="edit-guestCount" value="${escapeAttr(r.guest_count)}" /></td>
+        <td><input type="text" class="edit-songRequest" value="${escapeAttr(r.song_request || '')}" /></td>
+        <td><input type="text" class="edit-message" value="${escapeAttr(r.message || '')}" /></td>
+        <td>${formatDate(r.submitted_at)}</td>
+        <td class="admin-actions">
+          <button class="admin-save-btn" data-id="${r.id}">Save</button>
+          <button class="admin-cancel-btn" data-id="${r.id}">Cancel</button>
+        </td>
+      </tr>`;
+  }
+
+  /** Re-renders the whole table body from `currentData` + `editingId`. */
+  function renderTable() {
+    if (currentData.length === 0) {
+      tableBody.innerHTML = '<tr><td colspan="8">No responses yet.</td></tr>';
+      return;
+    }
+    tableBody.innerHTML = currentData
+      .map((r) => (r.id === editingId ? renderEditRow(r) : renderReadRow(r)))
+      .join('');
+  }
+
   async function loadRsvps() {
-    tableBody.innerHTML = '<tr><td colspan="10">Loading…</td></tr>';
+    tableBody.innerHTML = '<tr><td colspan="8">Loading…</td></tr>';
+    editingId = null;
 
     try {
       const res = await fetch('/api/admin/rsvps');
@@ -40,32 +110,12 @@
       document.getElementById('stat-guests').textContent = summary.totalGuestsAttending;
       document.getElementById('stat-declined').textContent = summary.declinedResponses;
 
-      if (responses.length === 0) {
-        tableBody.innerHTML = '<tr><td colspan="10">No responses yet.</td></tr>';
-        return;
-      }
-
-      tableBody.innerHTML = responses
-        .map(
-          (r) => `
-        <tr data-id="${r.id}">
-          <td>${escapeHtml(r.full_name)}</td>
-          <td>${escapeHtml(r.email)}</td>
-          <td>${r.attending ? 'Yes' : 'No'}</td>
-          <td>${escapeHtml(r.guest_count)}</td>
-          <td>${escapeHtml(r.meal_choice)}</td>
-          <td>${escapeHtml(r.song_request)}</td>
-          <td>${escapeHtml(r.message)}</td>
-          <td>${escapeHtml(r.language)}</td>
-          <td>${formatDate(r.submitted_at)}</td>
-          <td><button class="admin-delete-btn" data-id="${r.id}">Delete</button></td>
-        </tr>`
-        )
-        .join('');
+      currentData = responses;
+      renderTable();
     } catch (err) {
       console.error('Could not load RSVPs:', err);
       tableBody.innerHTML =
-        '<tr><td colspan="10">Could not load responses. Try refreshing.</td></tr>';
+        '<tr><td colspan="8">Could not load responses. Try refreshing.</td></tr>';
     }
   }
 
@@ -81,9 +131,53 @@
     }
   }
 
+  async function saveRsvp(id, rowEl) {
+    const payload = {
+      fullName: rowEl.querySelector('.edit-fullName').value,
+      phone: rowEl.querySelector('.edit-phone').value,
+      attending: rowEl.querySelector('.edit-attending').value === 'true',
+      guestCount: Number(rowEl.querySelector('.edit-guestCount').value) || 1,
+      songRequest: rowEl.querySelector('.edit-songRequest').value || null,
+      message: rowEl.querySelector('.edit-message').value || null,
+    };
+
+    if (!payload.fullName.trim() || !payload.phone.trim()) {
+      alert('Name and phone are required.');
+      return;
+    }
+
+    try {
+      const res = await fetch(`/api/admin/rsvps/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) throw new Error('Update failed');
+      editingId = null;
+      loadRsvps();
+    } catch (err) {
+      console.error('Could not update RSVP:', err);
+      alert('Could not save changes. Please try again.');
+    }
+  }
+
   tableBody.addEventListener('click', (event) => {
-    const btn = event.target.closest('.admin-delete-btn');
-    if (btn) deleteRsvp(btn.dataset.id);
+    const editBtn = event.target.closest('.admin-edit-btn');
+    const deleteBtn = event.target.closest('.admin-delete-btn');
+    const saveBtn = event.target.closest('.admin-save-btn');
+    const cancelBtn = event.target.closest('.admin-cancel-btn');
+
+    if (editBtn) {
+      editingId = Number(editBtn.dataset.id);
+      renderTable();
+    } else if (deleteBtn) {
+      deleteRsvp(deleteBtn.dataset.id);
+    } else if (saveBtn) {
+      saveRsvp(Number(saveBtn.dataset.id), saveBtn.closest('tr'));
+    } else if (cancelBtn) {
+      editingId = null;
+      renderTable();
+    }
   });
 
   refreshBtn.addEventListener('click', loadRsvps);

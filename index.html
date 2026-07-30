@@ -33,12 +33,32 @@
 
   <!-- ===================== Header ===================== -->
   <header class="site-header">
-    <span class="site-header__monogram">I &amp; J</span>
+    <a href="/admin" class="site-header__monogram">I &amp; J</a>
     <nav class="site-header__nav">
-      <a href="#story" data-i18n="nav_story">Nuestra Historia</a>
-      <a href="#details" data-i18n="nav_details">Detalles</a>
-      <a href="#dress-code" data-i18n="nav_dress">Código de Vestimenta</a>
-      <a href="#rsvp" data-i18n="nav_rsvp">Confirmar Asistencia</a>
+      <a href="#story" class="nav-link">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-6.7-4.35-9.3-8.1C1 10.2 1.8 6.7 5 5.4c2.1-.9 4.4-.1 5.7 1.6l1.3 1.7 1.3-1.7c1.3-1.7 3.6-2.5 5.7-1.6 3.2 1.3 4 4.8 2.3 7.5C18.7 16.65 12 21 12 21z"/></svg>
+        <span class="nav-label" data-i18n="nav_story">Nuestra Historia</span>
+      </a>
+      <a href="#details" class="nav-link">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/></svg>
+        <span class="nav-label" data-i18n="nav_details">Detalles</span>
+      </a>
+      <a href="#itinerary" class="nav-link">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+        <span class="nav-label" data-i18n="nav_itinerary">Itinerario</span>
+      </a>
+      <a href="#dress-code" class="nav-link">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4a1.5 1.5 0 1 0-1.5 1.5"/><path d="M12 5.5v2"/><path d="M3 20l9-6.5L21 20"/><path d="M3 20h18"/></svg>
+        <span class="nav-label" data-i18n="nav_dress">Código de Vestimenta</span>
+      </a>
+      <a href="#gifts" class="nav-link">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="8" width="18" height="13" rx="1"/><path d="M3 8h18M12 8v13"/><path d="M12 8c-1.5-4-6-4-6 0"/><path d="M12 8c1.5-4 6-4 6 0"/></svg>
+        <span class="nav-label" data-i18n="nav_gifts">Regalos</span>
+      </a>
+      <a href="#rsvp" class="nav-link">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9.5"/></svg>
+        <span class="nav-label" data-i18n="nav_rsvp">Confirmar Asistencia</span>
+      </a>
       <div class="lang-toggle" role="group" aria-label="Language / Idioma">
         <button type="button" data-lang="es" aria-pressed="true">ES</button>
         <button type="button" data-lang="en" aria-pressed="false">EN</button>
@@ -134,6 +154,20 @@
     </div>
   </section>
 
+  <!-- ===================== Itinerary ===================== -->
+  <!-- List of events comes from wedding-config.js (itinerary array) and is
+       rendered into the <ol> below by main.js -> renderItinerary(). Edit
+       the events there, not here. -->
+  <section class="section itinerary" id="itinerary">
+    <div class="container text-center">
+      <span class="eyebrow" data-i18n="itinerary_eyebrow">Itinerario</span>
+      <h2 data-i18n="itinerary_heading">El día se vivirá así</h2>
+    </div>
+    <div class="container">
+      <ol class="timeline" data-field="itinerary-list"></ol>
+    </div>
+  </section>
+
   <!-- ===================== Dress Code ===================== -->
   <section class="section dress-code" id="dress-code">
     <div class="container">
@@ -152,6 +186,19 @@
     </div>
   </section>
 
+  <!-- ===================== Gifts ===================== -->
+  <section class="section gifts" id="gifts">
+    <div class="container text-center">
+      <svg class="gifts__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="8" width="18" height="13" rx="1"/><path d="M3 8h18M12 8v13"/><path d="M12 8c-1.5-4-6-4-6 0"/><path d="M12 8c1.5-4 6-4 6 0"/></svg>
+      <span class="eyebrow" data-i18n="gifts_eyebrow">Regalos</span>
+      <h2 data-i18n="gifts_heading">Su presencia es nuestro mejor regalo</h2>
+      <p data-i18n="gifts_body">
+        Contar con ustedes ese día ya es un regalo enorme. Si desean obsequiarnos algo más,
+        tendremos un buzón para sobres durante la recepción.
+      </p>
+    </div>
+  </section>
+
   <!-- ===================== RSVP ===================== -->
   <section class="section rsvp" id="rsvp">
     <div class="container text-center">
@@ -165,18 +212,24 @@
     </div>
 
     <form class="rsvp__form" id="rsvp-form" novalidate>
-      <div class="field">
-        <label for="fullName" data-i18n="rsvp_name">Nombre completo</label>
+      <div class="field" id="field-fullName">
+        <label for="fullName">
+          <span data-i18n="rsvp_name">Nombre completo</span><span class="required-asterisk" aria-hidden="true">*</span>
+        </label>
         <input type="text" id="fullName" name="fullName" required autocomplete="name" />
       </div>
 
-      <div class="field">
-        <label for="email" data-i18n="rsvp_email">Correo electrónico (opcional)</label>
-        <input type="email" id="email" name="email" autocomplete="email" />
+      <div class="field" id="field-phone">
+        <label for="phone">
+          <span data-i18n="rsvp_phone">Teléfono</span><span class="required-asterisk" aria-hidden="true">*</span>
+        </label>
+        <input type="tel" id="phone" name="phone" required autocomplete="tel" />
       </div>
 
-      <div class="field">
-        <label data-i18n="rsvp_attending">¿Podrás acompañarnos?</label>
+      <div class="field" id="field-attending">
+        <label>
+          <span data-i18n="rsvp_attending">¿Podrás acompañarnos?</span><span class="required-asterisk" aria-hidden="true">*</span>
+        </label>
         <div class="field--radio-group">
           <label class="radio-option">
             <input type="radio" name="attending" value="yes" required />
@@ -192,11 +245,6 @@
       <div class="field">
         <label for="guestCount" data-i18n="rsvp_guest_count">Número de personas</label>
         <input type="number" id="guestCount" name="guestCount" min="1" max="10" value="1" />
-      </div>
-
-      <div class="field">
-        <label for="mealChoice" data-i18n="rsvp_meal">Elección de platillo</label>
-        <select id="mealChoice" name="mealChoice" data-field="meal-select"></select>
       </div>
 
       <div class="field">

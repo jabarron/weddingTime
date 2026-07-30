@@ -23,7 +23,10 @@
 
   <header class="admin-header">
     <h1>RSVP Dashboard — Ismeraí &amp; Jesús</h1>
-    <button id="refresh-btn" class="btn btn--primary">Refresh</button>
+    <div class="admin-header__actions">
+      <a href="/api/admin/rsvps/export" class="btn admin-export-btn" id="export-btn">Download Excel</a>
+      <button id="refresh-btn" class="btn btn--primary">Refresh</button>
+    </div>
   </header>
 
   <section class="admin-summary" id="admin-summary">
@@ -41,24 +44,24 @@
     </div>
   </section>
 
+  <p class="admin-scroll-hint">Swipe left/right to see more columns →</p>
+
   <section class="admin-table-wrap">
     <table class="admin-table">
       <thead>
         <tr>
           <th>Name</th>
-          <th>Email</th>
+          <th>Phone</th>
           <th>Attending</th>
           <th>Guests</th>
-          <th>Meal</th>
           <th>Song</th>
           <th>Message</th>
-          <th>Lang</th>
           <th>Submitted</th>
-          <th></th>
+          <th>Actions</th>
         </tr>
       </thead>
       <tbody id="admin-table-body">
-        <tr><td colspan="10">Loading…</td></tr>
+        <tr><td colspan="8">Loading…</td></tr>
       </tbody>
     </table>
   </section>

@@ -10,7 +10,9 @@
      6. Section dividers (vine motif)
      7. Our story
      8. Details (date / venue)
+     8.5 Itinerary (timeline)
      9. Dress code
+     9.5 Gifts
      10. RSVP form
      11. Footer
      12. Responsive breakpoints
@@ -186,7 +188,7 @@ button {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: var(--space-sm) var(--space-md);
+  padding: var(--space-xs) var(--space-sm);
   background: rgba(72, 1, 31, 0.0);
   transition: background var(--transition-fast), backdrop-filter var(--transition-fast);
 }
@@ -199,26 +201,59 @@ button {
 .site-header__monogram {
   font-family: var(--font-display);
   font-style: italic;
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   color: var(--color-white);
   letter-spacing: 0.04em;
+}
+
+/* This is now a link to /admin, but should look and behave exactly like
+   plain text — no color change, no underline, on any state. */
+.site-header__monogram,
+.site-header__monogram:link,
+.site-header__monogram:visited,
+.site-header__monogram:hover,
+.site-header__monogram:active {
+  color: var(--color-white);
+  text-decoration: none;
 }
 
 .site-header__nav {
   display: flex;
   align-items: center;
-  gap: var(--space-md);
+  gap: 0.65rem;
 }
 
-.site-header__nav a {
+.nav-link {
+  display: flex;
+  align-items: center;
   color: var(--color-white);
-  font-size: 0.85rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
 }
 
-.site-header__nav a:hover {
+.nav-icon {
+  width: 17px;
+  height: 17px;
+  flex-shrink: 0;
+}
+
+.nav-link:hover {
   color: var(--color-terracotta);
+}
+
+/* Mobile-first: the text label is present for screen readers and for the
+   desktop breakpoint below, but visually hidden here so the nav fits on
+   one line as icons only — see .nav-icon above and the min-width:860px
+   override in the responsive breakpoints section, which swaps this back
+   to text-only (icons hidden) to match the original desktop design. */
+.nav-label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 .lang-toggle {
@@ -232,9 +267,9 @@ button {
   background: transparent;
   border: none;
   color: var(--color-white);
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   font-weight: 600;
-  padding: 0.35rem 0.7rem;
+  padding: 0.25rem 0.5rem;
   letter-spacing: 0.05em;
 }
 
@@ -425,6 +460,58 @@ button {
 }
 
 /* ----------------------------------------------------------------------- */
+/* 8.5 Itinerary (timeline)                                                */
+/* ----------------------------------------------------------------------- */
+.itinerary {
+  background: var(--color-cream);
+}
+
+.timeline {
+  list-style: none;
+  max-width: 480px;
+  margin: var(--space-lg) auto 0;
+  padding: 0;
+}
+
+.timeline__item {
+  position: relative;
+  border-left: 2px solid var(--color-mauve);
+  padding-left: var(--space-md);
+  padding-bottom: var(--space-lg);
+}
+
+.timeline__item:last-child {
+  padding-bottom: 0.2rem;
+}
+
+.timeline__item::before {
+  content: '';
+  position: absolute;
+  left: -8px;
+  top: 0.15rem;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--color-terracotta);
+  border: 2px solid var(--color-cream);
+}
+
+.timeline__time {
+  display: block;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.15rem;
+  color: var(--color-wine);
+  margin-bottom: 0.15rem;
+}
+
+.timeline__title {
+  display: block;
+  font-size: 0.95rem;
+  color: var(--color-ink);
+}
+
+/* ----------------------------------------------------------------------- */
 /* 9. Dress code                                                           */
 /* ----------------------------------------------------------------------- */
 .dress-code {
@@ -444,6 +531,34 @@ button {
   height: 2.5rem;
   border-radius: 50%;
   border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/* ----------------------------------------------------------------------- */
+/* 9.5 Gifts                                                               */
+/* ----------------------------------------------------------------------- */
+.gifts {
+  background: var(--color-wine);
+  color: var(--color-cream);
+  text-align: center;
+}
+
+.gifts h2 {
+  color: var(--color-white);
+}
+
+.gifts__icon {
+  width: 40px;
+  height: 40px;
+  color: var(--color-terracotta);
+  margin: 0 auto var(--space-sm);
+}
+
+.gifts p {
+  max-width: 480px;
+  margin-left: auto;
+  margin-right: auto;
+  color: var(--color-cream);
+  margin-bottom: 0;
 }
 
 /* ----------------------------------------------------------------------- */
@@ -478,7 +593,7 @@ button {
 }
 
 .field input[type='text'],
-.field input[type='email'],
+.field input[type='tel'],
 .field input[type='number'],
 .field select,
 .field textarea {
@@ -515,6 +630,29 @@ button {
   margin-top: 0.3rem;
 }
 
+/* Required-field marker (name, phone, attending). */
+.required-asterisk {
+  color: var(--color-wine);
+  font-weight: 700;
+  margin-left: 0.2em;
+}
+
+/* Applied by rsvp-form.js to a .field wrapper when that required field
+   was left empty on a failed submit attempt. Cleared automatically once
+   the guest fills it in. */
+.field--invalid input,
+.field--invalid select,
+.field--invalid textarea {
+  border-color: var(--color-wine);
+  border-width: 2px;
+}
+
+.field--invalid .field--radio-group {
+  outline: 2px solid var(--color-wine);
+  outline-offset: 6px;
+  border-radius: var(--radius);
+}
+
 .rsvp__submit {
   width: 100%;
   border: none;
@@ -532,6 +670,11 @@ button {
 
 .rsvp__status[data-state='error'] {
   color: var(--color-terracotta);
+}
+
+.rsvp__status[data-state='required'] {
+  color: var(--color-wine);
+  font-weight: 600;
 }
 
 /* ----------------------------------------------------------------------- */
@@ -576,6 +719,45 @@ button {
 
   .story__grid.story__grid--reverse > * {
     direction: ltr;
+  }
+}
+
+/* Enough room for full text labels instead of icons in the header nav. */
+@media (min-width: 900px) {
+  .site-header {
+    padding: var(--space-sm) var(--space-md);
+  }
+
+  .site-header__monogram {
+    font-size: 1.4rem;
+  }
+
+  .lang-toggle button {
+    font-size: 0.75rem;
+    padding: 0.35rem 0.7rem;
+  }
+
+  .nav-icon {
+    display: none;
+  }
+
+  .nav-label {
+    position: static;
+    width: auto;
+    height: auto;
+    padding: 0;
+    margin: 0;
+    overflow: visible;
+    clip: auto;
+    white-space: nowrap;
+    border: 0;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .site-header__nav {
+    gap: var(--space-md);
   }
 }
 
