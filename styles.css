@@ -119,7 +119,7 @@ button {
 }
 
 .section {
-  padding: var(--space-xl) 0;
+  padding: 5rem 0;
 }
 
 .section--tight {
@@ -377,11 +377,11 @@ button {
 .vine-divider {
   display: flex;
   justify-content: center;
-  padding: var(--space-md) 0;
+  padding: var(--space-sm) 0;
 }
 
 .vine-divider svg {
-  width: 220px;
+  width: 300px;
   height: auto;
   stroke: var(--color-mauve);
 }
