@@ -37,6 +37,20 @@ const DICTIONARY = {
     story_body:
       'Lo que comenzó como una casualidad se convirtió en la certeza de querer construir una vida juntos. Entre risas, viajes y una que otra taza de café, hoy estamos listos para dar el siguiente paso — y no imaginamos mejor manera de hacerlo que rodeados de las personas que más queremos.',
 
+    // ✏️ EDIT ME: three more "chapters" of your story, shown below the intro
+    // above with alternating photo/text. Replace freely — add or remove
+    // pairs of *_heading/*_body keys if you want more or fewer than 3 (and
+    // update index.html to match, see the story-milestones comment there).
+    story_milestone1_heading: 'Cómo nos conocimos',
+    story_milestone1_body:
+      'Nuestro primer encuentro fue casi por accidente, pero desde ese momento supimos que había algo especial. Fue el inicio de una amistad que, sin darnos cuenta, se convirtió en algo mucho más grande.',
+    story_milestone2_heading: 'Primera cita',
+    story_milestone2_body:
+      'Nuestra primera cita oficial fue una tarde llena de risas y nervios. Hablamos durante horas como si nos conociéramos de toda la vida, y supimos que queríamos seguir escribiendo esta historia juntos.',
+    story_milestone3_heading: 'La propuesta',
+    story_milestone3_body:
+      'Después de tantos momentos compartidos, llegó el día en que decidimos dar el siguiente paso. Entre lágrimas y una gran sonrisa, dijimos que sí a pasar el resto de nuestras vidas juntos.',
+
     details_eyebrow: 'Detalles',
     details_heading: 'Cuándo y dónde',
     details_date_label: 'Fecha',
@@ -76,6 +90,37 @@ const DICTIONARY = {
     rsvp_required_error: 'Por favor completa los campos obligatorios: nombre, teléfono y confirmación de asistencia.',
 
     footer_contact: 'Preguntas',
+
+    // ✏️ Admin dashboard (/admin) — inherits whichever language was last
+    // selected on the public site (see admin.js), no separate toggle.
+    admin_title: 'Panel de RSVP',
+    admin_export_btn: 'Descargar Excel',
+    admin_refresh_btn: 'Actualizar',
+    admin_scroll_hint: 'Desliza izquierda/derecha para ver más columnas →',
+    admin_stat_attending: 'Respuestas confirmadas',
+    admin_stat_guests: 'Total de invitados asistiendo',
+    admin_stat_declined: 'Respuestas declinadas',
+    admin_th_name: 'Nombre',
+    admin_th_phone: 'Teléfono',
+    admin_th_attending: 'Asiste',
+    admin_th_guests: 'Invitados',
+    admin_th_song: 'Canción',
+    admin_th_message: 'Mensaje',
+    admin_th_submitted: 'Enviado',
+    admin_th_actions: 'Acciones',
+    admin_yes: 'Sí',
+    admin_no: 'No',
+    admin_edit_btn: 'Editar',
+    admin_delete_btn: 'Eliminar',
+    admin_save_btn: 'Guardar',
+    admin_cancel_btn: 'Cancelar',
+    admin_loading: 'Cargando…',
+    admin_empty: 'Aún no hay respuestas.',
+    admin_load_error: 'No se pudieron cargar las respuestas. Intenta actualizar.',
+    admin_delete_confirm: '¿Eliminar esta respuesta de RSVP? Esta acción no se puede deshacer.',
+    admin_delete_error: 'No se pudo eliminar esta respuesta. Intenta de nuevo.',
+    admin_save_error: 'No se pudieron guardar los cambios. Intenta de nuevo.',
+    admin_required_alert: 'Nombre y teléfono son obligatorios.',
   },
 
   en: {
@@ -99,6 +144,18 @@ const DICTIONARY = {
     // ✏️ EDIT ME: replace with your real story.
     story_body:
       "What started as a chance meeting turned into the certainty that we wanted to build a life together. Between laughs, trips, and a coffee or two, we're ready to take the next step — and we can't imagine a better way to do it than surrounded by the people we love most.",
+
+    // ✏️ EDIT ME: three more "chapters" of your story, shown below the intro
+    // above with alternating photo/text.
+    story_milestone1_heading: 'How we met',
+    story_milestone1_body:
+      "Our first meeting was almost by accident, but from that moment we knew there was something special. It was the start of a friendship that, before we knew it, became something much bigger.",
+    story_milestone2_heading: 'First date',
+    story_milestone2_body:
+      "Our first official date was an afternoon full of laughter and nerves. We talked for hours as if we'd known each other forever, and we knew we wanted to keep writing this story together.",
+    story_milestone3_heading: 'The proposal',
+    story_milestone3_body:
+      "After so many moments shared together, the day came to take the next step. Between tears and a huge smile, we said yes to spending the rest of our lives together.",
 
     details_eyebrow: 'Details',
     details_heading: 'When & where',
@@ -139,6 +196,35 @@ const DICTIONARY = {
     rsvp_required_error: 'Please fill in the required fields: name, phone, and attendance confirmation.',
 
     footer_contact: 'Questions',
+
+    admin_title: 'RSVP Dashboard',
+    admin_export_btn: 'Download Excel',
+    admin_refresh_btn: 'Refresh',
+    admin_scroll_hint: 'Swipe left/right to see more columns →',
+    admin_stat_attending: 'Attending responses',
+    admin_stat_guests: 'Total guests attending',
+    admin_stat_declined: 'Declined responses',
+    admin_th_name: 'Name',
+    admin_th_phone: 'Phone',
+    admin_th_attending: 'Attending',
+    admin_th_guests: 'Guests',
+    admin_th_song: 'Song',
+    admin_th_message: 'Message',
+    admin_th_submitted: 'Submitted',
+    admin_th_actions: 'Actions',
+    admin_yes: 'Yes',
+    admin_no: 'No',
+    admin_edit_btn: 'Edit',
+    admin_delete_btn: 'Delete',
+    admin_save_btn: 'Save',
+    admin_cancel_btn: 'Cancel',
+    admin_loading: 'Loading…',
+    admin_empty: 'No responses yet.',
+    admin_load_error: 'Could not load responses. Try refreshing.',
+    admin_delete_confirm: 'Delete this RSVP response? This cannot be undone.',
+    admin_delete_error: 'Could not delete this response. Please try again.',
+    admin_save_error: 'Could not save changes. Please try again.',
+    admin_required_alert: 'Name and phone are required.',
   },
 };
 

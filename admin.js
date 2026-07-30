@@ -7,6 +7,12 @@
  *  basic-auth credentials it collected on page load to these fetch() calls,
  *  since they're same-origin requests — no extra auth code needed here.
  *
+ *  Language: this page has no toggle of its own. It reads the
+ *  'site-language' key from localStorage — the same key main.js writes
+ *  when the couple uses the ES/EN toggle on the public site — and renders
+ *  in that language. Defaults to Spanish if that key was never set (e.g.
+ *  the public site was never visited in this browser).
+ *
  *  Inline editing: clicking "Edit" on a row swaps that row's read-only
  *  cells for input fields (see renderEditRow), and its buttons for
  *  Save/Cancel. Only one row can be in edit mode at a time — tracked by
@@ -20,9 +26,21 @@
   const tableBody = document.getElementById('admin-table-body');
   const refreshBtn = document.getElementById('refresh-btn');
 
+  const lang = localStorage.getItem('site-language') || 'es';
+  const dict = window.DICTIONARY[lang];
+
   let currentData = []; // last-loaded responses, cached so re-rendering
                          // during edit mode doesn't require another fetch
   let editingId = null; // id of the row currently being edited, or null
+
+  /** Applies the dictionary to every [data-i18n] element on the page. */
+  function applyLanguage() {
+    document.documentElement.lang = lang;
+    document.querySelectorAll('[data-i18n]').forEach((el) => {
+      const key = el.getAttribute('data-i18n');
+      if (dict[key]) el.textContent = dict[key];
+    });
+  }
 
   function escapeHtml(value) {
     if (value == null) return '';
@@ -39,7 +57,7 @@
   }
 
   function formatDate(isoString) {
-    return new Date(isoString).toLocaleString('en-US', {
+    return new Date(isoString).toLocaleString(lang === 'es' ? 'es-MX' : 'en-US', {
       dateStyle: 'medium',
       timeStyle: 'short',
     });
@@ -51,14 +69,14 @@
       <tr data-id="${r.id}">
         <td>${escapeHtml(r.full_name)}</td>
         <td>${escapeHtml(r.phone)}</td>
-        <td>${r.attending ? 'Yes' : 'No'}</td>
+        <td>${r.attending ? dict.admin_yes : dict.admin_no}</td>
         <td>${escapeHtml(r.guest_count)}</td>
         <td>${escapeHtml(r.song_request)}</td>
         <td>${escapeHtml(r.message)}</td>
         <td>${formatDate(r.submitted_at)}</td>
         <td class="admin-actions">
-          <button class="admin-edit-btn" data-id="${r.id}">Edit</button>
-          <button class="admin-delete-btn" data-id="${r.id}">Delete</button>
+          <button class="admin-edit-btn" data-id="${r.id}">${dict.admin_edit_btn}</button>
+          <button class="admin-delete-btn" data-id="${r.id}">${dict.admin_delete_btn}</button>
         </td>
       </tr>`;
   }
@@ -71,8 +89,8 @@
         <td><input type="tel" class="edit-phone" value="${escapeAttr(r.phone)}" /></td>
         <td>
           <select class="edit-attending">
-            <option value="true" ${r.attending ? 'selected' : ''}>Yes</option>
-            <option value="false" ${!r.attending ? 'selected' : ''}>No</option>
+            <option value="true" ${r.attending ? 'selected' : ''}>${dict.admin_yes}</option>
+            <option value="false" ${!r.attending ? 'selected' : ''}>${dict.admin_no}</option>
           </select>
         </td>
         <td><input type="number" min="1" class="edit-guestCount" value="${escapeAttr(r.guest_count)}" /></td>
@@ -80,8 +98,8 @@
         <td><input type="text" class="edit-message" value="${escapeAttr(r.message || '')}" /></td>
         <td>${formatDate(r.submitted_at)}</td>
         <td class="admin-actions">
-          <button class="admin-save-btn" data-id="${r.id}">Save</button>
-          <button class="admin-cancel-btn" data-id="${r.id}">Cancel</button>
+          <button class="admin-save-btn" data-id="${r.id}">${dict.admin_save_btn}</button>
+          <button class="admin-cancel-btn" data-id="${r.id}">${dict.admin_cancel_btn}</button>
         </td>
       </tr>`;
   }
@@ -89,7 +107,7 @@
   /** Re-renders the whole table body from `currentData` + `editingId`. */
   function renderTable() {
     if (currentData.length === 0) {
-      tableBody.innerHTML = '<tr><td colspan="8">No responses yet.</td></tr>';
+      tableBody.innerHTML = `<tr><td colspan="8">${dict.admin_empty}</td></tr>`;
       return;
     }
     tableBody.innerHTML = currentData
@@ -98,7 +116,7 @@
   }
 
   async function loadRsvps() {
-    tableBody.innerHTML = '<tr><td colspan="8">Loading…</td></tr>';
+    tableBody.innerHTML = `<tr><td colspan="8">${dict.admin_loading}</td></tr>`;
     editingId = null;
 
     try {
@@ -114,20 +132,19 @@
       renderTable();
     } catch (err) {
       console.error('Could not load RSVPs:', err);
-      tableBody.innerHTML =
-        '<tr><td colspan="8">Could not load responses. Try refreshing.</td></tr>';
+      tableBody.innerHTML = `<tr><td colspan="8">${dict.admin_load_error}</td></tr>`;
     }
   }
 
   async function deleteRsvp(id) {
-    if (!confirm('Delete this RSVP response? This cannot be undone.')) return;
+    if (!confirm(dict.admin_delete_confirm)) return;
     try {
       const res = await fetch(`/api/admin/rsvps/${id}`, { method: 'DELETE' });
       if (!res.ok) throw new Error('Delete failed');
       loadRsvps();
     } catch (err) {
       console.error('Could not delete RSVP:', err);
-      alert('Could not delete this response. Please try again.');
+      alert(dict.admin_delete_error);
     }
   }
 
@@ -142,7 +159,7 @@
     };
 
     if (!payload.fullName.trim() || !payload.phone.trim()) {
-      alert('Name and phone are required.');
+      alert(dict.admin_required_alert);
       return;
     }
 
@@ -157,7 +174,7 @@
       loadRsvps();
     } catch (err) {
       console.error('Could not update RSVP:', err);
-      alert('Could not save changes. Please try again.');
+      alert(dict.admin_save_error);
     }
   }
 
@@ -182,5 +199,8 @@
 
   refreshBtn.addEventListener('click', loadRsvps);
 
-  document.addEventListener('DOMContentLoaded', loadRsvps);
+  document.addEventListener('DOMContentLoaded', () => {
+    applyLanguage();
+    loadRsvps();
+  });
 })();

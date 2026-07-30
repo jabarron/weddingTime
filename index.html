@@ -120,6 +120,53 @@
         </p>
       </div>
     </div>
+
+    <!-- Three more "chapters", alternating photo/text sides on desktop
+         (single column on mobile). Add or remove a whole .story-milestone
+         block to change the count — each one just needs a *_heading/*_body
+         pair in i18n.js (see the comment there). -->
+    <div class="container story-milestones">
+      <div class="story__grid story-milestone">
+        <div class="story__photo" aria-hidden="true">
+          <!-- ✏️ EDIT ME: replace with an <img src="/your-photo.jpg" alt="..."> -->
+          Photo placeholder
+        </div>
+        <div class="story__text">
+          <h3 data-i18n="story_milestone1_heading">Cómo nos conocimos</h3>
+          <p data-i18n="story_milestone1_body">
+            Nuestro primer encuentro fue casi por accidente, pero desde ese momento supimos que
+            había algo especial.
+          </p>
+        </div>
+      </div>
+
+      <div class="story__grid story__grid--reverse story-milestone">
+        <div class="story__photo" aria-hidden="true">
+          <!-- ✏️ EDIT ME: replace with an <img src="/your-photo.jpg" alt="..."> -->
+          Photo placeholder
+        </div>
+        <div class="story__text">
+          <h3 data-i18n="story_milestone2_heading">Primera cita</h3>
+          <p data-i18n="story_milestone2_body">
+            Nuestra primera cita oficial fue una tarde llena de risas y nervios.
+          </p>
+        </div>
+      </div>
+
+      <div class="story__grid story-milestone">
+        <div class="story__photo" aria-hidden="true">
+          <!-- ✏️ EDIT ME: replace with an <img src="/your-photo.jpg" alt="..."> -->
+          Photo placeholder
+        </div>
+        <div class="story__text">
+          <h3 data-i18n="story_milestone3_heading">La propuesta</h3>
+          <p data-i18n="story_milestone3_body">
+            Después de tantos momentos compartidos, llegó el día en que decidimos dar el
+            siguiente paso.
+          </p>
+        </div>
+      </div>
+    </div>
   </section>
 
   <div class="vine-divider" aria-hidden="true">
@@ -167,6 +214,14 @@
       <ol class="timeline" data-field="itinerary-list"></ol>
     </div>
   </section>
+
+  <div class="vine-divider" aria-hidden="true">
+    <svg viewBox="0 0 200 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 20 C 30 5, 40 35, 70 20 S 110 5, 140 20 S 180 35, 200 20" stroke-width="1.5" stroke-linecap="round"/>
+      <path d="M55 20 C 58 12, 65 10, 70 14" stroke-width="1.2" stroke-linecap="round"/>
+      <path d="M125 20 C 128 28, 135 30, 140 26" stroke-width="1.2" stroke-linecap="round"/>
+    </svg>
+  </div>
 
   <!-- ===================== Dress Code ===================== -->
   <section class="section dress-code" id="dress-code">

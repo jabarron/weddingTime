@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <!--
   ============================================================================
-  admin/index.html — RSVP dashboard
+  admin.html — RSVP dashboard
   ============================================================================
   This page (and everything under /admin) is only reachable after the
   browser's basic-auth prompt succeeds — see adminAuth.js, which
@@ -9,6 +9,12 @@
 
   It fetches its data from GET /api/admin/rsvps (routes-admin.js), which is
   protected by the same middleware.
+
+  LANGUAGE: this page has no ES/EN toggle of its own — it reads whichever
+  language was last picked on the public site (localStorage key
+  'site-language', set by main.js) and renders in that language. See the
+  top of admin.js for how that's applied. If the couple never visited the
+  public site in this browser, it defaults to Spanish.
   ============================================================================
 -->
 <html lang="es">
@@ -22,42 +28,42 @@
 <body class="admin-body">
 
   <header class="admin-header">
-    <h1>RSVP Dashboard — Ismeraí &amp; Jesús</h1>
+    <h1><span data-i18n="admin_title">RSVP Dashboard</span> — Ismeraí &amp; Jesús</h1>
     <div class="admin-header__actions">
-      <a href="/api/admin/rsvps/export" class="btn admin-export-btn" id="export-btn">Download Excel</a>
-      <button id="refresh-btn" class="btn btn--primary">Refresh</button>
+      <a href="/api/admin/rsvps/export" class="btn admin-export-btn" id="export-btn" data-i18n="admin_export_btn">Download Excel</a>
+      <button id="refresh-btn" class="btn btn--primary" data-i18n="admin_refresh_btn">Refresh</button>
     </div>
   </header>
 
   <section class="admin-summary" id="admin-summary">
     <div class="admin-stat">
       <span class="admin-stat__number" id="stat-attending">–</span>
-      <span class="admin-stat__label">Attending responses</span>
+      <span class="admin-stat__label" data-i18n="admin_stat_attending">Attending responses</span>
     </div>
     <div class="admin-stat">
       <span class="admin-stat__number" id="stat-guests">–</span>
-      <span class="admin-stat__label">Total guests attending</span>
+      <span class="admin-stat__label" data-i18n="admin_stat_guests">Total guests attending</span>
     </div>
     <div class="admin-stat">
       <span class="admin-stat__number" id="stat-declined">–</span>
-      <span class="admin-stat__label">Declined responses</span>
+      <span class="admin-stat__label" data-i18n="admin_stat_declined">Declined responses</span>
     </div>
   </section>
 
-  <p class="admin-scroll-hint">Swipe left/right to see more columns →</p>
+  <p class="admin-scroll-hint" data-i18n="admin_scroll_hint">Swipe left/right to see more columns →</p>
 
   <section class="admin-table-wrap">
     <table class="admin-table">
       <thead>
         <tr>
-          <th>Name</th>
-          <th>Phone</th>
-          <th>Attending</th>
-          <th>Guests</th>
-          <th>Song</th>
-          <th>Message</th>
-          <th>Submitted</th>
-          <th>Actions</th>
+          <th data-i18n="admin_th_name">Name</th>
+          <th data-i18n="admin_th_phone">Phone</th>
+          <th data-i18n="admin_th_attending">Attending</th>
+          <th data-i18n="admin_th_guests">Guests</th>
+          <th data-i18n="admin_th_song">Song</th>
+          <th data-i18n="admin_th_message">Message</th>
+          <th data-i18n="admin_th_submitted">Submitted</th>
+          <th data-i18n="admin_th_actions">Actions</th>
         </tr>
       </thead>
       <tbody id="admin-table-body">
@@ -66,6 +72,8 @@
     </table>
   </section>
 
+  <!-- i18n.js must load before admin.js, which reads window.DICTIONARY. -->
+  <script src="/i18n.js"></script>
   <script src="/admin.js"></script>
 </body>
 </html>

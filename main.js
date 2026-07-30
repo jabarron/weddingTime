@@ -20,6 +20,21 @@
   let weddingInfo = null;
   let currentLanguage = localStorage.getItem('site-language') || 'es';
 
+  // Small line-icon set for the itinerary timeline, keyed by the `icon`
+  // value in wedding-config.js -> itinerary. Same thin-stroke style as the
+  // header nav icons. `dot` is the fallback for an unknown/omitted icon.
+  const TIMELINE_ICONS = {
+    rings: '<circle cx="8" cy="14" r="5"/><circle cx="14" cy="14" r="5"/>',
+    book: '<path d="M4 5c2-1 5-1 8 1 3-2 6-2 8-1v13c-2-1-5-1-8 1-3-2-6-2-8-1V5z"/><path d="M12 6v13"/>',
+    cocktail: '<path d="M5 4h14l-7 8v7"/><path d="M9 19h6"/>',
+    dinner: '<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/>',
+    music: '<path d="M9 18V5l10-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="16" cy="16" r="3"/>',
+    toast: '<path d="M6 3h4l-1 8a1 1 0 0 1-2 0L6 3z"/><path d="M14 5h4l-.8 6a1 1 0 0 1-2 0L14 5z"/><path d="M8 11v8M17 11v8"/>',
+    cake: '<path d="M4 20l8-12 8 12z"/><path d="M4 20h16"/><circle cx="12" cy="7" r="1"/>',
+    party: '<path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"/>',
+    dot: '<circle cx="12" cy="12" r="3"/>',
+  };
+
   /** Fetches the public wedding facts from the backend. */
   async function loadWeddingInfo() {
     try {
@@ -109,13 +124,17 @@
     const itineraryList = document.querySelector('[data-field="itinerary-list"]');
     if (itineraryList && Array.isArray(itinerary)) {
       itineraryList.innerHTML = itinerary
-        .map(
-          (event) => `
+        .map((event) => {
+          const iconPath = TIMELINE_ICONS[event.icon] || TIMELINE_ICONS.dot;
+          return `
         <li class="timeline__item">
+          <span class="timeline__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">${iconPath}</svg>
+          </span>
           <span class="timeline__time">${event.time}</span>
           <span class="timeline__title">${event[lang]}</span>
-        </li>`
-        )
+        </li>`;
+        })
         .join('');
     }
   }

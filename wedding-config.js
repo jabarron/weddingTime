@@ -53,17 +53,19 @@ module.exports = {
   // ✏️ EDIT ME: The day's itinerary, shown as a timeline. Add, remove, or
   // reorder events freely — the site renders whatever's in this array, in
   // this order. `time` is shown as-is (any format you like); `es`/`en` are
-  // the event name in each language.
+  // the event name in each language. `icon` picks the small icon shown
+  // next to the event — available options: rings, book, cocktail, dinner,
+  // music, toast, cake, party. Unknown/omitted values fall back to a dot.
   // ---------------------------------------------------------------------
   itinerary: [
-    { time: '12:00 PM', es: 'Ceremonia Civil', en: 'Civil Ceremony' },
-    { time: '5:00 PM', es: 'Ceremonia Religiosa', en: 'Religious Ceremony' },
-    { time: '6:30 PM', es: 'Cóctel de Bienvenida', en: 'Welcome Cocktail' },
-    { time: '7:30 PM', es: 'Recepción y Cena', en: 'Reception & Dinner' },
-    { time: '8:30 PM', es: 'Primer Baile', en: 'First Dance' },
-    { time: '9:00 PM', es: 'Brindis', en: 'Toasts' },
-    { time: '10:00 PM', es: 'Corte de Pastel', en: 'Cake Cutting' },
-    { time: '10:30 PM', es: 'Fiesta y Baile', en: 'Party & Dancing' },
+    { time: '12:00 PM', es: 'Ceremonia Civil', en: 'Civil Ceremony', icon: 'rings' },
+    { time: '5:00 PM', es: 'Ceremonia Religiosa', en: 'Religious Ceremony', icon: 'book' },
+    { time: '6:30 PM', es: 'Cóctel de Bienvenida', en: 'Welcome Cocktail', icon: 'cocktail' },
+    { time: '7:30 PM', es: 'Recepción y Cena', en: 'Reception & Dinner', icon: 'dinner' },
+    { time: '8:30 PM', es: 'Primer Baile', en: 'First Dance', icon: 'music' },
+    { time: '9:00 PM', es: 'Brindis', en: 'Toasts', icon: 'toast' },
+    { time: '10:00 PM', es: 'Corte de Pastel', en: 'Cake Cutting', icon: 'cake' },
+    { time: '10:30 PM', es: 'Fiesta y Baile', en: 'Party & Dancing', icon: 'party' },
   ],
 
   // ---------------------------------------------------------------------

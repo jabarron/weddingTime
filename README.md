@@ -151,6 +151,19 @@ migration step needed (see `db-pool.js` → `initDb()`).
   streams a real `.xlsx` file built with the `exceljs` package — that's a
   new dependency added to `package.json`, so make sure `npm install` runs
   again (Railway does this automatically on deploy).
+- **Admin language:** `/admin` has no ES/EN toggle of its own — it just
+  reads whichever language was last picked on the public site
+  (`localStorage`, same-origin) and renders in that language.
+- **Story timeline:** three more "chapters" below the main story intro,
+  alternating photo/text sides on desktop. Content lives in `i18n.js`
+  (`story_milestone1/2/3_heading/body`); add or remove a whole
+  `.story-milestone` block in `index.html` to change the count.
+- **Itinerary icons:** each event in the `itinerary` array
+  (`wedding-config.js`) can have an `icon` key (rings, book, cocktail,
+  dinner, music, toast, cake, party) — the actual icon artwork lives in
+  `main.js` (`TIMELINE_ICONS`), so picking a different available icon name
+  is a one-line change; adding a brand new icon means adding its SVG path
+  there too.
 - **Language default:** Spanish, with an EN toggle in the header. The
   visitor's choice is remembered in their browser (`localStorage`) between
   visits.
