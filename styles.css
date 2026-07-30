@@ -419,17 +419,68 @@ button {
   font-size: clamp(2rem, 4vw, 2.75rem);
 }
 
-.story-milestones {
-  margin-top: var(--space-xl);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-xl);
+.story-timeline {
+  list-style: none;
+  max-width: 480px;
+  margin: var(--space-xl) auto 0;
+  padding: 0;
 }
 
-.story-milestone .story__text h3 {
+.story-milestone {
+  position: relative;
+  border-left: 2px solid var(--color-mauve);
+  padding-left: var(--space-md);
+  padding-bottom: var(--space-xl);
+}
+
+.story-milestone:last-child {
+  padding-bottom: 0;
+}
+
+.story-milestone__dot {
+  position: absolute;
+  left: -7px;
+  top: 0.3rem;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--color-terracotta);
+  border: 2px solid var(--color-cream);
+}
+
+.story-milestone__photo {
+  max-width: 200px;
+  min-height: 110px;
+  border: 1px solid var(--color-mauve);
+  border-radius: var(--radius);
+  background: var(--color-cream-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-mauve);
+  font-size: 0.8rem;
+  text-align: center;
+  padding: var(--space-sm);
+  margin-bottom: var(--space-sm);
+  overflow: hidden;
+}
+
+.story-milestone__photo img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.story-milestone__text h3 {
   font-family: var(--font-display);
-  font-size: clamp(1.4rem, 3vw, 1.9rem);
+  font-size: clamp(1.3rem, 3vw, 1.7rem);
   color: var(--color-wine);
+  margin-bottom: 0.3rem;
+}
+
+.story-milestone__text p {
+  margin-bottom: 0;
+  font-size: 0.92rem;
 }
 
 /* ----------------------------------------------------------------------- */
@@ -511,11 +562,16 @@ button {
   align-items: center;
   justify-content: center;
   color: var(--color-white);
+  z-index: 1;
 }
 
 .timeline__icon svg {
   width: 18px;
   height: 18px;
+}
+
+.timeline__content {
+  display: block;
 }
 
 .timeline__time {
@@ -742,6 +798,77 @@ button {
 
   .story__grid.story__grid--reverse > * {
     direction: ltr;
+  }
+}
+
+/* Centered-line, alternating-sides layout for the itinerary and story
+   timelines — uses the extra width instead of staying in a narrow single
+   column. Below this width both stay as the single left-aligned column
+   defined earlier (mobile-first base styles). */
+@media (min-width: 760px) {
+  .timeline,
+  .story-timeline {
+    max-width: 720px;
+    position: relative;
+  }
+
+  .timeline::before,
+  .story-timeline::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--color-mauve);
+    transform: translateX(-50%);
+  }
+
+  .timeline__item,
+  .story-milestone {
+    border-left: none;
+    width: 50%;
+    padding-left: 0;
+  }
+
+  .timeline__item--left,
+  .story-milestone--left {
+    text-align: right;
+    padding-right: 3.5rem;
+  }
+
+  .timeline__item--right,
+  .story-milestone--right {
+    margin-left: 50%;
+    padding-left: 3.5rem;
+  }
+
+  .timeline__icon {
+    left: auto;
+  }
+
+  .timeline__item--left .timeline__icon {
+    right: -21px;
+  }
+
+  .timeline__item--right .timeline__icon {
+    left: -21px;
+  }
+
+  .story-milestone__dot {
+    left: auto;
+  }
+
+  .story-milestone--left .story-milestone__dot {
+    right: -7px;
+  }
+
+  .story-milestone--right .story-milestone__dot {
+    left: -7px;
+  }
+
+  .story-milestone--left .story-milestone__photo {
+    margin-left: auto;
   }
 }
 

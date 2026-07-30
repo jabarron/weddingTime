@@ -121,51 +121,62 @@
       </div>
     </div>
 
-    <!-- Three more "chapters", alternating photo/text sides on desktop
-         (single column on mobile). Add or remove a whole .story-milestone
-         block to change the count — each one just needs a *_heading/*_body
-         pair in i18n.js (see the comment there). -->
-    <div class="container story-milestones">
-      <div class="story__grid story-milestone">
-        <div class="story__photo" aria-hidden="true">
-          <!-- ✏️ EDIT ME: replace with an <img src="/your-photo.jpg" alt="..."> -->
-          Photo placeholder
-        </div>
-        <div class="story__text">
-          <h3 data-i18n="story_milestone1_heading">Cómo nos conocimos</h3>
-          <p data-i18n="story_milestone1_body">
-            Nuestro primer encuentro fue casi por accidente, pero desde ese momento supimos que
-            había algo especial.
-          </p>
-        </div>
-      </div>
+    <!-- Three more "chapters", shown as a dotted timeline: centered line
+         with alternating photo+text on desktop, left-aligned single column
+         on mobile (see .story-timeline / .story-milestone in styles.css —
+         same responsive pattern as the itinerary timeline above).
+         Photos here are intentionally smaller than the intro photo above,
+         and NOT forced into a fixed aspect ratio — whatever image you drop
+         in keeps its own proportions (square or rectangular). No line
+         connects the photo to the dot on purpose — just the dot itself.
+         Add or remove a whole .story-milestone block to change the count —
+         each one needs a *_heading/*_body pair in i18n.js. -->
+    <div class="container">
+      <ol class="story-timeline">
+        <li class="story-milestone story-milestone--left">
+          <span class="story-milestone__dot" aria-hidden="true"></span>
+          <div class="story-milestone__photo" aria-hidden="true">
+            <!-- ✏️ EDIT ME: replace with an <img src="/your-photo.jpg" alt="..."> -->
+            Photo
+          </div>
+          <div class="story-milestone__text">
+            <h3 data-i18n="story_milestone1_heading">Cómo nos conocimos</h3>
+            <p data-i18n="story_milestone1_body">
+              Nuestro primer encuentro fue casi por accidente, pero desde ese momento supimos que
+              había algo especial.
+            </p>
+          </div>
+        </li>
 
-      <div class="story__grid story__grid--reverse story-milestone">
-        <div class="story__photo" aria-hidden="true">
-          <!-- ✏️ EDIT ME: replace with an <img src="/your-photo.jpg" alt="..."> -->
-          Photo placeholder
-        </div>
-        <div class="story__text">
-          <h3 data-i18n="story_milestone2_heading">Primera cita</h3>
-          <p data-i18n="story_milestone2_body">
-            Nuestra primera cita oficial fue una tarde llena de risas y nervios.
-          </p>
-        </div>
-      </div>
+        <li class="story-milestone story-milestone--right">
+          <span class="story-milestone__dot" aria-hidden="true"></span>
+          <div class="story-milestone__photo" aria-hidden="true">
+            <!-- ✏️ EDIT ME: replace with an <img src="/your-photo.jpg" alt="..."> -->
+            Photo
+          </div>
+          <div class="story-milestone__text">
+            <h3 data-i18n="story_milestone2_heading">Primera cita</h3>
+            <p data-i18n="story_milestone2_body">
+              Nuestra primera cita oficial fue una tarde llena de risas y nervios.
+            </p>
+          </div>
+        </li>
 
-      <div class="story__grid story-milestone">
-        <div class="story__photo" aria-hidden="true">
-          <!-- ✏️ EDIT ME: replace with an <img src="/your-photo.jpg" alt="..."> -->
-          Photo placeholder
-        </div>
-        <div class="story__text">
-          <h3 data-i18n="story_milestone3_heading">La propuesta</h3>
-          <p data-i18n="story_milestone3_body">
-            Después de tantos momentos compartidos, llegó el día en que decidimos dar el
-            siguiente paso.
-          </p>
-        </div>
-      </div>
+        <li class="story-milestone story-milestone--left">
+          <span class="story-milestone__dot" aria-hidden="true"></span>
+          <div class="story-milestone__photo" aria-hidden="true">
+            <!-- ✏️ EDIT ME: replace with an <img src="/your-photo.jpg" alt="..."> -->
+            Photo
+          </div>
+          <div class="story-milestone__text">
+            <h3 data-i18n="story_milestone3_heading">La propuesta</h3>
+            <p data-i18n="story_milestone3_body">
+              Después de tantos momentos compartidos, llegó el día en que decidimos dar el
+              siguiente paso.
+            </p>
+          </div>
+        </li>
+      </ol>
     </div>
   </section>
 
@@ -208,7 +219,7 @@
   <section class="section itinerary" id="itinerary">
     <div class="container text-center">
       <span class="eyebrow" data-i18n="itinerary_eyebrow">Itinerario</span>
-      <h2 data-i18n="itinerary_heading">El día se vivirá así</h2>
+      <h2 data-i18n="itinerary_heading">Cronología de nuestra boda</h2>
     </div>
     <div class="container">
       <ol class="timeline" data-field="itinerary-list"></ol>

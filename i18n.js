@@ -59,7 +59,7 @@ const DICTIONARY = {
     details_rsvp_label: 'Confirmar antes del',
 
     itinerary_eyebrow: 'Itinerario',
-    itinerary_heading: 'El día se vivirá así',
+    itinerary_heading: 'Cronología de nuestra boda',
 
     dress_eyebrow: 'Código de Vestimenta',
     dress_heading: 'Formal / Elegante',
@@ -165,7 +165,7 @@ const DICTIONARY = {
     details_rsvp_label: 'RSVP by',
 
     itinerary_eyebrow: 'Itinerary',
-    itinerary_heading: "Here's how the day will go",
+    itinerary_heading: 'Wedding Day Timeline',
 
     dress_eyebrow: 'Dress Code',
     dress_heading: 'Formal / Elegant',

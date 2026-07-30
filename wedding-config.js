@@ -55,7 +55,8 @@ module.exports = {
   // this order. `time` is shown as-is (any format you like); `es`/`en` are
   // the event name in each language. `icon` picks the small icon shown
   // next to the event — available options: rings, book, cocktail, dinner,
-  // music, toast, cake, party. Unknown/omitted values fall back to a dot.
+  // music, toast, cake, disco, sparkle. Unknown/omitted values fall back
+  // to a plain dot.
   // ---------------------------------------------------------------------
   itinerary: [
     { time: '12:00 PM', es: 'Ceremonia Civil', en: 'Civil Ceremony', icon: 'rings' },
@@ -65,7 +66,8 @@ module.exports = {
     { time: '8:30 PM', es: 'Primer Baile', en: 'First Dance', icon: 'music' },
     { time: '9:00 PM', es: 'Brindis', en: 'Toasts', icon: 'toast' },
     { time: '10:00 PM', es: 'Corte de Pastel', en: 'Cake Cutting', icon: 'cake' },
-    { time: '10:30 PM', es: 'Fiesta y Baile', en: 'Party & Dancing', icon: 'party' },
+    { time: '10:30 PM', es: 'Fiesta y Baile', en: 'Party & Dancing', icon: 'disco' },
+    { time: '12:00 AM', es: 'Despedida', en: 'Send Off', icon: 'sparkle' },
   ],
 
   // ---------------------------------------------------------------------
