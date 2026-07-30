@@ -416,6 +416,16 @@ button {
   padding: var(--space-md);
 }
 
+/* Same treatment as .story-milestone__text h3 below, so the intro block
+   reads as the same "kind" of item as the three milestones that follow —
+   just with a bigger photo. */
+.story__text h3 {
+  font-family: var(--font-display);
+  font-size: clamp(1.3rem, 3vw, 1.7rem);
+  color: var(--color-wine);
+  margin-bottom: 0.3rem;
+}
+
 .story-timeline {
   list-style: none;
   max-width: 480px;
