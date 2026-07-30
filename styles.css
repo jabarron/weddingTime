@@ -398,6 +398,7 @@ button {
   grid-template-columns: 1fr;
   gap: var(--space-lg);
   align-items: center;
+  margin-top: var(--space-lg);
 }
 
 .story__photo {
@@ -413,10 +414,6 @@ button {
   font-size: 0.85rem;
   text-align: center;
   padding: var(--space-md);
-}
-
-.story__text h2 {
-  font-size: clamp(2rem, 4vw, 2.75rem);
 }
 
 .story-timeline {
@@ -533,16 +530,16 @@ button {
 .timeline {
   list-style: none;
   max-width: 480px;
-  margin: var(--space-lg) auto 0;
+  margin: var(--space-md) auto 0;
   padding: 0;
 }
 
 .timeline__item {
   position: relative;
   border-left: 2px solid var(--color-mauve);
-  padding-left: calc(var(--space-md) + 14px);
-  padding-bottom: var(--space-lg);
-  min-height: 42px;
+  padding-left: calc(var(--space-md) + 10px);
+  padding-bottom: 1.5rem;
+  min-height: 34px;
 }
 
 .timeline__item:last-child {
@@ -551,10 +548,10 @@ button {
 
 .timeline__icon {
   position: absolute;
-  left: -21px;
-  top: -4px;
-  width: 40px;
-  height: 40px;
+  left: -18px;
+  top: -3px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
   background: var(--color-terracotta);
   border: 3px solid var(--color-cream);
@@ -566,26 +563,30 @@ button {
 }
 
 .timeline__icon svg {
-  width: 18px;
-  height: 18px;
+  width: 15px;
+  height: 15px;
 }
 
+/* Time + event name sit on the same line to keep each entry compact —
+   wraps to two lines only if a combination is too long for the space. */
 .timeline__content {
-  display: block;
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  column-gap: 0.5rem;
+  padding-top: 0.15rem;
 }
 
 .timeline__time {
-  display: block;
   font-family: var(--font-display);
   font-style: italic;
-  font-size: 1.15rem;
+  font-size: 1.05rem;
   color: var(--color-wine);
-  margin-bottom: 0.15rem;
-  padding-top: 0.3rem;
+  white-space: nowrap;
 }
 
 .timeline__title {
-  display: block;
+  display: inline;
   font-size: 0.95rem;
   color: var(--color-ink);
 }
@@ -848,11 +849,15 @@ button {
   }
 
   .timeline__item--left .timeline__icon {
-    right: -21px;
+    right: -18px;
   }
 
   .timeline__item--right .timeline__icon {
-    left: -21px;
+    left: -18px;
+  }
+
+  .timeline__item--left .timeline__content {
+    justify-content: flex-end;
   }
 
   .story-milestone__dot {

@@ -75,7 +75,7 @@ const DICTIONARY = {
 
     rsvp_eyebrow: 'RSVP',
     rsvp_heading: 'Confirma tu asistencia',
-    rsvp_intro: 'Por favor confirma antes de la fecha límite. ¡Nos hace muy felices contar contigo!',
+    rsvp_intro: 'Por favor confirma antes de la fecha límite. ¡Ya queremos verte ahí!',
     rsvp_name: 'Nombre completo',
     rsvp_phone: 'Teléfono',
     rsvp_attending: '¿Podrás acompañarnos?',
@@ -181,7 +181,7 @@ const DICTIONARY = {
 
     rsvp_eyebrow: 'RSVP',
     rsvp_heading: 'Confirm your attendance',
-    rsvp_intro: "Please respond by the date below. We can't wait to celebrate with you!",
+    rsvp_intro: "Please respond by the date below. We can't wait to see you there!",
     rsvp_name: 'Full name',
     rsvp_phone: 'Phone number',
     rsvp_attending: 'Will you be joining us?',
