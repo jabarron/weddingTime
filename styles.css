@@ -537,9 +537,9 @@ button {
 .timeline__item {
   position: relative;
   border-left: 2px solid var(--color-mauve);
-  padding-left: calc(var(--space-md) + 10px);
+  padding-left: calc(var(--space-md) + 14px);
   padding-bottom: 1.5rem;
-  min-height: 34px;
+  min-height: 38px;
 }
 
 .timeline__item:last-child {
@@ -548,10 +548,10 @@ button {
 
 .timeline__icon {
   position: absolute;
-  left: -18px;
+  left: -20px;
   top: -3px;
-  width: 34px;
-  height: 34px;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
   background: var(--color-terracotta);
   border: 3px solid var(--color-cream);
@@ -563,8 +563,8 @@ button {
 }
 
 .timeline__icon svg {
-  width: 15px;
-  height: 15px;
+  width: 17px;
+  height: 17px;
 }
 
 /* Time + event name sit on the same line to keep each entry compact —
@@ -849,11 +849,11 @@ button {
   }
 
   .timeline__item--left .timeline__icon {
-    right: -18px;
+    right: -20px;
   }
 
   .timeline__item--right .timeline__icon {
-    left: -18px;
+    left: -20px;
   }
 
   .timeline__item--left .timeline__content {
