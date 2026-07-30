@@ -244,12 +244,16 @@
       <p data-i18n="dress_body">
         Nos encantaría que nos acompañaran con un atuendo formal.
       </p>
+      <p data-i18n="dress_avoid_white">Por favor eviten el color blanco.</p>
       <div class="dress-code__swatches" aria-hidden="true">
         <span class="dress-code__swatch" style="background:#48011F"></span>
         <span class="dress-code__swatch" style="background:#9D3A56"></span>
         <span class="dress-code__swatch" style="background:#B06F6B"></span>
         <span class="dress-code__swatch" style="background:#C3634D"></span>
         <span class="dress-code__swatch" style="background:#DFD8C6"></span>
+        <span class="dress-code__swatch dress-code__swatch--avoid" style="background:#FFFFFF">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><line x1="5.8" y1="18.2" x2="18.2" y2="5.8"/></svg>
+        </span>
       </div>
     </div>
   </section>
@@ -257,6 +261,7 @@
   <!-- ===================== Gifts ===================== -->
   <section class="section gifts" id="gifts">
     <div class="container text-center">
+      <span class="gifts__seal" aria-hidden="true">I &amp; J</span>
       <svg class="gifts__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="8" width="18" height="13" rx="1"/><path d="M3 8h18M12 8v13"/><path d="M12 8c-1.5-4-6-4-6 0"/><path d="M12 8c1.5-4 6-4 6 0"/></svg>
       <span class="eyebrow" data-i18n="gifts_eyebrow">Regalos</span>
       <h2 data-i18n="gifts_heading">Su presencia es nuestro mejor regalo</h2>
@@ -310,9 +315,9 @@
         </div>
       </div>
 
-      <div class="field">
+      <div class="field" id="field-guestCount">
         <label for="guestCount" data-i18n="rsvp_guest_count">Número de personas</label>
-        <input type="number" id="guestCount" name="guestCount" min="1" max="10" value="1" />
+        <input type="number" id="guestCount" name="guestCount" min="0" max="10" value="1" />
       </div>
 
       <div class="field">

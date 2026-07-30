@@ -66,6 +66,8 @@ const DICTIONARY = {
     // ✏️ EDIT ME: replace with your real dress code guidance.
     dress_body:
       'Nos encantaría que nos acompañaran con un atuendo formal. Estos son los tonos de nuestra paleta — siéntanse libres de inspirarse en ellos, aunque no es obligatorio.',
+    // ✏️ EDIT ME: adjust the wording if you'd like.
+    dress_avoid_white: 'Por favor eviten el color blanco.',
 
     gifts_eyebrow: 'Regalos',
     gifts_heading: 'Su presencia es nuestro mejor regalo',
@@ -75,7 +77,7 @@ const DICTIONARY = {
 
     rsvp_eyebrow: 'RSVP',
     rsvp_heading: 'Confirma tu asistencia',
-    rsvp_intro: 'Por favor confirma antes de la fecha límite. ¡Ya queremos verte ahí!',
+    rsvp_intro: '¡Ya queremos verte ahí!',
     rsvp_name: 'Nombre completo',
     rsvp_phone: 'Teléfono',
     rsvp_attending: '¿Podrás acompañarnos?',
@@ -88,6 +90,7 @@ const DICTIONARY = {
     rsvp_success: '¡Gracias! Tu confirmación fue recibida.',
     rsvp_error: 'Hubo un problema al enviar tu confirmación. Intenta de nuevo.',
     rsvp_required_error: 'Por favor completa los campos obligatorios: nombre, teléfono y confirmación de asistencia.',
+    rsvp_guest_count_error: 'Agrega un número de invitados mayor a 0',
 
     footer_contact: 'Preguntas',
 
@@ -172,6 +175,8 @@ const DICTIONARY = {
     // ✏️ EDIT ME: replace with your real dress code guidance.
     dress_body:
       "We'd love for you to join us in formal attire. Here are the tones from our palette — feel free to draw inspiration from them, though it isn't required.",
+    // ✏️ EDIT ME: adjust the wording if you'd like.
+    dress_avoid_white: 'Please avoid wearing white.',
 
     gifts_eyebrow: 'Gifts',
     gifts_heading: 'Your presence is our favorite gift',
@@ -181,7 +186,7 @@ const DICTIONARY = {
 
     rsvp_eyebrow: 'RSVP',
     rsvp_heading: 'Confirm your attendance',
-    rsvp_intro: "Please respond by the date below. We can't wait to see you there!",
+    rsvp_intro: "We can't wait to see you there!",
     rsvp_name: 'Full name',
     rsvp_phone: 'Phone number',
     rsvp_attending: 'Will you be joining us?',
@@ -194,6 +199,7 @@ const DICTIONARY = {
     rsvp_success: 'Thank you! Your RSVP has been received.',
     rsvp_error: 'Something went wrong sending your RSVP. Please try again.',
     rsvp_required_error: 'Please fill in the required fields: name, phone, and attendance confirmation.',
+    rsvp_guest_count_error: 'Please add a number of guests greater than 0',
 
     footer_contact: 'Questions',
 

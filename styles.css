@@ -623,6 +623,19 @@ button {
   border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
+.dress-code__swatch--avoid {
+  border-color: var(--color-mauve);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-terracotta);
+}
+
+.dress-code__swatch--avoid svg {
+  width: 60%;
+  height: 60%;
+}
+
 /* ----------------------------------------------------------------------- */
 /* 9.5 Gifts                                                               */
 /* ----------------------------------------------------------------------- */
@@ -634,6 +647,21 @@ button {
 
 .gifts h2 {
   color: var(--color-white);
+}
+
+.gifts__seal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 1px solid var(--color-terracotta);
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.1rem;
+  color: var(--color-terracotta);
+  margin: 0 auto var(--space-sm);
 }
 
 .gifts__icon {
@@ -700,6 +728,13 @@ button {
 .field textarea {
   resize: vertical;
   min-height: 90px;
+}
+
+.field input:disabled {
+  background: var(--color-cream-soft);
+  color: var(--color-mauve);
+  border-color: var(--color-cream-soft);
+  cursor: not-allowed;
 }
 
 .field--radio-group {
