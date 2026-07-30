@@ -119,7 +119,7 @@ button {
 }
 
 .section {
-  padding: 5rem 0;
+  padding: 6rem 0;
 }
 
 .section--tight {
@@ -547,9 +547,9 @@ button {
 .timeline__item {
   position: relative;
   border-left: 2px solid var(--color-mauve);
-  padding-left: calc(var(--space-md) + 14px);
-  padding-bottom: 1.5rem;
-  min-height: 38px;
+  padding-left: calc(var(--space-md) + 16px);
+  padding-bottom: 2.25rem;
+  min-height: 42px;
 }
 
 .timeline__item:last-child {
@@ -558,10 +558,10 @@ button {
 
 .timeline__icon {
   position: absolute;
-  left: -20px;
+  left: -22px;
   top: -3px;
-  width: 38px;
-  height: 38px;
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
   background: var(--color-terracotta);
   border: 3px solid var(--color-cream);
@@ -573,8 +573,8 @@ button {
 }
 
 .timeline__icon svg {
-  width: 17px;
-  height: 17px;
+  width: 19px;
+  height: 19px;
 }
 
 /* Time + event name sit on the same line to keep each entry compact —
@@ -859,11 +859,11 @@ button {
   }
 
   .timeline__item--left .timeline__icon {
-    right: -20px;
+    right: -22px;
   }
 
   .timeline__item--right .timeline__icon {
-    left: -20px;
+    left: -22px;
   }
 
   .timeline__item--left .timeline__content {
