@@ -189,6 +189,51 @@
     window.addEventListener('scroll', toggle, { passive: true });
   }
 
+  /**
+   * Hero fades to a maximum of 30% transparent as the guest scrolls
+   * through it, plus a very slight parallax drift on the text/button so
+   * they lag a touch behind the scroll instead of moving in lockstep.
+   * Both are tied to scroll progress across the hero's own height — by
+   * the time it's fully scrolled past (out of view), the values stop
+   * mattering visually, so there's no need to keep extending the effect
+   * beyond that point.
+   *
+   * Skipped entirely for guests with prefers-reduced-motion on — scroll-
+   * linked movement can be uncomfortable for some, so the hero just
+   * stays fully opaque and static for them instead.
+   */
+  function setupHeroScrollEffects() {
+    const hero = document.querySelector('.hero');
+    if (!hero) return;
+
+    const prefersReducedMotion = window.matchMedia(
+      '(prefers-reduced-motion: reduce)'
+    ).matches;
+    if (prefersReducedMotion) return;
+
+    const heroContentEls = hero.querySelectorAll(
+      '.hero__eyebrow, .hero__names, .hero__date, .hero__venue, .countdown, .hero__actions'
+    );
+
+    function onScroll() {
+      const heroHeight = hero.offsetHeight;
+      const progress = Math.min(Math.max(window.scrollY / heroHeight, 0), 1);
+
+      // Fade: 1 (fully opaque) down to 0.7 (30% transparent) — never past that.
+      hero.style.opacity = String(1 - progress * 0.3);
+
+      // Parallax: capped at a 40px drift max, so it stays subtle and
+      // never pushes content into the hero's own overflow:hidden edge.
+      const parallaxShift = progress * 40;
+      heroContentEls.forEach((el) => {
+        el.style.transform = `translateY(${parallaxShift}px)`;
+      });
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  }
+
   /** Wires up the ES/EN buttons in the header. */
   function setupLanguageToggle() {
     document.querySelectorAll('.lang-toggle button').forEach((btn) => {
@@ -200,6 +245,7 @@
     await loadWeddingInfo();
     setupLanguageToggle();
     setupHeaderScroll();
+    setupHeroScrollEffects();
     applyLanguage(currentLanguage);
     startCountdown();
   }
