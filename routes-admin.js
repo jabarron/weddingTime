@@ -159,12 +159,12 @@ router.patch('/rsvps/:id', async (req, res) => {
        WHERE id = $7
        RETURNING id, full_name, phone, attending, guest_count, song_request, message, submitted_at`,
       [
-        fullName.trim(),
-        phone.trim(),
+        fullName.trim().slice(0, 100),
+        phone.trim().slice(0, 30),
         attending,
         safeGuestCount,
-        songRequest ? String(songRequest).trim() : null,
-        message ? String(message).trim() : null,
+        songRequest ? String(songRequest).trim().slice(0, 150) : null,
+        message ? String(message).trim().slice(0, 500) : null,
         id,
       ]
     );

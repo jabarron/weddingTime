@@ -44,6 +44,9 @@ const pool = new Pool({
     process.env.NODE_ENV === 'production'
       ? { rejectUnauthorized: false }
       : false,
+  // Helps prevent idle connections from being silently dropped by the
+  // network before pg's own idle timeout even kicks in.
+  keepAlive: true,
 });
 
 pool.on('error', (err) => {
@@ -52,12 +55,36 @@ pool.on('error', (err) => {
   console.error('[db] Unexpected error on idle client', err);
 });
 
+// Connection-related error codes/messages worth ONE automatic retry.
+// These are typically transient — e.g. the pool's last connection had
+// gone idle (closed automatically after ~10s of inactivity) and the
+// first attempt to open a fresh one hit a momentary network hiccup —
+// not a problem with the query itself. Retrying almost always succeeds
+// immediately, which is exactly the "works on the second click" pattern
+// this fixes: now the retry happens automatically, invisibly to the guest.
+const RETRYABLE_CODES = new Set(['ECONNRESET', 'ETIMEDOUT', 'ECONNREFUSED', '57P01']);
+
+function isRetryableError(err) {
+  return RETRYABLE_CODES.has(err.code) || /connection/i.test(err.message || '');
+}
+
 /**
  * Runs a SQL query against the pool. Thin wrapper kept in one place so
- * routes don't each need to import `pg` directly.
+ * routes don't each need to import `pg` directly. Automatically retries
+ * once, after a short pause, on a connection-related failure — see
+ * isRetryableError above for what qualifies.
  */
-function query(text, params) {
-  return pool.query(text, params);
+async function query(text, params, _isRetry = false) {
+  try {
+    return await pool.query(text, params);
+  } catch (err) {
+    if (!_isRetry && isRetryableError(err)) {
+      console.warn('[db] Query failed on a connection error, retrying once:', err.message);
+      await new Promise((resolve) => setTimeout(resolve, 250));
+      return query(text, params, true);
+    }
+    throw err;
+  }
 }
 
 /**
@@ -71,7 +98,12 @@ async function initDb() {
   const schemaSql = fs.readFileSync(schemaPath, 'utf8');
 
   try {
-    await pool.query(schemaSql);
+    // Uses query() (not pool.query() directly) so the very first
+    // connection attempt at server boot gets the same automatic retry
+    // as every other query — this is actually the MOST likely place to
+    // hit a cold-start connection hiccup, since it's the first-ever
+    // connection this process makes.
+    await query(schemaSql);
     console.log('[db] Schema ready (rsvps table present).');
   } catch (err) {
     console.error('[db] Failed to initialize schema:', err.message);
