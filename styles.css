@@ -9,6 +9,7 @@
      5. Hero
      6. Section dividers (vine motif)
      7. Our story
+     7.5 Quote / Verse
      8. Details (date / venue)
      8.5 Itinerary (timeline)
      9. Dress code
@@ -527,6 +528,39 @@ button {
 .story-milestone__text p {
   margin-bottom: 0;
   font-size: 0.92rem;
+}
+
+/* ----------------------------------------------------------------------- */
+/* 7.5 Quote / Verse                                                       */
+/* ----------------------------------------------------------------------- */
+.quote {
+  background: var(--color-cream-soft);
+  text-align: center;
+}
+
+.quote__text {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(1.6rem, 4vw, 2.6rem);
+  line-height: 1.45;
+  color: var(--color-wine);
+  max-width: 700px;
+  margin: 0 auto var(--space-sm);
+}
+
+.quote__source {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-terracotta-on-light);
+}
+
+/* Lets you clear quote_source to '' in i18n.js and have the (now empty)
+   line disappear cleanly instead of leaving a blank gap. */
+.quote__source:empty {
+  display: none;
 }
 
 /* ----------------------------------------------------------------------- */

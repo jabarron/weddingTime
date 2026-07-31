@@ -51,6 +51,15 @@ const DICTIONARY = {
     story_milestone3_body:
       'Después de tantos momentos compartidos, llegó el día en que decidimos dar el siguiente paso. Entre lágrimas y una gran sonrisa, dijimos que sí a pasar el resto de nuestras vidas juntos.',
 
+    // ✏️ EDIT ME: this is meant for a Bible verse, quote, or personal
+    // thought that represents you both — deliberately left as an
+    // instructional placeholder rather than a real verse, so you can
+    // paste in your own translation/wording. quote_source is optional —
+    // leave it empty ('') if you don't want a citation line under it.
+    quote_text:
+      'Este es el espacio perfecto para el versículo, la frase o el pensamiento que más represente lo que sienten el uno por el otro.',
+    quote_source: 'Cita opcional — ej. 1 Corintios 13:4',
+
     details_eyebrow: 'Detalles',
     details_heading: 'Cuándo y dónde',
     details_date_label: 'Fecha',
@@ -159,6 +168,12 @@ const DICTIONARY = {
     story_milestone3_heading: 'The proposal',
     story_milestone3_body:
       "After so many moments shared together, the day came to take the next step. Between tears and a huge smile, we said yes to spending the rest of our lives together.",
+
+    // ✏️ EDIT ME: same placeholder as the Spanish version — meant for a
+    // verse, quote, or thought that represents you both.
+    quote_text:
+      'This is the perfect space for the verse, phrase, or thought that best represents what you feel for each other.',
+    quote_source: 'Optional citation — e.g. 1 Corinthians 13:4',
 
     details_eyebrow: 'Details',
     details_heading: 'When & where',
