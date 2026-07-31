@@ -322,42 +322,7 @@ button {
   background: radial-gradient(120% 120% at 50% 0%, #5c0526 0%, var(--color-wine) 55%, #34011a 100%);
   color: var(--color-white);
   position: relative;
-  z-index: 0;
   overflow: hidden;
-}
-
-/* Subtle grain texture — a fractal-noise SVG (no image file needed),
-   desaturated and blended at low opacity so it reads as texture/depth
-   rather than visible speckling. Sits behind the text (z-index: -1) but
-   in front of the hero's own gradient background, which is always
-   painted first regardless of this. */
-.hero::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-repeat: repeat;
-  background-size: 300px 300px;
-  opacity: 0.05;
-  mix-blend-mode: overlay;
-  pointer-events: none;
-}
-
-/* Fade into the next section's color instead of a hard cut — same idea
-   as the cream/cream-soft shifts used between other sections, just
-   handled as a gradient overlay here since the hero's own background is
-   already a gradient. */
-.hero::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 160px;
-  z-index: -1;
-  background: linear-gradient(to bottom, transparent, var(--color-cream));
-  pointer-events: none;
 }
 
 .hero__eyebrow {
