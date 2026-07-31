@@ -77,7 +77,7 @@ const DICTIONARY = {
     dress_heading: 'Formal / Elegante',
     // ✏️ EDIT ME: replace with your real dress code guidance.
     dress_body:
-      'Nos encantaría que nos acompañaran con un atuendo formal. Estos son los tonos de nuestra paleta — siéntanse libres de inspirarse en ellos, aunque no es obligatorio.',
+      'Nos encantaría que nos acompañaran con un atuendo formal, en el color que gusten.',
     // ✏️ EDIT ME: adjust the wording if you'd like.
     dress_avoid_white: 'Por favor eviten el color blanco.',
 
@@ -195,7 +195,7 @@ const DICTIONARY = {
     dress_heading: 'Formal / Elegant',
     // ✏️ EDIT ME: replace with your real dress code guidance.
     dress_body:
-      "We'd love for you to join us in formal attire. Here are the tones from our palette — feel free to draw inspiration from them, though it isn't required.",
+      "We'd love for you to join us in formal attire, in whatever color you like.",
     // ✏️ EDIT ME: adjust the wording if you'd like.
     dress_avoid_white: 'Please avoid wearing white.',
 
