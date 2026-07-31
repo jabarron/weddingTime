@@ -48,6 +48,7 @@ const express = require('express');
 
 const { initDb } = require('./db-pool');
 const adminAuth = require('./adminAuth');
+const rsvpRateLimit = require('./rateLimiter');
 
 const infoRoutes = require('./routes-info');
 const rsvpRoutes = require('./routes-rsvp');
@@ -55,6 +56,13 @@ const adminRoutes = require('./routes-admin');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// Railway (like most hosting platforms) puts the app behind a reverse
+// proxy. Without this, req.ip would return the proxy's IP for every
+// visitor — making the rate limiter below useless, since it would count
+// ALL guests as one single "IP". This tells Express to trust the
+// X-Forwarded-For header Railway sets, so req.ip reflects the real client.
+app.set('trust proxy', 1);
 
 // ---------------------------------------------------------------------------
 // Files that must NEVER be sent to the browser, even though they live in
@@ -68,6 +76,7 @@ const BLOCKED_FILES = new Set([
   'db-pool.js',
   'schema.sql',
   'adminAuth.js',
+  'rateLimiter.js',
   'routes-info.js',
   'routes-rsvp.js',
   'routes-admin.js',
@@ -92,7 +101,7 @@ app.use(express.json()); // parses JSON request bodies (RSVP submissions)
 // Public API routes
 // ---------------------------------------------------------------------------
 app.use('/api/wedding-info', infoRoutes);
-app.use('/api/rsvp', rsvpRoutes);
+app.use('/api/rsvp', rsvpRateLimit, rsvpRoutes);
 
 // ---------------------------------------------------------------------------
 // Admin: the HTML page and the API are both behind adminAuth. admin.css and
@@ -109,11 +118,11 @@ app.use('/api/admin', adminAuth, adminRoutes);
 // main.js, i18n.js, rsvp-form.js, admin.css, admin.js). Comes after the
 // BLOCKED_FILES guard and the routes above so those take priority.
 //
-// This also covers the Photos/ subfolder automatically — express.static
-// serves nested folders too, so a file at Photos/foo.jpg is reachable at
-// /Photos/foo.jpg with no extra route needed. The BLOCKED_FILES guard
+// This also covers the photos/ subfolder automatically — express.static
+// serves nested folders too, so a file at photos/foo.jpg is reachable at
+// /photos/foo.jpg with no extra route needed. The BLOCKED_FILES guard
 // above only matches against filenames (path.basename), not folder names,
-// so it doesn't affect anything inside Photos/ either.
+// so it doesn't affect anything inside photos/ either.
 // ---------------------------------------------------------------------------
 app.use(express.static(__dirname));
 

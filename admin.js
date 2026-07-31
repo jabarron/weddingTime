@@ -93,7 +93,7 @@
             <option value="false" ${!r.attending ? 'selected' : ''}>${dict.admin_no}</option>
           </select>
         </td>
-        <td><input type="number" min="1" max="2" class="edit-guestCount" value="${escapeAttr(r.guest_count)}" /></td>
+        <td><input type="number" min="0" max="2" class="edit-guestCount" value="${escapeAttr(r.guest_count)}" /></td>
         <td><input type="text" class="edit-songRequest" value="${escapeAttr(r.song_request || '')}" /></td>
         <td><input type="text" class="edit-message" value="${escapeAttr(r.message || '')}" /></td>
         <td>${formatDate(r.submitted_at)}</td>
@@ -149,11 +149,15 @@
   }
 
   async function saveRsvp(id, rowEl) {
+    const attending = rowEl.querySelector('.edit-attending').value === 'true';
+    const guestCountRaw = Number(rowEl.querySelector('.edit-guestCount').value);
     const payload = {
       fullName: rowEl.querySelector('.edit-fullName').value,
       phone: rowEl.querySelector('.edit-phone').value,
-      attending: rowEl.querySelector('.edit-attending').value === 'true',
-      guestCount: Number(rowEl.querySelector('.edit-guestCount').value) || 1,
+      attending,
+      // 0 is a valid, intentional value when not attending — only fall
+      // back to 1 for a genuinely empty/invalid field.
+      guestCount: Number.isInteger(guestCountRaw) ? guestCountRaw : 1,
       songRequest: rowEl.querySelector('.edit-songRequest').value || null,
       message: rowEl.querySelector('.edit-message').value || null,
     };
@@ -194,6 +198,29 @@
     } else if (cancelBtn) {
       editingId = null;
       renderTable();
+    }
+  });
+
+  // Keep the guest count field in sync with the attending dropdown while
+  // editing — same behavior as the public RSVP form: switching to "No"
+  // zeroes it out and locks it, switching to "Yes" restores it to 1.
+  // Purely visual here; the server enforces the real rule on save either
+  // way (see routes-admin.js), this just avoids a confusing mismatch
+  // between what the row shows and what gets saved.
+  tableBody.addEventListener('change', (event) => {
+    if (!event.target.classList.contains('edit-attending')) return;
+    const row = event.target.closest('tr');
+    const guestCountInput = row.querySelector('.edit-guestCount');
+    if (!guestCountInput) return;
+
+    if (event.target.value === 'false') {
+      guestCountInput.value = '0';
+      guestCountInput.disabled = true;
+    } else {
+      if (guestCountInput.disabled) {
+        guestCountInput.value = '1';
+      }
+      guestCountInput.disabled = false;
     }
   });
 

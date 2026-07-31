@@ -115,7 +115,7 @@ migration step needed (see `db-pool.js` → `initDb()`).
 | Dress code paragraph (ES & EN)         | `i18n.js`                                      |
 | Gifts / envelope box message (ES & EN) | `i18n.js`                                      |
 | Interface button/label text            | `i18n.js`                                      |
-| Engagement / story photos               | Drop image files into the `Photos/` folder, then swap each placeholder `<div class="story__photo">` or `<div class="story-milestone__photo">` in `index.html` for an `<img src="/Photos/your-file.jpg" alt="...">` tag (instructions are commented right above each one) |
+| Engagement / story photos               | Drop image files into the `photos/` folder, then swap each placeholder `<div class="story__photo">` or `<div class="story-milestone__photo">` in `index.html` for an `<img src="/photos/your-file.jpg" alt="...">` tag (instructions are commented right above each one) |
 | Admin login credentials                | `.env` locally, or Railway's Variables tab in production — never commit these |
 
 ---
@@ -190,6 +190,17 @@ migration step needed (see `db-pool.js` → `initDb()`).
   reference later (e.g. a shareable confirmation code) without exposing
   the internal `id`. Deleting a row deletes it too, same as any other
   column.
+- **Photo uploads:** drop image files into the `photos/` folder (all
+  lowercase) — they're reachable at `/photos/whatever-you-name-it.jpg`,
+  no server changes needed, `express.static` already covers subfolders.
+- **Spam protection:** `POST /api/rsvp` is rate-limited to 5 submissions
+  per IP per 15 minutes (`rateLimiter.js`) — a simple in-memory guard, no
+  extra dependency. Fine for this site's expected traffic; not meant to
+  scale beyond that.
+- **Admin edit sync:** switching the "Attending" dropdown while editing a
+  row in `/admin` now updates the guest count field the same way the
+  public form does (locks to 0 on "No", resets to 1 on "Yes") — purely
+  visual, the server already enforced the real rule either way.
 - **Admin language:** `/admin` has no ES/EN toggle of its own — it just
   reads whichever language was last picked on the public site
   (`localStorage`, same-origin) and renders in that language.
