@@ -323,6 +323,9 @@ button {
   color: var(--color-white);
   position: relative;
   overflow: hidden;
+  /* Smooths the scroll-driven opacity updates from main.js so the fade
+     reads as continuous instead of jumping in small steps. */
+  transition: opacity 0.25s ease-out;
 }
 
 .hero__eyebrow {

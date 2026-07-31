@@ -54,14 +54,12 @@ const DICTIONARY = {
     story_milestone4_body:
       'De todos los momentos, los favoritos siguen siendo los más simples — un café, una plática sin prisa, y la certeza de estar exactamente donde queremos estar.',
 
-    // ✏️ EDIT ME: this is meant for a Bible verse, quote, or personal
-    // thought that represents you both — deliberately left as an
-    // instructional placeholder rather than a real verse, so you can
-    // paste in your own translation/wording. quote_source is optional —
-    // leave it empty ('') if you don't want a citation line under it.
+    // ✏️ EDIT ME: your chosen verse — swap for a different one/translation
+    // any time. quote_source is optional — leave it empty ('') if you
+    // don't want a citation line under it.
     quote_text:
-      'Este es el espacio perfecto para el versículo, la frase o el pensamiento que más represente lo que sienten el uno por el otro.',
-    quote_source: 'Cita opcional — ej. 1 Corintios 13:4',
+      'La verdad, más valen dos que uno, porque sacan más provecho de lo que hacen. Además, si uno de ellos se tropieza, el otro puede levantarlo. Pero ¡pobre del que cae y no tiene quien lo ayude a levantarse!',
+    quote_source: 'TLA Eclesiastés 4:9-10',
 
     details_eyebrow: 'Detalles',
     details_heading: 'Cuándo y dónde',
@@ -77,7 +75,7 @@ const DICTIONARY = {
     dress_heading: 'Formal / Elegante',
     // ✏️ EDIT ME: replace with your real dress code guidance.
     dress_body:
-      'Nos encantaría que nos acompañaran con un atuendo formal, en el color que gusten.',
+      'Nos encantaría que nos acompañaran con un atuendo formal para celebrar este día tan especial. ¡Estamos seguros de que lucirán increíbles!',
     // ✏️ EDIT ME: adjust the wording if you'd like.
     dress_avoid_white: 'Por favor eviten el color blanco.',
 
@@ -175,11 +173,11 @@ const DICTIONARY = {
     story_milestone4_body:
       "Of all the moments, our favorites are still the simplest ones — a coffee, an unhurried conversation, and the certainty of being exactly where we want to be.",
 
-    // ✏️ EDIT ME: same placeholder as the Spanish version — meant for a
-    // verse, quote, or thought that represents you both.
+    // ✏️ EDIT ME: your chosen verse — swap for a different one/translation
+    // any time.
     quote_text:
-      'This is the perfect space for the verse, phrase, or thought that best represents what you feel for each other.',
-    quote_source: 'Optional citation — e.g. 1 Corinthians 13:4',
+      'Two are better than one, because they have a good return for their labor. If either of them falls down, one can help the other up. But pity anyone who falls and has no one to help them up.',
+    quote_source: 'NIV Ecclesiastes 4:9-10',
 
     details_eyebrow: 'Details',
     details_heading: 'When & where',
@@ -195,7 +193,7 @@ const DICTIONARY = {
     dress_heading: 'Formal / Elegant',
     // ✏️ EDIT ME: replace with your real dress code guidance.
     dress_body:
-      "We'd love for you to join us in formal attire, in whatever color you like.",
+      "We'd love for you to join us in formal attire to celebrate this special day. We're sure you'll look amazing!",
     // ✏️ EDIT ME: adjust the wording if you'd like.
     dress_avoid_white: 'Please avoid wearing white.',
 

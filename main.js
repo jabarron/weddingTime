@@ -190,17 +190,17 @@
   }
 
   /**
-   * Hero fades to a maximum of 30% transparent as the guest scrolls
-   * through it, plus a very slight parallax drift on the text/button so
-   * they lag a touch behind the scroll instead of moving in lockstep.
-   * Both are tied to scroll progress across the hero's own height — by
-   * the time it's fully scrolled past (out of view), the values stop
-   * mattering visually, so there's no need to keep extending the effect
-   * beyond that point.
+   * Hero fades to a maximum of 20% transparent as the guest scrolls
+   * through it, tied to scroll progress across the hero's own height —
+   * by the time it's fully scrolled past (out of view), the value stops
+   * mattering visually, so there's no need to extend the effect further.
    *
-   * Skipped entirely for guests with prefers-reduced-motion on — scroll-
-   * linked movement can be uncomfortable for some, so the hero just
-   * stays fully opaque and static for them instead.
+   * Smoothed two ways: a CSS transition on .hero's opacity (see
+   * styles.css) interpolates between updates instead of jumping, and
+   * requestAnimationFrame avoids piling up redundant work on scroll.
+   *
+   * Skipped entirely for guests with prefers-reduced-motion on — the
+   * hero just stays fully opaque and static for them instead.
    */
   function setupHeroScrollEffects() {
     const hero = document.querySelector('.hero');
@@ -211,27 +211,24 @@
     ).matches;
     if (prefersReducedMotion) return;
 
-    const heroContentEls = hero.querySelectorAll(
-      '.hero__eyebrow, .hero__names, .hero__date, .hero__venue, .countdown, .hero__actions'
-    );
+    let ticking = false;
 
-    function onScroll() {
+    function updateFade() {
       const heroHeight = hero.offsetHeight;
       const progress = Math.min(Math.max(window.scrollY / heroHeight, 0), 1);
+      // Fade: 1 (fully opaque) down to 0.8 (20% transparent) — never past that.
+      hero.style.opacity = String(1 - progress * 0.2);
+      ticking = false;
+    }
 
-      // Fade: 1 (fully opaque) down to 0.7 (30% transparent) — never past that.
-      hero.style.opacity = String(1 - progress * 0.3);
-
-      // Parallax: capped at a 40px drift max, so it stays subtle and
-      // never pushes content into the hero's own overflow:hidden edge.
-      const parallaxShift = progress * 40;
-      heroContentEls.forEach((el) => {
-        el.style.transform = `translateY(${parallaxShift}px)`;
-      });
+    function onScroll() {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(updateFade);
     }
 
     window.addEventListener('scroll', onScroll, { passive: true });
-    onScroll();
+    updateFade();
   }
 
   /** Wires up the ES/EN buttons in the header. */
