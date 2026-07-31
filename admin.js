@@ -93,7 +93,7 @@
             <option value="false" ${!r.attending ? 'selected' : ''}>${dict.admin_no}</option>
           </select>
         </td>
-        <td><input type="number" min="1" class="edit-guestCount" value="${escapeAttr(r.guest_count)}" /></td>
+        <td><input type="number" min="1" max="2" class="edit-guestCount" value="${escapeAttr(r.guest_count)}" /></td>
         <td><input type="text" class="edit-songRequest" value="${escapeAttr(r.song_request || '')}" /></td>
         <td><input type="text" class="edit-message" value="${escapeAttr(r.message || '')}" /></td>
         <td>${formatDate(r.submitted_at)}</td>

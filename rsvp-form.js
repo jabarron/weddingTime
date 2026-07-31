@@ -62,7 +62,7 @@
     // Guest count only needs to be > 0 when the guest is actually coming.
     if (attendingChecked.value === 'yes') {
       const guestCountValue = Number(form.guestCount.value);
-      if (!form.guestCount.value || !(guestCountValue > 0)) {
+      if (!form.guestCount.value || !(guestCountValue > 0) || guestCountValue > 2) {
         document.getElementById('field-guestCount').classList.add('field--invalid');
         return { isValid: false, errorKey: 'rsvp_guest_count_error' };
       }
@@ -165,7 +165,7 @@
       }
       if (event.target.name === 'guestCount') {
         const value = Number(form.guestCount.value);
-        if (form.guestCount.value && value > 0) {
+        if (form.guestCount.value && value > 0 && value <= 2) {
           field.classList.remove('field--invalid');
         }
       }

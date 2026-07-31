@@ -78,7 +78,7 @@ const DICTIONARY = {
     rsvp_eyebrow: 'RSVP',
     rsvp_heading: 'Confirma tu asistencia',
     rsvp_intro: '¡Ya queremos verte ahí!',
-    rsvp_name: 'Nombre completo',
+    rsvp_name: 'Familia / Nombre completo',
     rsvp_phone: 'Teléfono',
     rsvp_attending: '¿Podrás acompañarnos?',
     rsvp_attending_yes: 'Sí, ahí estaré',
@@ -90,7 +90,7 @@ const DICTIONARY = {
     rsvp_success: '¡Gracias! Tu confirmación fue recibida.',
     rsvp_error: 'Hubo un problema al enviar tu confirmación. Intenta de nuevo.',
     rsvp_required_error: 'Por favor completa los campos obligatorios: nombre, teléfono y confirmación de asistencia.',
-    rsvp_guest_count_error: 'Agrega un número de invitados mayor a 0',
+    rsvp_guest_count_error: 'Agrega un número de invitados entre 1 y 2',
 
     footer_contact: 'Preguntas',
 
@@ -187,7 +187,7 @@ const DICTIONARY = {
     rsvp_eyebrow: 'RSVP',
     rsvp_heading: 'Confirm your attendance',
     rsvp_intro: "We can't wait to see you there!",
-    rsvp_name: 'Full name',
+    rsvp_name: 'Family / Full name',
     rsvp_phone: 'Phone number',
     rsvp_attending: 'Will you be joining us?',
     rsvp_attending_yes: "Yes, I'll be there",
@@ -199,7 +199,7 @@ const DICTIONARY = {
     rsvp_success: 'Thank you! Your RSVP has been received.',
     rsvp_error: 'Something went wrong sending your RSVP. Please try again.',
     rsvp_required_error: 'Please fill in the required fields: name, phone, and attendance confirmation.',
-    rsvp_guest_count_error: 'Please add a number of guests greater than 0',
+    rsvp_guest_count_error: 'Please add a number of guests between 1 and 2',
 
     footer_contact: 'Questions',
 

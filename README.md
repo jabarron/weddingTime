@@ -177,6 +177,19 @@ migration step needed (see `db-pool.js` → `initDb()`).
   action button (Edit, Save, Cancel, Delete, Download Excel) now have a
   hover state with a smooth color transition, matching the rest of the
   site's buttons.
+- **Guest count:** capped at 2 per RSVP (form input, client validation,
+  and server validation in both `routes-rsvp.js` and `routes-admin.js` all
+  enforce this — change all three together if you need a different limit).
+- **Name field:** labeled "Familia / Nombre completo" — still a single
+  text field; if you later want to split it into separate first/last or
+  per-guest names, that's a bigger change touching the form, both route
+  files, and `schema.sql`.
+- **`public_id`:** every RSVP row gets a random UUID in this column
+  automatically (database-generated, no app code involved) — not used by
+  any feature yet, just there in case you need a stable, non-sequential
+  reference later (e.g. a shareable confirmation code) without exposing
+  the internal `id`. Deleting a row deletes it too, same as any other
+  column.
 - **Admin language:** `/admin` has no ES/EN toggle of its own — it just
   reads whichever language was last picked on the public site
   (`localStorage`, same-origin) and renders in that language.

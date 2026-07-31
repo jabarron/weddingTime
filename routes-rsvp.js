@@ -40,17 +40,18 @@ router.post('/', async (req, res) => {
 
   // Guest count rules mirror the client-side behavior in rsvp-form.js:
   // - Not attending -> guest count is always 0, regardless of what was sent.
-  // - Attending -> guest count must be a positive integer (validated here
-  //   as a safety net in case the request didn't go through the form).
+  // - Attending -> guest count must be an integer between 1 and 2
+  //   (validated here as a safety net in case the request didn't go
+  //   through the form).
   let safeGuestCount;
   if (!attending) {
     safeGuestCount = 0;
-  } else if (Number.isInteger(guestCount) && guestCount > 0) {
+  } else if (Number.isInteger(guestCount) && guestCount > 0 && guestCount <= 2) {
     safeGuestCount = guestCount;
   } else {
     return res
       .status(400)
-      .json({ error: 'Guest count must be greater than 0 when attending.' });
+      .json({ error: 'Guest count must be between 1 and 2 when attending.' });
   }
 
   try {

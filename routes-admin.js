@@ -138,17 +138,17 @@ router.patch('/rsvps/:id', async (req, res) => {
       .json({ error: 'Attending must be true or false.' });
   }
 
-  // Same rule as routes-rsvp.js: 0 when not attending, must be a positive
-  // integer when attending.
+  // Same rule as routes-rsvp.js: 0 when not attending, must be an integer
+  // between 1 and 2 when attending.
   let safeGuestCount;
   if (!attending) {
     safeGuestCount = 0;
-  } else if (Number.isInteger(guestCount) && guestCount > 0) {
+  } else if (Number.isInteger(guestCount) && guestCount > 0 && guestCount <= 2) {
     safeGuestCount = guestCount;
   } else {
     return res
       .status(400)
-      .json({ error: 'Guest count must be greater than 0 when attending.' });
+      .json({ error: 'Guest count must be between 1 and 2 when attending.' });
   }
 
   try {
