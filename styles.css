@@ -693,7 +693,7 @@ button {
 /* 9. Dress code                                                           */
 /* ----------------------------------------------------------------------- */
 .dress-code {
-  background: var(--color-cream);
+  background: var(--color-cream-soft);
   text-align: center;
 }
 
