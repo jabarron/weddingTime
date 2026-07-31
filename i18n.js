@@ -50,6 +50,9 @@ const DICTIONARY = {
     story_milestone3_heading: 'La propuesta',
     story_milestone3_body:
       'Después de tantos momentos compartidos, llegó el día en que decidimos dar el siguiente paso. Entre lágrimas y una gran sonrisa, dijimos que sí a pasar el resto de nuestras vidas juntos.',
+    story_milestone4_heading: 'Simplemente nosotros',
+    story_milestone4_body:
+      'De todos los momentos, los favoritos siguen siendo los más simples — un café, una plática sin prisa, y la certeza de estar exactamente donde queremos estar.',
 
     // ✏️ EDIT ME: this is meant for a Bible verse, quote, or personal
     // thought that represents you both — deliberately left as an
@@ -168,6 +171,9 @@ const DICTIONARY = {
     story_milestone3_heading: 'The proposal',
     story_milestone3_body:
       "After so many moments shared together, the day came to take the next step. Between tears and a huge smile, we said yes to spending the rest of our lives together.",
+    story_milestone4_heading: 'Simply us',
+    story_milestone4_body:
+      "Of all the moments, our favorites are still the simplest ones — a coffee, an unhurried conversation, and the certainty of being exactly where we want to be.",
 
     // ✏️ EDIT ME: same placeholder as the Spanish version — meant for a
     // verse, quote, or thought that represents you both.
