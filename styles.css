@@ -1057,6 +1057,18 @@ button {
   }
 }
 
+/* On genuinely wide screens (large monitors), 720px left a lot of empty
+   margin on either side of the itinerary/story timelines. This widens
+   them further past that point — kept as its own tier rather than
+   changing the 768px value above, so laptop/tablet widths (768-1199px)
+   keep the sizing that already worked fine there. */
+@media (min-width: 1200px) {
+  .timeline,
+  .story-timeline {
+    max-width: 900px;
+  }
+}
+
 /* This one is intentionally separate and wider than the 768px breakpoint
    above — NOT an oversight. The full-text header nav (6 links + language
    toggle, worst case in Spanish: "Código de Vestimenta", "Confirmar
