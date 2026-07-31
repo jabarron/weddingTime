@@ -135,7 +135,7 @@
     </div>
     <div class="container story__grid">
       <div class="story__photo" aria-hidden="true">
-        <!-- ✏️ EDIT ME: replace this placeholder with an <img src="/your-photo.jpg" alt="..."> -->
+        <!-- ✏️ EDIT ME: replace this placeholder with an <img src="/Photos/your-photo.jpg" alt="..."> -->
         Photo placeholder — add an engagement photo here
       </div>
       <div class="story__text">
@@ -162,7 +162,7 @@
         <li class="story-milestone story-milestone--left">
           <span class="story-milestone__dot" aria-hidden="true"></span>
           <div class="story-milestone__photo" aria-hidden="true">
-            <!-- ✏️ EDIT ME: replace with an <img src="/your-photo.jpg" alt="..."> -->
+            <!-- ✏️ EDIT ME: replace with an <img src="/Photos/your-photo.jpg" alt="..."> -->
             Photo
           </div>
           <div class="story-milestone__text">
@@ -177,7 +177,7 @@
         <li class="story-milestone story-milestone--right">
           <span class="story-milestone__dot" aria-hidden="true"></span>
           <div class="story-milestone__photo" aria-hidden="true">
-            <!-- ✏️ EDIT ME: replace with an <img src="/your-photo.jpg" alt="..."> -->
+            <!-- ✏️ EDIT ME: replace with an <img src="/Photos/your-photo.jpg" alt="..."> -->
             Photo
           </div>
           <div class="story-milestone__text">
@@ -191,7 +191,7 @@
         <li class="story-milestone story-milestone--left">
           <span class="story-milestone__dot" aria-hidden="true"></span>
           <div class="story-milestone__photo" aria-hidden="true">
-            <!-- ✏️ EDIT ME: replace with an <img src="/your-photo.jpg" alt="..."> -->
+            <!-- ✏️ EDIT ME: replace with an <img src="/Photos/your-photo.jpg" alt="..."> -->
             Photo
           </div>
           <div class="story-milestone__text">
@@ -352,14 +352,17 @@
       </div>
 
       <div class="field">
-        <label for="songRequest" data-i18n="rsvp_song">Una canción que no puede faltar (opcional)</label>
+        <label for="songRequest">
+          <span data-i18n="rsvp_song">Una canción que no puede faltar</span>
+          <svg class="label-icon label-icon--music" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18V5l10-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="16" cy="16" r="3"/></svg>
+        </label>
         <input type="text" id="songRequest" name="songRequest" maxlength="150" />
       </div>
 
       <div class="field">
         <label for="message">
           <span data-i18n="rsvp_message">Mensaje para los novios</span>
-          <svg class="label-heart" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.7-4.35-9.3-8.1C1 10.2 1.8 6.7 5 5.4c2.1-.9 4.4-.1 5.7 1.6l1.3 1.7 1.3-1.7c1.3-1.7 3.6-2.5 5.7-1.6 3.2 1.3 4 4.8 2.3 7.5C18.7 16.65 12 21 12 21z"/></svg>
+          <svg class="label-icon label-icon--heart" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.7-4.35-9.3-8.1C1 10.2 1.8 6.7 5 5.4c2.1-.9 4.4-.1 5.7 1.6l1.3 1.7 1.3-1.7c1.3-1.7 3.6-2.5 5.7-1.6 3.2 1.3 4 4.8 2.3 7.5C18.7 16.65 12 21 12 21z"/></svg>
         </label>
         <textarea id="message" name="message" maxlength="500"></textarea>
       </div>
@@ -372,6 +375,7 @@
   <!-- ===================== Footer ===================== -->
   <footer class="site-footer">
     <div class="site-footer__monogram">I &amp; J</div>
+    <p class="site-footer__contact" data-i18n="footer_contact">Si tienes dudas, por favor contáctanos.</p>
   </footer>
 
   <!-- Scripts load in this order: dictionary first, then page logic, then the form handler. -->

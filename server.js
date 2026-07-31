@@ -108,6 +108,12 @@ app.use('/api/admin', adminAuth, adminRoutes);
 // Public static site — everything left over (index.html, styles.css,
 // main.js, i18n.js, rsvp-form.js, admin.css, admin.js). Comes after the
 // BLOCKED_FILES guard and the routes above so those take priority.
+//
+// This also covers the Photos/ subfolder automatically — express.static
+// serves nested folders too, so a file at Photos/foo.jpg is reachable at
+// /Photos/foo.jpg with no extra route needed. The BLOCKED_FILES guard
+// above only matches against filenames (path.basename), not folder names,
+// so it doesn't affect anything inside Photos/ either.
 // ---------------------------------------------------------------------------
 app.use(express.static(__dirname));
 

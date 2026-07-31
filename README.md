@@ -115,7 +115,7 @@ migration step needed (see `db-pool.js` → `initDb()`).
 | Dress code paragraph (ES & EN)         | `i18n.js`                                      |
 | Gifts / envelope box message (ES & EN) | `i18n.js`                                      |
 | Interface button/label text            | `i18n.js`                                      |
-| Engagement photo                       | Add an image file to this same root folder (e.g. `photo1.jpg`), then update the placeholder `<div class="story__photo">` in `index.html` with an `<img src="/photo1.jpg" alt="...">` tag (instructions are commented right above it) |
+| Engagement / story photos               | Drop image files into the `Photos/` folder, then swap each placeholder `<div class="story__photo">` or `<div class="story-milestone__photo">` in `index.html` for an `<img src="/Photos/your-file.jpg" alt="...">` tag (instructions are commented right above each one) |
 | Admin login credentials                | `.env` locally, or Railway's Variables tab in production — never commit these |
 
 ---

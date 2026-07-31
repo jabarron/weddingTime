@@ -84,7 +84,7 @@ const DICTIONARY = {
     rsvp_attending_yes: 'Sí, ahí estaré',
     rsvp_attending_no: 'No podré asistir',
     rsvp_guest_count: 'Número de personas',
-    rsvp_song: 'Una canción que no puede faltar (opcional)',
+    rsvp_song: 'Una canción que no puede faltar',
     rsvp_message: 'Mensaje para los novios',
     rsvp_submit: 'Enviar confirmación',
     rsvp_success: '¡Gracias! Tu confirmación fue recibida.',
@@ -92,7 +92,7 @@ const DICTIONARY = {
     rsvp_required_error: 'Por favor completa los campos obligatorios: nombre, teléfono y confirmación de asistencia.',
     rsvp_guest_count_error: 'Agrega un número de invitados entre 1 y 2',
 
-    footer_contact: 'Preguntas',
+    footer_contact: 'Si tienes dudas, por favor contáctanos.',
 
     // ✏️ Admin dashboard (/admin) — inherits whichever language was last
     // selected on the public site (see admin.js), no separate toggle.
@@ -193,7 +193,7 @@ const DICTIONARY = {
     rsvp_attending_yes: "Yes, I'll be there",
     rsvp_attending_no: "I can't make it",
     rsvp_guest_count: 'Number of guests',
-    rsvp_song: "A song that has to be played (optional)",
+    rsvp_song: "A song that has to be played",
     rsvp_message: 'Message for the couple',
     rsvp_submit: 'Send RSVP',
     rsvp_success: 'Thank you! Your RSVP has been received.',
@@ -201,7 +201,7 @@ const DICTIONARY = {
     rsvp_required_error: 'Please fill in the required fields: name, phone, and attendance confirmation.',
     rsvp_guest_count_error: 'Please add a number of guests between 1 and 2',
 
-    footer_contact: 'Questions',
+    footer_contact: 'If you have any questions, please reach out to us.',
 
     admin_title: 'RSVP Dashboard',
     admin_export_btn: 'Download Excel',
