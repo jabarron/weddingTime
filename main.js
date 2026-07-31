@@ -190,7 +190,7 @@
   }
 
   /**
-   * Hero fades to a maximum of 20% transparent as the guest scrolls
+   * Hero fades to a maximum of 10% transparent as the guest scrolls
    * through it, tied to scroll progress across the hero's own height —
    * by the time it's fully scrolled past (out of view), the value stops
    * mattering visually, so there's no need to extend the effect further.
@@ -216,8 +216,8 @@
     function updateFade() {
       const heroHeight = hero.offsetHeight;
       const progress = Math.min(Math.max(window.scrollY / heroHeight, 0), 1);
-      // Fade: 1 (fully opaque) down to 0.8 (20% transparent) — never past that.
-      hero.style.opacity = String(1 - progress * 0.2);
+      // Fade: 1 (fully opaque) down to 0.9 (10% transparent) — never past that.
+      hero.style.opacity = String(1 - progress * 0.1);
       ticking = false;
     }
 
