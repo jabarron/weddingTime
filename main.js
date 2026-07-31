@@ -231,6 +231,111 @@
     updateFade();
   }
 
+  /**
+   * Very subtle "constellation" on the hero background — a handful of
+   * soft dots that drift slowly, with faint lines connecting the ones
+   * that happen to be near each other. Deliberately understated: few
+   * particles, slow movement, low opacity — meant to read as ambience,
+   * not as a noticeable animation. Skipped for guests with
+   * prefers-reduced-motion on, same as the fade effect above.
+   */
+  function setupHeroConstellation() {
+    const canvas = document.querySelector('.hero__constellation');
+    const hero = document.querySelector('.hero');
+    if (!canvas || !hero) return;
+
+    const prefersReducedMotion = window.matchMedia(
+      '(prefers-reduced-motion: reduce)'
+    ).matches;
+    if (prefersReducedMotion) return;
+
+    const ctx = canvas.getContext('2d');
+    const PARTICLE_COUNT = 32;
+    const MAX_LINK_DISTANCE = 150;
+    const DOT_COLOR = '223, 216, 198'; // --color-cream, as an rgb triple for use in rgba()
+    let particles = [];
+    let width = 0;
+    let height = 0;
+
+    function resize() {
+      width = hero.offsetWidth;
+      height = hero.offsetHeight;
+      canvas.width = width;
+      canvas.height = height;
+    }
+
+    function createParticles() {
+      particles = Array.from({ length: PARTICLE_COUNT }, () => ({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        // Very slow drift — a full crossing of the hero takes minutes,
+        // not seconds.
+        vx: (Math.random() - 0.5) * 0.12,
+        vy: (Math.random() - 0.5) * 0.12,
+      }));
+    }
+
+    function step() {
+      ctx.clearRect(0, 0, width, height);
+
+      // Move each particle, gently wrapping around the edges instead of
+      // bouncing (keeps the motion feeling calm/ambient, not bouncy).
+      particles.forEach((p) => {
+        p.x += p.vx;
+        p.y += p.vy;
+        if (p.x < 0) p.x = width;
+        if (p.x > width) p.x = 0;
+        if (p.y < 0) p.y = height;
+        if (p.y > height) p.y = 0;
+      });
+
+      // Faint lines between nearby particles.
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < MAX_LINK_DISTANCE) {
+            const lineOpacity = 0.12 * (1 - dist / MAX_LINK_DISTANCE);
+            ctx.strokeStyle = `rgba(${DOT_COLOR}, ${lineOpacity})`;
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.stroke();
+          }
+        }
+      }
+
+      // Dots on top of the lines.
+      particles.forEach((p) => {
+        ctx.fillStyle = `rgba(${DOT_COLOR}, 0.35)`;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 1.5, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      requestAnimationFrame(step);
+    }
+
+    resize();
+    createParticles();
+    requestAnimationFrame(step);
+
+    let resizeTimeout;
+    window.addEventListener(
+      'resize',
+      () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+          resize();
+          createParticles();
+        }, 200);
+      },
+      { passive: true }
+    );
+  }
+
   /** Wires up the ES/EN buttons in the header. */
   function setupLanguageToggle() {
     document.querySelectorAll('.lang-toggle button').forEach((btn) => {
@@ -243,6 +348,7 @@
     setupLanguageToggle();
     setupHeaderScroll();
     setupHeroScrollEffects();
+    setupHeroConstellation();
     applyLanguage(currentLanguage);
     startCountdown();
   }
