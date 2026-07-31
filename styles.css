@@ -718,6 +718,20 @@ button {
   margin-bottom: 0.4rem;
 }
 
+/* Small decorative heart next to the message label, replacing the old
+   "(optional)" text — filled (not the thin-line style used elsewhere)
+   since it's meant to read as a warm little accent, not a functional
+   icon. */
+.label-heart {
+  width: 13px;
+  height: 13px;
+  fill: var(--color-berry);
+  vertical-align: middle;
+  margin-left: 0.2em;
+  position: relative;
+  top: -1px;
+}
+
 .field input[type='text'],
 .field input[type='tel'],
 .field input[type='number'],
@@ -738,7 +752,8 @@ button {
   min-height: 90px;
 }
 
-.field input:disabled {
+.field input:disabled,
+.field select:disabled {
   background: var(--color-cream-soft);
   color: var(--color-mauve);
   border-color: var(--color-cream-soft);

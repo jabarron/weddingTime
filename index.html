@@ -340,7 +340,15 @@
 
       <div class="field" id="field-guestCount">
         <label for="guestCount" data-i18n="rsvp_guest_count">Número de personas</label>
-        <input type="number" id="guestCount" name="guestCount" min="0" max="2" value="1" />
+        <select id="guestCount" name="guestCount">
+          <!-- Hidden on purpose: never selectable from the open dropdown,
+               but this is what gets shown while the field is disabled
+               (see rsvp-form.js -> setupGuestCountToggle, which sets this
+               value when "No podré asistir" is picked). -->
+          <option value="0" hidden>0</option>
+          <option value="1" selected>1</option>
+          <option value="2">2</option>
+        </select>
       </div>
 
       <div class="field">
@@ -349,7 +357,10 @@
       </div>
 
       <div class="field">
-        <label for="message" data-i18n="rsvp_message">Mensaje para los novios (opcional)</label>
+        <label for="message">
+          <span data-i18n="rsvp_message">Mensaje para los novios</span>
+          <svg class="label-heart" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.7-4.35-9.3-8.1C1 10.2 1.8 6.7 5 5.4c2.1-.9 4.4-.1 5.7 1.6l1.3 1.7 1.3-1.7c1.3-1.7 3.6-2.5 5.7-1.6 3.2 1.3 4 4.8 2.3 7.5C18.7 16.65 12 21 12 21z"/></svg>
+        </label>
         <textarea id="message" name="message" maxlength="500"></textarea>
       </div>
 
