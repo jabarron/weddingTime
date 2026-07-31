@@ -19,6 +19,30 @@
   <title>Ismeraí &amp; Jesús</title>
   <meta name="description" content="Acompáñanos a celebrar la boda de Ismeraí y Jesús — 1 de mayo, 2027." />
 
+  <!-- Favicon / browser tab icon + home-screen icon (generated from the
+       "I & J" monogram — see og-gen notes in README if you want to
+       regenerate these with a real photo instead). -->
+  <link rel="icon" type="image/png" href="/favicon-32.png" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+  <!-- ✏️ EDIT ME: Open Graph + Twitter Card tags control how the link looks
+       when shared on WhatsApp, iMessage, Facebook, etc. Without these, most
+       apps show a bare, imageless link. `og:url` should be your real
+       domain once you have one (Railway subdomain or custom domain) —
+       it's not critical for the preview card to render, but good practice. -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Ismeraí & Jesús — Nos Casamos" />
+  <meta property="og:description" content="1 de mayo, 2027 · Jardín, Cd. Juárez, Chihuahua" />
+  <meta property="og:image" content="/og-image.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:url" content="https://weddingtime-production.up.railway.app/" />
+  <meta property="og:locale" content="es_MX" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Ismeraí & Jesús — Nos Casamos" />
+  <meta name="twitter:description" content="1 de mayo, 2027 · Jardín, Cd. Juárez, Chihuahua" />
+  <meta name="twitter:image" content="/og-image.jpg" />
+
   <!-- Fonts: Cormorant Garamond (display) + Jost (body) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -289,14 +313,14 @@
         <label for="fullName">
           <span data-i18n="rsvp_name">Nombre completo</span><span class="required-asterisk" aria-hidden="true">*</span>
         </label>
-        <input type="text" id="fullName" name="fullName" required autocomplete="name" />
+        <input type="text" id="fullName" name="fullName" required autocomplete="name" maxlength="100" />
       </div>
 
       <div class="field" id="field-phone">
         <label for="phone">
           <span data-i18n="rsvp_phone">Teléfono</span><span class="required-asterisk" aria-hidden="true">*</span>
         </label>
-        <input type="tel" id="phone" name="phone" required autocomplete="tel" />
+        <input type="tel" id="phone" name="phone" required autocomplete="tel" maxlength="30" />
       </div>
 
       <div class="field" id="field-attending">
@@ -322,12 +346,12 @@
 
       <div class="field">
         <label for="songRequest" data-i18n="rsvp_song">Una canción que no puede faltar (opcional)</label>
-        <input type="text" id="songRequest" name="songRequest" />
+        <input type="text" id="songRequest" name="songRequest" maxlength="150" />
       </div>
 
       <div class="field">
         <label for="message" data-i18n="rsvp_message">Mensaje para los novios (opcional)</label>
-        <textarea id="message" name="message"></textarea>
+        <textarea id="message" name="message" maxlength="500"></textarea>
       </div>
 
       <button type="submit" class="btn btn--primary rsvp__submit" data-i18n="rsvp_submit">Enviar confirmación</button>

@@ -60,12 +60,12 @@ router.post('/', async (req, res) => {
        VALUES ($1, $2, $3, $4, $5, $6)
        RETURNING id, submitted_at`,
       [
-        fullName.trim(),
-        phone.trim(),
+        fullName.trim().slice(0, 100),
+        phone.trim().slice(0, 30),
         attending,
         safeGuestCount,
-        songRequest ? String(songRequest).trim() : null,
-        message ? String(message).trim() : null,
+        songRequest ? String(songRequest).trim().slice(0, 150) : null,
+        message ? String(message).trim().slice(0, 500) : null,
       ]
     );
 

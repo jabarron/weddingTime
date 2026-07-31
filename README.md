@@ -151,6 +151,32 @@ migration step needed (see `db-pool.js` → `initDb()`).
   streams a real `.xlsx` file built with the `exceljs` package — that's a
   new dependency added to `package.json`, so make sure `npm install` runs
   again (Railway does this automatically on deploy).
+- **Link previews (Open Graph):** `og-image.jpg`, `favicon.png`,
+  `favicon-32.png`, and `apple-touch-icon.png` were generated from the
+  site's own colors/fonts (not real photos yet). When you have engagement
+  photos, regenerate `og-image.jpg` with one of them for a more personal
+  link preview on WhatsApp/iMessage — it should stay 1200×630px.
+- **Color contrast:** `terracotta` and `mauve` are used as backgrounds/
+  accents throughout, but are too light to pass WCAG AA as small text on
+  their own. `styles.css` defines adjusted text-only variants
+  (`--color-terracotta-on-light`, `--color-terracotta-on-dark`,
+  `--color-mauve-text`, `--color-mauve-on-dark`) — always use one of these
+  instead of the base color if you're setting a `color:` (text) property,
+  not a `background`/`border`.
+- **Form limits:** name (100 chars), phone (30), song request (150), and
+  message (500) all have a `maxlength` in `index.html` and a matching
+  server-side cap in `routes-rsvp.js` — adjust both together if you change
+  one.
+- **Responsive breakpoints:** Details cards, the Our Story intro grid, and
+  both dotted timelines all switch to their wider layout at the same
+  768px breakpoint (previously four different values — see the comment
+  above it in `styles.css`). The header nav's icon→text switch stays a
+  separate, wider breakpoint (900px) on purpose, since the full Spanish
+  labels need more room than everything else.
+- **Micro-interactions:** the ES/EN toggle buttons and every `/admin`
+  action button (Edit, Save, Cancel, Delete, Download Excel) now have a
+  hover state with a smooth color transition, matching the rest of the
+  site's buttons.
 - **Admin language:** `/admin` has no ES/EN toggle of its own — it just
   reads whichever language was last picked on the public site
   (`localStorage`, same-origin) and renders in that language.

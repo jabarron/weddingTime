@@ -38,6 +38,17 @@
   --color-ink: #2a0512; /* near-black wine, for body text on cream */
   --color-white: #fffaf3;
 
+  /* Accessible text variants: terracotta and mauve are great as accents,
+     backgrounds, and borders, but too light/mid-tone to pass WCAG AA
+     (4.5:1) as small text on their "home" backgrounds. These adjusted
+     versions stay in the same hue family but meet contrast — use them
+     instead of the base color whenever terracotta/mauve is the TEXT
+     color, not just a decorative accent. */
+  --color-terracotta-on-light: #924a39; /* terracotta text on cream/white */
+  --color-terracotta-on-dark: #cc7a67; /* terracotta text on wine */
+  --color-mauve-text: #8c5855; /* mauve text on cream/cream-soft/white */
+  --color-mauve-on-dark: #b77d79; /* mauve text on wine */
+
   --font-display: 'Cormorant Garamond', Georgia, serif;
   --font-body: 'Jost', 'Segoe UI', sans-serif;
 
@@ -131,10 +142,17 @@ button {
   text-transform: uppercase;
   letter-spacing: 0.18em;
   font-size: 0.75rem;
-  color: var(--color-terracotta);
+  color: var(--color-terracotta-on-light);
   font-weight: 600;
   display: block;
   margin-bottom: var(--space-xs);
+}
+
+/* Sections with a wine (dark) background need the lighter terracotta
+   variant instead — same accent color family, readable on dark. */
+.details .eyebrow,
+.gifts .eyebrow {
+  color: var(--color-terracotta-on-dark);
 }
 
 .text-center {
@@ -271,6 +289,11 @@ button {
   font-weight: 600;
   padding: 0.25rem 0.5rem;
   letter-spacing: 0.05em;
+  transition: background var(--transition-fast);
+}
+
+.lang-toggle button:hover {
+  background: rgba(255, 255, 255, 0.14);
 }
 
 .lang-toggle button[aria-pressed='true'] {
@@ -295,7 +318,7 @@ button {
 }
 
 .hero__eyebrow {
-  color: var(--color-mauve);
+  color: var(--color-mauve-on-dark);
   text-transform: uppercase;
   letter-spacing: 0.3em;
   font-size: 0.75rem;
@@ -327,7 +350,7 @@ button {
 
 .hero__venue {
   font-size: 0.95rem;
-  color: var(--color-mauve);
+  color: var(--color-mauve-on-dark);
   margin-bottom: var(--space-lg);
 }
 
@@ -355,7 +378,7 @@ button {
   font-size: 0.7rem;
   text-transform: uppercase;
   letter-spacing: 0.12em;
-  color: var(--color-mauve);
+  color: var(--color-mauve-on-dark);
 }
 
 .hero__actions {
@@ -751,7 +774,7 @@ button {
 
 .field-hint {
   font-size: 0.75rem;
-  color: var(--color-mauve);
+  color: var(--color-mauve-text);
   margin-top: 0.3rem;
 }
 
@@ -794,7 +817,7 @@ button {
 }
 
 .rsvp__status[data-state='error'] {
-  color: var(--color-terracotta);
+  color: var(--color-terracotta-on-light);
 }
 
 .rsvp__status[data-state='required'] {
@@ -827,13 +850,18 @@ button {
 /* ----------------------------------------------------------------------- */
 /* 12. Responsive breakpoints                                              */
 /* ----------------------------------------------------------------------- */
-@media (min-width: 640px) {
+/* Consolidated to one shared breakpoint (768px, standard tablet width) for
+   every layout that goes from single-column to a wider/multi-column
+   arrangement: Details cards, the Our Story intro grid, and both dotted
+   timelines. Previously these switched at four different widths (640,
+   760, 860px) which meant the site was "half desktop" for a chunk of the
+   tablet range — some parts wide, others still stacked. Keeping them on
+   one value means the whole page changes together at the same point. */
+@media (min-width: 768px) {
   .details__grid {
     grid-template-columns: repeat(2, 1fr);
   }
-}
 
-@media (min-width: 860px) {
   .story__grid {
     grid-template-columns: 1fr 1fr;
   }
@@ -845,13 +873,7 @@ button {
   .story__grid.story__grid--reverse > * {
     direction: ltr;
   }
-}
 
-/* Centered-line, alternating-sides layout for the itinerary and story
-   timelines — uses the extra width instead of staying in a narrow single
-   column. Below this width both stay as the single left-aligned column
-   defined earlier (mobile-first base styles). */
-@media (min-width: 760px) {
   .timeline,
   .story-timeline {
     max-width: 720px;
@@ -922,7 +944,12 @@ button {
   }
 }
 
-/* Enough room for full text labels instead of icons in the header nav. */
+/* This one is intentionally separate and wider than the 768px breakpoint
+   above — NOT an oversight. The full-text header nav (6 links + language
+   toggle, worst case in Spanish: "Código de Vestimenta", "Confirmar
+   Asistencia") needs roughly 1000px to fit on one line without wrapping;
+   768px is nowhere near enough room for it. Below this width the nav
+   stays icon-only regardless of what the rest of the page is doing. */
 @media (min-width: 900px) {
   .site-header {
     padding: var(--space-sm) var(--space-md);
