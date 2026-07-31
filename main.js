@@ -131,9 +131,13 @@
         .map((event, index) => {
           const iconPath = TIMELINE_ICONS[event.icon] || TIMELINE_ICONS.dot;
           const side = index % 2 === 0 ? 'left' : 'right';
+          // Religious ceremony gets the navy accent instead of the usual
+          // terracotta badge — a small, deliberate exception (see the
+          // --color-navy comment in styles.css for why only this one).
+          const accent = event.icon === 'book' ? ' timeline__icon--accent' : '';
           return `
         <li class="timeline__item timeline__item--${side}">
-          <span class="timeline__icon" aria-hidden="true">
+          <span class="timeline__icon${accent}" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">${iconPath}</svg>
           </span>
           <span class="timeline__content">

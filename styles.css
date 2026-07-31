@@ -50,6 +50,13 @@
   --color-mauve-text: #8c5855; /* mauve text on cream/cream-soft/white */
   --color-mauve-on-dark: #b77d79; /* mauve text on wine */
 
+  /* Sparing accent — sampled directly from the blue doll in holdingHands.jpg.
+     Used deliberately in only 3 spots (see comments at each): a dress-code
+     swatch, the religious ceremony icon, and a subtle photo-frame border —
+     never as a base/background color, to keep the site's warm palette
+     dominant. */
+  --color-navy: #1f2e4d;
+
   --font-display: 'Cormorant Garamond', Georgia, serif;
   --font-body: 'Jost', 'Segoe UI', sans-serif;
 
@@ -428,7 +435,9 @@ button {
 .story__photo {
   aspect-ratio: 4 / 5;
   background: var(--color-cream-soft);
-  border: 1px solid var(--color-mauve);
+  /* Subtle nod to the blue doll in holdingHands.jpg — same idea as the
+     dress-code swatch and the religious ceremony icon. */
+  border: 1px solid var(--color-navy);
   border-radius: var(--radius);
   display: flex;
   align-items: center;
@@ -498,7 +507,7 @@ button {
 .story-milestone__photo {
   max-width: 200px;
   min-height: 110px;
-  border: 1px solid var(--color-mauve);
+  border: 1px solid var(--color-navy);
   border-radius: var(--radius);
   background: var(--color-cream-soft);
   display: flex;
@@ -648,6 +657,12 @@ button {
 .timeline__icon svg {
   width: 19px;
   height: 19px;
+}
+
+/* Religious ceremony's navy badge — see the --color-navy comment in the
+   design tokens section. */
+.timeline__icon--accent {
+  background: var(--color-navy);
 }
 
 /* Time + event name sit on the same line to keep each entry compact —
