@@ -437,6 +437,22 @@ button {
   font-size: 0.85rem;
   text-align: center;
   padding: var(--space-md);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Fills the fixed 4:5 frame edge-to-edge, cropping (not stretching)
+   whatever doesn't fit — the "adjust the photo, not the space" choice,
+   so this one stays a consistent, polished "hero" size no matter what
+   proportions the source photo is. Positioned absolutely so it ignores
+   the parent's padding (that padding only matters for the placeholder
+   text before a real photo is added). */
+.story__photo img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 /* Same treatment as .story-milestone__text h3 below, so the intro block
