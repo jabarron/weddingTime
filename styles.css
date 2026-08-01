@@ -1154,16 +1154,23 @@ button {
   }
 
   /* Rounded corners only where the "card" actually meets the frame
-     background — the very top (header + hero) and very bottom (footer).
+     background — the very top (hero) and very bottom (footer).
      Deliberately NOT applied to every .section: they're separate stacked
      elements with no gap between them, so rounding every one of them
      would create small pinched notches at each section-to-section seam
-     instead of one clean silhouette. .site-header needs its own
-     matching radius too, since its background is transparent at rest
-     (showing the hero's rounded corner through it) but becomes solid
-     wine once scrolled (.is-scrolled) — without this it would show
-     square corners over the hero's rounded ones at that point. */
-  .site-header,
+     instead of one clean silhouette.
+
+     NOT applied to .site-header either, even though it sits at the very
+     top too — it's position:fixed, so its width is calculated relative
+     to the viewport, while .hero (normal document flow) calculates its
+     width relative to the content area, which excludes the scrollbar.
+     Those two can differ by the scrollbar's width, which is enough to
+     visibly misalign two independently-rounded corners right at the
+     curve (small straight-edge misalignment is invisible; the same
+     misalignment at a curve is not). Skipping the header's own rounding
+     sidesteps the mismatch entirely — by the time the header becomes
+     solid on scroll (.is-scrolled), the hero's curve is already
+     scrolled out of view anyway, so nothing is lost. */
   .hero {
     border-radius: 20px 20px 0 0;
   }
