@@ -148,7 +148,7 @@ function pageShell({ lang, title, bodyHtml, wide = false }) {
     }
     img.error-image {
       width: 100%;
-      max-height: 60vh;
+      max-height: 85vh;
       height: auto;
       object-fit: contain;
       border-radius: 8px;

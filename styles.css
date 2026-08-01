@@ -1110,6 +1110,20 @@ button {
     align-items: center;
   }
 
+  /* Pulled out of the nav's normal flow on purpose — it should NOT count
+     toward the space-between distribution below (that's what keeps the
+     monogram mathematically centered among the 6 links, regardless of
+     the toggle's width). Positioned relative to .site-header (already
+     position:fixed, so it works as the containing block here). A slight
+     overlap with "Asistencia" on narrower desktop widths is expected and
+     accepted — see the conversation this came from. */
+  .lang-toggle {
+    position: absolute;
+    right: var(--space-md);
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
   .lang-toggle button {
     font-size: 0.75rem;
     padding: 0.35rem 0.7rem;

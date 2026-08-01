@@ -110,7 +110,7 @@ const DICTIONARY = {
     admin_refresh_btn: 'Actualizar',
     admin_scroll_hint: 'Desliza izquierda/derecha para ver más columnas →',
     admin_stat_attending: 'Respuestas confirmadas',
-    admin_stat_guests: 'Total de invitados asistiendo',
+    admin_stat_guests: 'Total de asistentes',
     admin_stat_declined: 'Respuestas declinadas',
     admin_th_name: 'Nombre',
     admin_th_phone: 'Teléfono',
