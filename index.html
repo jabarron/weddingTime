@@ -57,12 +57,7 @@
 
   <!-- ===================== Header ===================== -->
   <header class="site-header">
-    <a href="/admin" class="site-header__monogram">I &amp; J</a>
-    <!-- Desktop-only centered monogram — the fixed logo asset (monogram.png)
-         so it renders identically everywhere, not dependent on font
-         rendering. Hidden by default (mobile); shown centered instead of
-         the text monogram above at the 900px breakpoint — see styles.css. -->
-    <a href="/admin" class="site-header__monogram-center">
+    <a href="/admin" class="site-header__monogram">
       <img src="/monogram.png" alt="I &amp; J" />
     </a>
     <nav class="site-header__nav">
@@ -77,6 +72,16 @@
       <a href="#itinerary" class="nav-link">
         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
         <span class="nav-label" data-i18n="nav_itinerary">Itinerario</span>
+      </a>
+      <!-- Desktop-only: same monogram image as the corner one, but shown
+           here (in the middle of the link list) instead, and hidden at
+           the corner — see styles.css. Being a REAL item in this flex
+           row (not absolutely positioned) is what makes it land in the
+           visual center: the row uses justify-content: space-between at
+           desktop, so it naturally centers regardless of how much text
+           is on either side. -->
+      <a href="/admin" class="site-header__monogram-center">
+        <img src="/monogram.png" alt="I &amp; J" />
       </a>
       <a href="#dress-code" class="nav-link">
         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4a1.5 1.5 0 1 0-1.5 1.5"/><path d="M12 5.5v2"/><path d="M3 20l9-6.5L21 20"/><path d="M3 20h18"/></svg>

@@ -147,9 +147,8 @@ function pageShell({ lang, title, bodyHtml, wide = false }) {
       .card { animation: none; }
     }
     img.error-image {
-      max-width: min(500px, 80vw);
-      max-height: 60vh;
       width: 100%;
+      max-height: 60vh;
       height: auto;
       object-fit: contain;
       border-radius: 8px;

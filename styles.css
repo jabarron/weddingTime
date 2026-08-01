@@ -224,28 +224,16 @@ button {
   backdrop-filter: blur(6px);
 }
 
-.site-header__monogram {
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: 1.2rem;
-  color: var(--color-white);
-  letter-spacing: 0.04em;
+.site-header__monogram img {
+  display: block;
+  height: 28px;
+  width: auto;
 }
 
-/* This is now a link to /admin, but should look and behave exactly like
-   plain text — no color change, no underline, on any state. */
-.site-header__monogram,
-.site-header__monogram:link,
-.site-header__monogram:visited,
-.site-header__monogram:hover,
-.site-header__monogram:active {
-  color: var(--color-white);
-  text-decoration: none;
-}
-
-/* Hidden on mobile — only shown (and centered) at the 900px breakpoint,
-   replacing the text monogram above. See the media query in the
-   responsive section for the positioning. */
+/* Hidden on mobile — only shown at the 900px breakpoint, replacing the
+   corner monogram above. Being a normal flex item inside .site-header__nav
+   (not absolutely positioned) is what keeps it correctly centered — see
+   the media query in the responsive section. */
 .site-header__monogram-center {
   display: none;
 }
@@ -1105,24 +1093,21 @@ button {
 @media (min-width: 900px) {
   .site-header {
     padding: var(--space-sm) var(--space-md);
-    /* The text monogram (which used to anchor the left side) is hidden
-       below, so without this the nav would drift to the left instead of
-       staying right-aligned like before. */
-    justify-content: flex-end;
   }
 
-  /* Swap the corner text monogram for the centered image one — same
-     logo, different position/format, only at this width. */
+  /* Swap the corner monogram for the centered one, only at this width.
+     The centered one is a real item inside .site-header__nav below (not
+     absolutely positioned) — combined with .site-header__nav spanning
+     the full width and space-between distributing its items evenly,
+     that's what puts it in the true visual middle regardless of how
+     much text sits on either side of it. */
   .site-header__monogram {
     display: none;
   }
 
   .site-header__monogram-center {
-    display: block;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
   }
 
   .lang-toggle button {
@@ -1150,7 +1135,9 @@ button {
   }
 
   .site-header__nav {
-    gap: var(--space-md);
+    width: 100%;
+    justify-content: space-between;
+    gap: var(--space-sm);
   }
 }
 
