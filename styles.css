@@ -36,6 +36,10 @@
   --color-cream: #dfd8c6;
 
   --color-cream-soft: #eae5d9; /* lighter tint of cream, for cards on cream bg */
+  --color-frame: #ddc9a3; /* warmer/more saturated sand than cream, on purpose —
+    used only for the desktop "framed card" background (see the 1200px
+    breakpoint), needs to read as clearly outside the card even where
+    the card's own edge happens to be cream-on-cream. */
   --color-ink: #2a0512; /* near-black wine, for body text on cream */
   --color-white: #fffaf3;
 
@@ -53,9 +57,9 @@
   /* Sparing accent — sampled directly from the blue doll in holdingHands.jpg.
      Used deliberately as an accent (never as a base/background color, to
      keep the site's warm palette dominant): the religious ceremony icon,
-     photo-frame borders, the RSVP heart/music icons, and the "J" in the
-     monogram (monogram.png, favicon files — edited directly as images,
-     not driven by this token). */
+     photo-frame borders, and the RSVP heart/music icons. (Was briefly
+     also used for the "J" in monogram.png — reverted per feedback, so
+     the monogram/favicon files are back to all-white/cream now.) */
   --color-navy: #1f2e4d;
 
   --font-display: 'Cormorant Garamond', Georgia, serif;
@@ -1077,6 +1081,27 @@ button {
   .story-timeline {
     max-width: 900px;
   }
+
+  /* "Framed card" layout — only past this width, where there was empty
+     margin to spare anyway. The whole site (header included) becomes a
+     centered card sitting on a warm sand background, while keeping the
+     section-by-section color alternation (wine/cream/etc.) exactly as
+     it already works on the inside — this is the "hybrid" option from
+     the conversation this came from, not a full redesign to one flat
+     background. Mobile and tablet/laptop (under 1200px) are completely
+     unaffected. */
+  body {
+    background: var(--color-frame);
+  }
+
+  .site-header,
+  .hero,
+  .section,
+  .site-footer {
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
+  }
 }
 
 /* This one is intentionally separate and wider than the 768px breakpoint
@@ -1115,8 +1140,8 @@ button {
     font-size: 0.75rem;
     font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.06em;
-    padding: 0.4rem 1.1rem;
+    letter-spacing: 0.05em;
+    padding: 0.35rem 0.7rem;
     transition: background var(--transition-fast);
   }
 
