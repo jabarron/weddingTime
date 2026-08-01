@@ -233,15 +233,16 @@ button {
 /* Hidden on mobile — only shown at the 900px breakpoint, replacing the
    corner monogram above. Being a normal flex item inside .site-header__nav
    (not absolutely positioned) is what keeps it correctly centered — see
-   the media query in the responsive section. */
+   the media query in the responsive section. Purely decorative now (a
+   plain <img>, not a link) — "Admin" (below) is the real way in. */
 .site-header__monogram-center {
   display: none;
-}
-
-.site-header__monogram-center img {
-  display: block;
   height: 34px;
   width: auto;
+}
+
+.nav-admin-link {
+  display: none; /* shown only at the 900px breakpoint, see below */
 }
 
 .site-header__nav {
@@ -1099,29 +1100,29 @@ button {
      The centered one is a real item inside .site-header__nav below (not
      absolutely positioned) — combined with .site-header__nav spanning
      the full width and space-between distributing its items evenly,
-     that's what puts it in the true visual middle regardless of how
-     much text sits on either side of it. */
+     that's what puts it in the true visual middle: 4 items on the left
+     (Admin + 3 links), 4 on the right (3 links + language toggle). */
   .site-header__monogram {
     display: none;
   }
 
   .site-header__monogram-center {
-    display: flex;
-    align-items: center;
+    display: block;
   }
 
-  /* Pulled out of the nav's normal flow on purpose — it should NOT count
-     toward the space-between distribution below (that's what keeps the
-     monogram mathematically centered among the 6 links, regardless of
-     the toggle's width). Positioned relative to .site-header (already
-     position:fixed, so it works as the containing block here). A slight
-     overlap with "Asistencia" on narrower desktop widths is expected and
-     accepted — see the conversation this came from. */
-  .lang-toggle {
-    position: absolute;
-    right: var(--space-md);
-    top: 50%;
-    transform: translateY(-50%);
+  .nav-admin-link {
+    display: inline-block;
+    font-family: var(--font-body);
+    color: var(--color-white);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .nav-admin-link:hover {
+    color: var(--color-terracotta);
   }
 
   .lang-toggle button {

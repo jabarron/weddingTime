@@ -61,6 +61,12 @@
       <img src="/monogram.png" alt="I &amp; J" />
     </a>
     <nav class="site-header__nav">
+      <!-- Desktop-only. Left-side counterpart to the ES/EN toggle on the
+           right — 4 items on each side of the centered monogram below.
+           This is now the ONLY way to reach /admin from the desktop nav;
+           the monogram itself stopped being a link (see the comment on
+           .site-header__monogram-center). -->
+      <a href="/admin" class="nav-admin-link" data-i18n="nav_admin">Admin</a>
       <a href="#story" class="nav-link">
         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-6.7-4.35-9.3-8.1C1 10.2 1.8 6.7 5 5.4c2.1-.9 4.4-.1 5.7 1.6l1.3 1.7 1.3-1.7c1.3-1.7 3.6-2.5 5.7-1.6 3.2 1.3 4 4.8 2.3 7.5C18.7 16.65 12 21 12 21z"/></svg>
         <span class="nav-label" data-i18n="nav_story">Nuestra Historia</span>
@@ -75,14 +81,15 @@
       </a>
       <!-- Desktop-only: same monogram image as the corner one, but shown
            here (in the middle of the link list) instead, and hidden at
-           the corner — see styles.css. Being a REAL item in this flex
-           row (not absolutely positioned) is what makes it land in the
-           visual center: the row uses justify-content: space-between at
-           desktop, so it naturally centers regardless of how much text
-           is on either side. -->
-      <a href="/admin" class="site-header__monogram-center">
-        <img src="/monogram.png" alt="I &amp; J" />
-      </a>
+           the corner — see styles.css. Purely decorative now — NOT a
+           link — since the new "Admin" text link on the left is the
+           actual way in. Being a real item in this flex row (not
+           absolutely positioned) is what makes it land in the visual
+           center: with 4 items on each side (Admin + 3 links on the
+           left, 3 links + language toggle on the right) and
+           justify-content: space-between, the middle naturally falls
+           here regardless of exact text widths. -->
+      <img src="/monogram.png" alt="I &amp; J" class="site-header__monogram-center" />
       <a href="#dress-code" class="nav-link">
         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4a1.5 1.5 0 1 0-1.5 1.5"/><path d="M12 5.5v2"/><path d="M3 20l9-6.5L21 20"/><path d="M3 20h18"/></svg>
         <span class="nav-label" data-i18n="nav_dress">Vestimenta</span>

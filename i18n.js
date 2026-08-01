@@ -16,6 +16,7 @@
 
 const DICTIONARY = {
   es: {
+    nav_admin: 'Admin',
     nav_story: 'Nuestra Historia',
     nav_details: 'Detalles',
     nav_itinerary: 'Itinerario',
@@ -136,6 +137,7 @@ const DICTIONARY = {
   },
 
   en: {
+    nav_admin: 'Admin',
     nav_story: 'Our Story',
     nav_details: 'Details',
     nav_itinerary: 'Itinerary',
