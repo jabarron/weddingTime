@@ -1128,15 +1128,19 @@ button {
   .hero,
   .section,
   .site-footer {
-    /* My call this time, no fraction/multiple given: at 1700px this was
-       still a fairly wide gutter (~110px per side at 1920px). Dropping
-       to 1850px keeps the frame clearly visible/intentional — it should
-       never look like a rendering glitch — without it dominating the
-       page or wasting the wide-screen space. Margin shrinks toward 0
-       naturally as the viewport approaches the 1200px breakpoint below,
-       and grows gently past that on larger screens (e.g. ~35px per side
-       at 1920px, more on bigger monitors). */
-    max-width: 1850px;
+    /* Switched from a fixed max-width to a fixed margin. The previous
+       approach (max-width: 1850px) meant the visible margin was
+       "1920px minus 1850px" — which only works out to something
+       reasonable at exactly the screen width used to calculate it. On
+       any window narrower than 1850px (very common — that's not a huge
+       browser window), max-width:1850px does nothing at all, since it
+       only caps width when the natural width would exceed it: the
+       margin silently collapses to 0. This version gives a genuinely
+       consistent ~44px margin per side at any qualifying width (1200px
+       and up), with max-width only as a safety cap for ultra-wide
+       monitors so the card doesn't become absurdly wide past ~1900px. */
+    width: calc(100% - 88px);
+    max-width: 1900px;
     margin-left: auto;
     margin-right: auto;
     /* Left/right only (not top/bottom) on purpose — these are separate
