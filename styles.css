@@ -350,25 +350,24 @@ button {
 
 .hero__names {
   /* Deliberately a different font from --font-display (Cormorant, used
-     everywhere else) — Playfair Display Bold specifically for this one
-     highest-impact spot, per the couple's request for something bolder/
-     more dramatic just for their names. Upright, not italic — italic
-     read as more delicate, which is the opposite of what was asked for. */
-  font-family: 'Playfair Display', Georgia, serif;
+     everywhere else) — Alex Brush, a flowing script, specifically for
+     this one highest-impact spot, matching the reference image the
+     couple shared. Sized larger than a typical serif at the same
+     visual weight would need, since script fonts have thin strokes and
+     more internal whitespace per letter. */
+  font-family: 'Alex Brush', cursive;
   font-style: normal;
-  font-weight: 700;
-  font-size: clamp(2.75rem, 8vw, 5.5rem);
+  font-weight: 400;
+  font-size: clamp(3.5rem, 10vw, 7rem);
   color: var(--color-white);
   margin: 0 0 var(--space-sm);
 }
 
 .hero__ampersand {
   display: inline-block;
-  font-family: var(--font-display);
-  font-style: italic;
-  font-weight: 600;
+  font-family: 'Alex Brush', cursive;
   color: var(--color-terracotta);
-  padding: 0 0.15em;
+  padding: 0 0.1em;
 }
 
 .hero__date {
@@ -1098,7 +1097,15 @@ button {
   .hero,
   .section,
   .site-footer {
-    max-width: 1400px;
+    /* Reduced from 1400px. Note: literally doubling the margin at every
+       screen size isn't possible while keeping this safely wider than
+       the inner .container (1100px, --max-width) — at 1920px, exactly
+       double the margin would need max-width down to ~880px, which is
+       narrower than the content inside it and would break the layout.
+       1200px is the honest compromise: meaningfully more margin
+       (~360px vs ~260px per side at 1920px) while staying a safe 100px
+       wider than the inner container. */
+    max-width: 1200px;
     margin-left: auto;
     margin-right: auto;
   }
