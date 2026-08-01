@@ -1014,6 +1014,76 @@ button {
    760, 860px) which meant the site was "half desktop" for a chunk of the
    tablet range — some parts wide, others still stacked. Keeping them on
    one value means the whole page changes together at the same point. */
+/* Same "framed card" concept as the 1200px+ desktop version further
+   below (sand background, navy boundary line, rounded top/bottom
+   corners), scaled down for phone-sized screens (under 768px, this
+   site's existing mobile/tablet boundary). Two margin sizes: a small
+   one in portrait, a bit more in landscape — sizes are my own judgment
+   call (none were specified), reasoning below. Same two technical fixes
+   as the desktop version, for the same reasons (see the corresponding
+   comments in the 1200px block): .site-header never gets its own
+   border-radius (its width is viewport-relative while .hero's is
+   content-area-relative — they can differ by the scrollbar's width,
+   enough to misalign a curve), and .site-header's own boundary border
+   only appears once .is-scrolled (otherwise it draws a straight line
+   over the hero's rounded corner at rest). */
+@media (max-width: 767px) {
+  body {
+    background: var(--color-frame);
+  }
+
+  .hero,
+  .section,
+  .site-footer {
+    border-left: 1px solid rgba(31, 46, 77, 0.35);
+    border-right: 1px solid rgba(31, 46, 77, 0.35);
+  }
+
+  .site-header.is-scrolled {
+    border-left: 1px solid rgba(31, 46, 77, 0.35);
+    border-right: 1px solid rgba(31, 46, 77, 0.35);
+  }
+
+  .hero {
+    border-radius: 14px 14px 0 0;
+    border-top: 1px solid rgba(31, 46, 77, 0.35);
+  }
+
+  .site-footer {
+    border-radius: 0 0 14px 14px;
+    border-bottom: 1px solid rgba(31, 46, 77, 0.35);
+  }
+}
+
+/* Portrait: small margin, proportional to how little width a phone has
+   to spare — 10px/side is enough to read as an intentional frame
+   without meaningfully narrowing the content on an already-narrow
+   screen (a phone at 375px wide only loses ~5% of its width to this). */
+@media (max-width: 767px) and (orientation: portrait) {
+  .site-header,
+  .hero,
+  .section,
+  .site-footer {
+    width: calc(100% - 20px);
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+/* Landscape: same phone, meaningfully more width available (typically
+   ~2x the portrait width), so the margin scales up too — 18px/side,
+   proportionally similar to portrait's ratio rather than a fixed jump. */
+@media (max-width: 767px) and (orientation: landscape) {
+  .site-header,
+  .hero,
+  .section,
+  .site-footer {
+    width: calc(100% - 36px);
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
 @media (min-width: 768px) {
   .details__grid {
     grid-template-columns: repeat(2, 1fr);
