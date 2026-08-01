@@ -819,7 +819,7 @@ button {
 }
 
 .label-icon--music {
-  color: var(--color-berry);
+  fill: var(--color-berry);
 }
 
 .field input[type='text'],

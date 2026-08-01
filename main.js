@@ -232,12 +232,13 @@
   }
 
   /**
-   * Very subtle "constellation" on the hero background — a handful of
-   * soft dots that drift slowly, with faint lines connecting the ones
-   * that happen to be near each other. Deliberately understated: few
-   * particles, slow movement, low opacity — meant to read as ambience,
-   * not as a noticeable animation. Skipped for guests with
-   * prefers-reduced-motion on, same as the fade effect above.
+   * Fireflies on the hero background — a handful of warm dots that fade
+   * in and out at fixed spots, each on its own independent (and
+   * slightly randomized) cycle so they never blink in sync. No movement,
+   * no connecting lines — deliberately sparser and calmer than the
+   * constellation version this replaced, so it stays firmly in the
+   * background rather than competing with the text. Skipped for guests
+   * with prefers-reduced-motion on, same as the fade effect above.
    */
   function setupHeroConstellation() {
     const canvas = document.querySelector('.hero__constellation');
@@ -250,10 +251,9 @@
     if (prefersReducedMotion) return;
 
     const ctx = canvas.getContext('2d');
-    const PARTICLE_COUNT = 32;
-    const MAX_LINK_DISTANCE = 150;
-    const DOT_COLOR = '223, 216, 198'; // --color-cream, as an rgb triple for use in rgba()
-    let particles = [];
+    const FIREFLY_COUNT = 14; // kept low on purpose — "no saturar el hero"
+    const GLOW_COLOR = '195, 99, 77'; // --color-terracotta, as an rgb triple
+    let fireflies = [];
     let width = 0;
     let height = 0;
 
@@ -264,54 +264,33 @@
       canvas.height = height;
     }
 
-    function createParticles() {
-      particles = Array.from({ length: PARTICLE_COUNT }, () => ({
+    function createFireflies() {
+      fireflies = Array.from({ length: FIREFLY_COUNT }, () => ({
         x: Math.random() * width,
         y: Math.random() * height,
-        // Very slow drift — a full crossing of the hero takes minutes,
-        // not seconds.
-        vx: (Math.random() - 0.5) * 0.12,
-        vy: (Math.random() - 0.5) * 0.12,
+        radius: 1.3 + Math.random() * 1.2,
+        // Each firefly has its own random starting point in the cycle and
+        // its own slightly different cycle length, so they drift in and
+        // out of sync with each other rather than blinking together.
+        phase: Math.random() * Math.PI * 2,
+        cycleMs: 3500 + Math.random() * 3000,
+        maxOpacity: 0.35 + Math.random() * 0.25,
       }));
     }
 
-    function step() {
+    function step(timestamp) {
       ctx.clearRect(0, 0, width, height);
 
-      // Move each particle, gently wrapping around the edges instead of
-      // bouncing (keeps the motion feeling calm/ambient, not bouncy).
-      particles.forEach((p) => {
-        p.x += p.vx;
-        p.y += p.vy;
-        if (p.x < 0) p.x = width;
-        if (p.x > width) p.x = 0;
-        if (p.y < 0) p.y = height;
-        if (p.y > height) p.y = 0;
-      });
+      fireflies.forEach((f) => {
+        const t = (timestamp / f.cycleMs) * Math.PI * 2 + f.phase;
+        // (sin(t) + 1) / 2 oscillates smoothly between 0 and 1.
+        const opacity = ((Math.sin(t) + 1) / 2) * f.maxOpacity;
 
-      // Faint lines between nearby particles.
-      for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < particles.length; j++) {
-          const dx = particles[i].x - particles[j].x;
-          const dy = particles[i].y - particles[j].y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < MAX_LINK_DISTANCE) {
-            const lineOpacity = 0.12 * (1 - dist / MAX_LINK_DISTANCE);
-            ctx.strokeStyle = `rgba(${DOT_COLOR}, ${lineOpacity})`;
-            ctx.lineWidth = 1;
-            ctx.beginPath();
-            ctx.moveTo(particles[i].x, particles[i].y);
-            ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.stroke();
-          }
-        }
-      }
-
-      // Dots on top of the lines.
-      particles.forEach((p) => {
-        ctx.fillStyle = `rgba(${DOT_COLOR}, 0.35)`;
         ctx.beginPath();
-        ctx.arc(p.x, p.y, 1.5, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${GLOW_COLOR}, ${opacity})`;
+        ctx.shadowColor = `rgba(${GLOW_COLOR}, ${opacity})`;
+        ctx.shadowBlur = 6;
+        ctx.arc(f.x, f.y, f.radius, 0, Math.PI * 2);
         ctx.fill();
       });
 
@@ -319,7 +298,7 @@
     }
 
     resize();
-    createParticles();
+    createFireflies();
     requestAnimationFrame(step);
 
     let resizeTimeout;
@@ -329,7 +308,7 @@
         clearTimeout(resizeTimeout);
         resizeTimeout = setTimeout(() => {
           resize();
-          createParticles();
+          createFireflies();
         }, 200);
       },
       { passive: true }

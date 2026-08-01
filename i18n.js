@@ -77,13 +77,12 @@ const DICTIONARY = {
     dress_body:
       'Nos encantaría que nos acompañaran con un atuendo formal para celebrar este día tan especial. ¡Estamos seguros de que lucirán increíbles!',
     // ✏️ EDIT ME: adjust the wording if you'd like.
-    dress_avoid_white: 'Por favor eviten el color blanco.',
+    dress_avoid_white: 'Respetuosamente, les pedimos que eviten el color blanco.',
 
     gifts_eyebrow: 'Regalos',
-    gifts_heading: 'Su presencia es nuestro mejor regalo',
-    // ✏️ EDIT ME: replace with your real message about gifts / the envelope box.
+    gifts_heading: 'Su compañía es el regalo más hermoso.',
     gifts_body:
-      'Contar con ustedes ese día ya es un regalo enorme. Si desean obsequiarnos algo más, tendremos un buzón para sobres durante la recepción.',
+      'Nos sentimos profundamente agradecidos de poder compartir este momento con ustedes. Si desean hacernos un obsequio, tendremos preparado un buzón para sobres durante la recepción.',
 
     rsvp_eyebrow: 'RSVP',
     rsvp_heading: 'Confirma tu asistencia',
@@ -195,13 +194,12 @@ const DICTIONARY = {
     dress_body:
       "We'd love for you to join us in formal attire to celebrate this special day. We're sure you'll look amazing!",
     // ✏️ EDIT ME: adjust the wording if you'd like.
-    dress_avoid_white: 'Please avoid wearing white.',
+    dress_avoid_white: 'We kindly ask that you avoid wearing white.',
 
     gifts_eyebrow: 'Gifts',
-    gifts_heading: 'Your presence is our favorite gift',
-    // ✏️ EDIT ME: replace with your real message about gifts / the envelope box.
+    gifts_heading: 'Your company is the most beautiful gift.',
     gifts_body:
-      "Having you there means everything to us. If you'd like to give us something more, we'll have an envelope box available during the reception.",
+      "We feel deeply grateful to be able to share this moment with you. If you'd like to give us a gift, we'll have an envelope box ready during the reception.",
 
     rsvp_eyebrow: 'RSVP',
     rsvp_heading: 'Confirm your attendance',

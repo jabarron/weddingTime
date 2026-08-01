@@ -15,25 +15,28 @@
  *      static file server ever runs, and returns 404 if it matches.
  *    - admin.html is double-protected: it's in BLOCKED_FILES (so it can't
  *      be fetched directly) AND only reachable through the explicit
- *      GET /admin route below, which requires admin login first.
+ *      GET /admin route below, which requires a valid session first.
  *    - Dotfiles (.env, .gitignore, .env.example) are never served by
  *      express.static by default, so those are already safe.
  *
  *  When you're ready to reorganize into folders later, move the backend
- *  files (server.js, *-pool.js, routes-*.js, adminAuth.js, wedding-config.js,
- *  schema.sql) into a non-public folder and you can delete this guard —
- *  express.static only serving that specific public folder becomes the
- *  guard at that point instead.
+ *  files (server.js, *-pool.js, routes-*.js, adminAuth.js, session.js,
+ *  loginAttempts.js, wedding-config.js, schema.sql) into a non-public
+ *  folder and you can delete this guard — express.static only serving
+ *  that specific public folder becomes the guard at that point instead.
  *
  *  Boot order (what happens when you run `npm start`):
  *    1. Load environment variables from .env               (dotenv)
  *    2. Connect to the database + ensure the schema exists  (db-pool.js)
- *    3. Set up Express: JSON parsing, the file-blocking guard
+ *    3. Set up Express: body parsing, the file-blocking guard
  *    4. Mount routes:
  *         GET  /api/wedding-info    -> routes-info.js   (public)
  *         POST /api/rsvp            -> routes-rsvp.js   (public)
- *         GET  /admin               -> admin.html, behind adminAuth
- *         /api/admin/*              -> routes-admin.js, behind adminAuth
+ *         GET  /admin               -> login form or admin.html,
+ *                                       depending on session (adminAuth.js)
+ *         POST /admin/login         -> credential check (adminAuth.js)
+ *         /api/admin/*              -> routes-admin.js, behind a session
+ *                                       check (adminAuth.js)
  *         everything else           -> static files (index.html, styles.css,
  *                                       main.js, i18n.js, rsvp-form.js,
  *                                       admin.css, admin.js)
@@ -47,8 +50,8 @@ const path = require('path');
 const express = require('express');
 
 const { initDb } = require('./db-pool');
-const adminAuth = require('./adminAuth');
-const rsvpRateLimit = require('./rateLimiter');
+const { handleAdminPage, handleLoginSubmit, requireSession } = require('./adminAuth');
+const { rsvpRateLimit, loginRateLimit } = require('./rateLimiter');
 
 const infoRoutes = require('./routes-info');
 const rsvpRoutes = require('./routes-rsvp');
@@ -76,6 +79,8 @@ const BLOCKED_FILES = new Set([
   'db-pool.js',
   'schema.sql',
   'adminAuth.js',
+  'session.js',
+  'loginAttempts.js',
   'rateLimiter.js',
   'routes-info.js',
   'routes-rsvp.js',
@@ -96,6 +101,7 @@ app.use((req, res, next) => {
 // Core middleware
 // ---------------------------------------------------------------------------
 app.use(express.json()); // parses JSON request bodies (RSVP submissions)
+app.use(express.urlencoded({ extended: true })); // parses the login form's POST body
 
 // ---------------------------------------------------------------------------
 // Public API routes
@@ -104,14 +110,18 @@ app.use('/api/wedding-info', infoRoutes);
 app.use('/api/rsvp', rsvpRateLimit, rsvpRoutes);
 
 // ---------------------------------------------------------------------------
-// Admin: the HTML page and the API are both behind adminAuth. admin.css and
-// admin.js aren't secret (no data in them) so they're served normally by
-// the static handler below — only the page and the data need the login.
+// Admin: GET /admin shows the login form unless there's already a valid
+// session, in which case handleAdminPage calls next() and we serve
+// admin.html here. POST /admin/login is the actual credential check.
+// admin.css and admin.js aren't secret (no data in them) so they're
+// served normally by the static handler below — only the dashboard page
+// and the data need a session.
 // ---------------------------------------------------------------------------
-app.get('/admin', adminAuth, (req, res) => {
+app.get('/admin', handleAdminPage, (req, res) => {
   res.sendFile(path.join(__dirname, 'admin.html'));
 });
-app.use('/api/admin', adminAuth, adminRoutes);
+app.post('/admin/login', loginRateLimit, handleLoginSubmit);
+app.use('/api/admin', requireSession, adminRoutes);
 
 // ---------------------------------------------------------------------------
 // Public static site — everything left over (index.html, styles.css,

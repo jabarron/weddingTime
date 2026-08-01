@@ -4,8 +4,13 @@
  * ============================================================================
  *  Fetches GET /api/admin/rsvps, fills in the summary stats, and renders
  *  one table row per response. The browser automatically attaches the
- *  basic-auth credentials it collected on page load to these fetch() calls,
- *  since they're same-origin requests — no extra auth code needed here.
+ *  session cookie to these fetch() calls, since they're same-origin
+ *  requests — no extra auth code needed here.
+ *
+ *  If any API call comes back 401 (no valid session — e.g. it expired
+ *  because the browser was closed, or someone opened this page's URL
+ *  directly without logging in), apiFetch below sends the browser to
+ *  /admin, which shows the login form.
  *
  *  Language: this page has no toggle of its own. It reads the
  *  'site-language' key from localStorage — the same key main.js writes
@@ -32,6 +37,22 @@
   let currentData = []; // last-loaded responses, cached so re-rendering
                          // during edit mode doesn't require another fetch
   let editingId = null; // id of the row currently being edited, or null
+
+  /**
+   * Wraps fetch() for every /api/admin/* call in this file. On a 401
+   * (session missing/expired), redirects to /admin instead of letting
+   * the caller try to handle a response it was never designed for — and
+   * throws, so the calling code's own catch block stops there rather
+   * than continuing to work with data that will never arrive.
+   */
+  async function apiFetch(url, options) {
+    const res = await fetch(url, options);
+    if (res.status === 401) {
+      window.location.href = '/admin';
+      throw new Error('Session expired — redirecting to /admin');
+    }
+    return res;
+  }
 
   /** Applies the dictionary to every [data-i18n] element on the page. */
   function applyLanguage() {
@@ -120,7 +141,7 @@
     editingId = null;
 
     try {
-      const res = await fetch('/api/admin/rsvps');
+      const res = await apiFetch('/api/admin/rsvps');
       if (!res.ok) throw new Error('Failed to load RSVPs');
       const { summary, responses } = await res.json();
 
@@ -139,7 +160,7 @@
   async function deleteRsvp(id) {
     if (!confirm(dict.admin_delete_confirm)) return;
     try {
-      const res = await fetch(`/api/admin/rsvps/${id}`, { method: 'DELETE' });
+      const res = await apiFetch(`/api/admin/rsvps/${id}`, { method: 'DELETE' });
       if (!res.ok) throw new Error('Delete failed');
       loadRsvps();
     } catch (err) {
@@ -168,7 +189,7 @@
     }
 
     try {
-      const res = await fetch(`/api/admin/rsvps/${id}`, {
+      const res = await apiFetch(`/api/admin/rsvps/${id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),

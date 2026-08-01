@@ -20,17 +20,20 @@ wedding-website/
 │                         RSVP deadline.
 ├── db-pool.js            PostgreSQL connection + schema init.
 ├── schema.sql            Table definition.
-├── adminAuth.js          Password-protects /admin.
+├── adminAuth.js          /admin login form, session check, lockout page.
+├── session.js            In-memory session store (login state).
+├── loginAttempts.js      Tracks failed logins per IP (for the lockout page).
+├── rateLimiter.js        Reusable rate limiting (RSVP spam + login abuse).
 ├── routes-info.js        GET  /api/wedding-info   (public)
 ├── routes-rsvp.js        POST /api/rsvp           (public)
-├── routes-admin.js       /api/admin/*             (protected)
+├── routes-admin.js       /api/admin/*             (session-protected)
 ├── index.html            The public site.
 ├── styles.css            All styling + design tokens.
 ├── i18n.js               ✏️ Spanish/English text — story & dress-code
 │                         paragraphs live here.
 ├── main.js               Language switching, countdown, etc.
 ├── rsvp-form.js          RSVP form submit handling.
-├── admin.html            RSVP dashboard page (behind basic-auth).
+├── admin.html            RSVP dashboard page (session-protected).
 ├── admin.css             Dashboard styling.
 └── admin.js              Dashboard data fetching/rendering.
 ```
@@ -125,9 +128,26 @@ migration step needed (see `db-pool.js` → `initDb()`).
 - **RSVP access:** the form is open to anyone with the site link — there is
   no guest-list validation. If you want to restrict who can submit later,
   that logic belongs in `routes-rsvp.js`.
-- **Admin auth:** simple HTTP basic-auth (one shared username/password).
-  Good enough for a small wedding admin panel; let me know if you'd rather
-  have individual accounts later.
+- **Admin login:** a custom login form (not the browser's native basic-auth
+  prompt) at `/admin`, backed by an in-memory session — see `session.js`,
+  `loginAttempts.js`, and `adminAuth.js`.
+  - **Session lifetime:** lasts until the browser is closed (a session
+    cookie, no expiry date) — closing the browser logs you out. There's
+    no "log out" button yet by choice; add one later if needed (
+    `session.js` already exports `destroySession` for exactly that).
+  - **Wrong password:** the 1st failed attempt from an IP just re-shows
+    the login form with an error message. The 2nd (and any further)
+    failed attempt within a 10-minute window shows the styled "access
+    denied" page instead (`admin-error-es.jpg` / `admin-error-en.jpg`).
+    This is **not a lockout** — a correct password logs you in
+    immediately no matter how many times you got it wrong first.
+  - **Sessions live in server memory**, not the database — simplest
+    option for how small this admin panel is, but it means every
+    redeploy (which restarts the process) logs everyone out. Not a
+    problem in practice since logging back in takes a few seconds.
+  - **Reusable:** nothing wedding-specific is hardcoded in the auth
+    files — reusing this for a future event is just new env vars and new
+    error-page images, no code changes.
 - **Required fields:** name, phone, and attendance (yes/no) are required on
   the public RSVP form — marked with a `*` and enforced both client-side
   (instant feedback, no page reload) and server-side (`routes-rsvp.js`).
