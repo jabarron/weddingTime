@@ -1148,9 +1148,11 @@ button {
        draw unwanted horizontal lines at every seam between sections.
        Barely visible against wine sections (already high-contrast with
        the sand frame) but does real work marking the edge against cream
-       sections, where sand-vs-cream contrast alone is subtle. */
-    border-left: 1px solid rgba(176, 111, 107, 0.3);
-    border-right: 1px solid rgba(176, 111, 107, 0.3);
+       sections, where sand-vs-cream contrast alone is subtle. Navy, per
+       the couple's request — same accent used elsewhere on the site
+       (religious ceremony icon, photo frames, RSVP heart/music icons). */
+    border-left: 1px solid rgba(31, 46, 77, 0.35);
+    border-right: 1px solid rgba(31, 46, 77, 0.35);
   }
 
   /* Rounded corners only where the "card" actually meets the frame
@@ -1173,10 +1175,20 @@ button {
      scrolled out of view anyway, so nothing is lost. */
   .hero {
     border-radius: 20px 20px 0 0;
+    /* Without this, the border-left/border-right above have no
+       border-top to curve into at the corner — border-radius still
+       rounds the background fill correctly, but the border LINE stays
+       sharp/square at the top, poking out past the rounded background
+       like a leftover corner. Adding a matching border-top gives the
+       radius a full edge to round smoothly on all three curved sides. */
+    border-top: 1px solid rgba(31, 46, 77, 0.35);
   }
 
   .site-footer {
     border-radius: 0 0 20px 20px;
+    /* Same fix as .hero's border-top above — gives the bottom corners'
+       radius a border-bottom edge to round into. */
+    border-bottom: 1px solid rgba(31, 46, 77, 0.35);
   }
 }
 
