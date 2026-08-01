@@ -24,7 +24,6 @@ const DICTIONARY = {
     nav_gifts: 'Regalos',
     nav_rsvp: 'Asistencia',
 
-    hero_eyebrow: 'Nos Casamos',
     hero_cta: 'Confirmar Asistencia',
 
     countdown_days: 'Días',
@@ -145,7 +144,6 @@ const DICTIONARY = {
     nav_gifts: 'Gifts',
     nav_rsvp: 'RSVP',
 
-    hero_eyebrow: "We're Getting Married",
     hero_cta: 'RSVP',
 
     countdown_days: 'Days',

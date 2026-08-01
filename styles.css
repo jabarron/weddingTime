@@ -51,10 +51,11 @@
   --color-mauve-on-dark: #b77d79; /* mauve text on wine */
 
   /* Sparing accent — sampled directly from the blue doll in holdingHands.jpg.
-     Used deliberately in only 3 spots (see comments at each): a dress-code
-     swatch, the religious ceremony icon, and a subtle photo-frame border —
-     never as a base/background color, to keep the site's warm palette
-     dominant. */
+     Used deliberately as an accent (never as a base/background color, to
+     keep the site's warm palette dominant): the religious ceremony icon,
+     photo-frame borders, the RSVP heart/music icons, and the "J" in the
+     monogram (monogram.png, favicon files — edited directly as images,
+     not driven by this token). */
   --color-navy: #1f2e4d;
 
   --font-display: 'Cormorant Garamond', Georgia, serif;
@@ -343,19 +344,15 @@ button {
   pointer-events: none;
 }
 
-.hero__eyebrow {
-  color: var(--color-mauve-on-dark);
-  text-transform: uppercase;
-  letter-spacing: 0.3em;
-  font-size: 0.75rem;
-  font-weight: 600;
-  margin-bottom: var(--space-md);
-}
-
 .hero__names {
-  font-family: var(--font-display);
-  font-style: italic;
-  font-weight: 600;
+  /* Deliberately a different font from --font-display (Cormorant, used
+     everywhere else) — Playfair Display Bold specifically for this one
+     highest-impact spot, per the couple's request for something bolder/
+     more dramatic just for their names. Upright, not italic — italic
+     read as more delicate, which is the opposite of what was asked for. */
+  font-family: 'Playfair Display', Georgia, serif;
+  font-style: normal;
+  font-weight: 700;
   font-size: clamp(2.75rem, 8vw, 5.5rem);
   color: var(--color-white);
   margin: 0 0 var(--space-sm);
@@ -363,6 +360,9 @@ button {
 
 .hero__ampersand {
   display: inline-block;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 600;
   color: var(--color-terracotta);
   padding: 0 0.15em;
 }
@@ -372,12 +372,6 @@ button {
   letter-spacing: 0.06em;
   color: var(--color-cream);
   margin-bottom: var(--space-md);
-}
-
-.hero__venue {
-  font-size: 0.95rem;
-  color: var(--color-mauve-on-dark);
-  margin-bottom: var(--space-lg);
 }
 
 .countdown {
@@ -817,11 +811,11 @@ button {
 }
 
 .label-icon--heart {
-  fill: var(--color-berry);
+  fill: var(--color-navy);
 }
 
 .label-icon--music {
-  fill: var(--color-berry);
+  fill: var(--color-navy);
 }
 
 .field input[type='text'],
@@ -1112,17 +1106,22 @@ button {
 
   .nav-admin-link {
     display: inline-block;
+    background: var(--color-terracotta);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 999px;
     font-family: var(--font-body);
     color: var(--color-white);
     text-decoration: none;
-    font-size: 0.85rem;
+    font-size: 0.75rem;
     font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.06em;
+    padding: 0.4rem 1.1rem;
+    transition: background var(--transition-fast);
   }
 
   .nav-admin-link:hover {
-    color: var(--color-terracotta);
+    background: var(--color-berry);
   }
 
   .lang-toggle button {
