@@ -1128,13 +1128,15 @@ button {
   .hero,
   .section,
   .site-footer {
-    /* Margin reduced to ~1/4 of what it was (measuring at 1920px, same
-       reference point as before): was ~360px per side at max-width
-       1200px: 360/4 = 90px, so max-width goes up to roughly
-       1920 - 2*90 = 1740px. Rounded to 1700px. At this size the frame
-       is a much thinner strip — still visible, no longer the dominant
-       feature it was before. */
-    max-width: 1700px;
+    /* My call this time, no fraction/multiple given: at 1700px this was
+       still a fairly wide gutter (~110px per side at 1920px). Dropping
+       to 1850px keeps the frame clearly visible/intentional — it should
+       never look like a rendering glitch — without it dominating the
+       page or wasting the wide-screen space. Margin shrinks toward 0
+       naturally as the viewport approaches the 1200px breakpoint below,
+       and grows gently past that on larger screens (e.g. ~35px per side
+       at 1920px, more on bigger monitors). */
+    max-width: 1850px;
     margin-left: auto;
     margin-right: auto;
     /* Left/right only (not top/bottom) on purpose — these are separate
