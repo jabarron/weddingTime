@@ -1108,6 +1108,14 @@ button {
     max-width: 1200px;
     margin-left: auto;
     margin-right: auto;
+    /* Left/right only (not top/bottom) on purpose — these are separate
+       stacked elements, not one wrapper, so a full border would also
+       draw unwanted horizontal lines at every seam between sections.
+       Barely visible against wine sections (already high-contrast with
+       the sand frame) but does real work marking the edge against cream
+       sections, where sand-vs-cream contrast alone is subtle. */
+    border-left: 1px solid rgba(176, 111, 107, 0.3);
+    border-right: 1px solid rgba(176, 111, 107, 0.3);
   }
 }
 
