@@ -348,6 +348,15 @@ button {
   pointer-events: none;
 }
 
+.hero__eyebrow {
+  color: var(--color-mauve-on-dark);
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-bottom: var(--space-md);
+}
+
 .hero__names {
   /* Back to --font-display (Cormorant Garamond italic) — this is what
      the hero originally used, before trying Playfair Display Bold, then
@@ -387,6 +396,15 @@ button {
   font-size: clamp(1rem, 2.4vw, 1.3rem);
   letter-spacing: 0.06em;
   color: var(--color-cream);
+  /* Small gap here now — venue (closely related info) follows right
+     after; the bigger breathing-room gap moved to venue's own margin,
+     right before the countdown numbers. */
+  margin-bottom: var(--space-sm);
+}
+
+.hero__venue {
+  font-size: 0.95rem;
+  color: var(--color-mauve-on-dark);
   margin-bottom: var(--space-lg);
 }
 
@@ -1127,6 +1145,25 @@ button {
        sections, where sand-vs-cream contrast alone is subtle. */
     border-left: 1px solid rgba(176, 111, 107, 0.3);
     border-right: 1px solid rgba(176, 111, 107, 0.3);
+  }
+
+  /* Rounded corners only where the "card" actually meets the frame
+     background — the very top (header + hero) and very bottom (footer).
+     Deliberately NOT applied to every .section: they're separate stacked
+     elements with no gap between them, so rounding every one of them
+     would create small pinched notches at each section-to-section seam
+     instead of one clean silhouette. .site-header needs its own
+     matching radius too, since its background is transparent at rest
+     (showing the hero's rounded corner through it) but becomes solid
+     wine once scrolled (.is-scrolled) — without this it would show
+     square corners over the hero's rounded ones at that point. */
+  .site-header,
+  .hero {
+    border-radius: 20px 20px 0 0;
+  }
+
+  .site-footer {
+    border-radius: 0 0 20px 20px;
   }
 }
 
