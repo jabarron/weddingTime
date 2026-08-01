@@ -1143,14 +1143,33 @@ button {
     max-width: 1900px;
     margin-left: auto;
     margin-right: auto;
-    /* Left/right only (not top/bottom) on purpose — these are separate
-       stacked elements, not one wrapper, so a full border would also
-       draw unwanted horizontal lines at every seam between sections.
-       Barely visible against wine sections (already high-contrast with
-       the sand frame) but does real work marking the edge against cream
-       sections, where sand-vs-cream contrast alone is subtle. Navy, per
-       the couple's request — same accent used elsewhere on the site
-       (religious ceremony icon, photo frames, RSVP heart/music icons). */
+  }
+
+  /* Boundary line — .hero/.section/.site-footer only, NOT .site-header.
+     Left/right only (not top/bottom) on purpose — these are separate
+     stacked elements, not one wrapper, so a full border would also draw
+     unwanted horizontal lines at every seam between sections. Navy, per
+     the couple's request — same accent used elsewhere on the site
+     (religious ceremony icon, photo frames, RSVP heart/music icons).
+
+     .site-header is deliberately excluded here and instead only gets
+     this same border once it's scrolled (see .is-scrolled below) — it's
+     position:fixed, so its own edges never move or curve with scroll;
+     only its background toggles between transparent and solid. At rest
+     (page not scrolled), the hero sits directly behind/around it with
+     its own rounded top border — giving the header a straight border of
+     its own at that moment would draw a sharp square line across that
+     curve. Once scrolled, the rounded corner is out of view anyway, so
+     a straight border is exactly right — that's what the .is-scrolled
+     rule below adds. */
+  .hero,
+  .section,
+  .site-footer {
+    border-left: 1px solid rgba(31, 46, 77, 0.35);
+    border-right: 1px solid rgba(31, 46, 77, 0.35);
+  }
+
+  .site-header.is-scrolled {
     border-left: 1px solid rgba(31, 46, 77, 0.35);
     border-right: 1px solid rgba(31, 46, 77, 0.35);
   }

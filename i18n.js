@@ -83,7 +83,7 @@ const DICTIONARY = {
     gifts_eyebrow: 'Regalos',
     gifts_heading: 'Su compañía es el regalo más hermoso.',
     gifts_body:
-      'Nos sentimos profundamente agradecidos de poder compartir este momento con ustedes. Si desean hacernos un obsequio, tendremos preparado un buzón para sobres durante la recepción.',
+      'Nos sentimos profundamente agradecidos de poder compartir este momento con ustedes. Si desean hacernos un obsequio, tendremos un buzón preparado durante el evento.',
 
     rsvp_eyebrow: 'RSVP',
     rsvp_heading: 'Confirma tu asistencia',
@@ -201,7 +201,7 @@ const DICTIONARY = {
     gifts_eyebrow: 'Gifts',
     gifts_heading: 'Your company is the most beautiful gift.',
     gifts_body:
-      "We feel deeply grateful to be able to share this moment with you. If you'd like to give us a gift, we'll have an envelope box ready during the reception.",
+      "We feel deeply grateful to be able to share this moment with you. If you'd like to give us a gift, we'll have an envelope box ready during the event.",
 
     rsvp_eyebrow: 'RSVP',
     rsvp_heading: 'Confirm your attendance',
