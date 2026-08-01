@@ -19,9 +19,9 @@ const DICTIONARY = {
     nav_story: 'Nuestra Historia',
     nav_details: 'Detalles',
     nav_itinerary: 'Itinerario',
-    nav_dress: 'Código de Vestimenta',
+    nav_dress: 'Vestimenta',
     nav_gifts: 'Regalos',
-    nav_rsvp: 'Confirmar Asistencia',
+    nav_rsvp: 'Asistencia',
 
     hero_eyebrow: 'Nos Casamos',
     hero_cta: 'Confirmar Asistencia',

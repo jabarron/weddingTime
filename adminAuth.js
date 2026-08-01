@@ -27,9 +27,15 @@
  *                            no/bad session -> 401 JSON (admin.js reacts
  *                              to this by redirecting the browser to /admin)
  *
+ *  Both pages share a look via pageShell() below: a wine ribbon with the
+ *  monogram at the top, a few drifting fireflies in the background
+ *  (skipped for prefers-reduced-motion), and a soft fade-in on load —
+ *  the same visual language as the main site, just toned down since this
+ *  is a functional utility screen, not guest-facing romantic content.
+ *
  *  Nothing about the wedding is hardcoded in here — this whole file is
  *  meant to be reusable as-is for a future event, just by changing the
- *  env vars and the two error-page images.
+ *  env vars, monogram.png, and the two error-page images.
  * ============================================================================
  */
 
@@ -66,9 +72,15 @@ function safeCompare(a, b) {
   return crypto.timingSafeEqual(bufA, bufB);
 }
 
-/** Shared page chrome (fonts + palette) so the login form and error page
-    look like they belong to the same system without duplicating it. */
-function pageShell({ lang, title, bodyHtml }) {
+/**
+ * Shared page chrome: wine ribbon + monogram, cream body with a few
+ * drifting fireflies, fonts + base styles — so the login form and error
+ * page look like they belong to the same system without duplicating it.
+ * `bodyHtml` is whatever goes inside the main content area (below the
+ * ribbon); `wide` loosens the content area's own max-width, used by the
+ * error page so its much bigger image has room.
+ */
+function pageShell({ lang, title, bodyHtml, wide = false }) {
   return `<!DOCTYPE html>
 <html lang="${lang}">
 <head>
@@ -80,23 +92,67 @@ function pageShell({ lang, title, bodyHtml }) {
     rel="stylesheet"
   />
   <style>
+    * { box-sizing: border-box; }
     body {
       margin: 0;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      justify-content: center;
       background: #dfd8c6;
       font-family: 'Jost', 'Segoe UI', sans-serif;
       text-align: center;
-      padding: 2rem 1rem;
     }
-    img {
-      max-width: 300px;
+    .ribbon {
+      background: #48011f;
+      padding: 0.9rem 1rem;
+      display: flex;
+      justify-content: center;
+    }
+    .ribbon img {
+      height: 42px;
+      width: auto;
+    }
+    .content {
+      position: relative;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      padding: 2.5rem 1rem;
+    }
+    .fireflies {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .card {
+      position: relative;
+      z-index: 1;
+      background: #fffaf3;
+      border-radius: 8px;
+      box-shadow: 0 12px 40px rgba(72, 1, 31, 0.15);
+      padding: 2.25rem 2rem;
+      width: 100%;
+      max-width: ${wide ? '600px' : '360px'};
+      animation: fadeIn 0.5s ease-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .card { animation: none; }
+    }
+    img.error-image {
+      max-width: min(500px, 80vw);
+      max-height: 60vh;
       width: 100%;
       height: auto;
-      border-radius: 6px;
+      object-fit: contain;
+      border-radius: 8px;
       border: 1px solid #b06f6b;
       margin-bottom: 1.5rem;
     }
@@ -104,7 +160,7 @@ function pageShell({ lang, title, bodyHtml }) {
       font-family: 'Cormorant Garamond', Georgia, serif;
       font-style: italic;
       font-weight: 600;
-      font-size: 2rem;
+      font-size: 1.8rem;
       color: #48011f;
       margin: 0 0 0.5rem;
     }
@@ -112,11 +168,8 @@ function pageShell({ lang, title, bodyHtml }) {
       font-size: 0.95rem;
       color: #48011f;
       margin: 0 0 1.5rem;
-      max-width: 320px;
     }
     form {
-      width: 100%;
-      max-width: 300px;
       text-align: left;
     }
     label {
@@ -130,15 +183,18 @@ function pageShell({ lang, title, bodyHtml }) {
     }
     input {
       width: 100%;
-      box-sizing: border-box;
-      padding: 0.7rem;
-      margin-bottom: 1rem;
+      padding: 0.75rem 1rem;
+      margin-bottom: 1.1rem;
       border: 1px solid #b06f6b;
-      border-radius: 4px;
+      border-radius: 8px;
       font-family: inherit;
       font-size: 1rem;
       background: #fffaf3;
       color: #2a0512;
+    }
+    input:focus-visible {
+      outline: 2px solid #c3634d;
+      outline-offset: 2px;
     }
     .error-message {
       color: #c3634d;
@@ -149,7 +205,6 @@ function pageShell({ lang, title, bodyHtml }) {
     a.btn {
       display: inline-block;
       width: 100%;
-      box-sizing: border-box;
       background: #c3634d;
       color: #fffaf3;
       text-decoration: none;
@@ -163,11 +218,85 @@ function pageShell({ lang, title, bodyHtml }) {
       letter-spacing: 0.05em;
       cursor: pointer;
       text-align: center;
+      transition: background 0.15s ease;
+    }
+    button:hover,
+    a.btn:hover {
+      background: #9d3a56;
     }
   </style>
 </head>
 <body>
-  ${bodyHtml}
+  <div class="ribbon">
+    <img src="/monogram.png" alt="I &amp; J" />
+  </div>
+  <div class="content">
+    <canvas class="fireflies" aria-hidden="true"></canvas>
+    ${bodyHtml}
+  </div>
+  <script>
+    // A handful of very subtle drifting fireflies — same idea as the
+    // hero on the main site, just toned down further (fewer, dimmer)
+    // since this is a functional screen, not guest-facing content.
+    // Skipped entirely for prefers-reduced-motion, same reasoning as
+    // the main site's version.
+    (function () {
+      var canvas = document.querySelector('.fireflies');
+      var container = document.querySelector('.content');
+      if (!canvas || !container) return;
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+      var ctx = canvas.getContext('2d');
+      var COUNT = 7;
+      var GLOW = '195, 99, 77'; // terracotta
+      var fireflies = [];
+      var width = 0, height = 0;
+
+      function resize() {
+        width = container.offsetWidth;
+        height = container.offsetHeight;
+        canvas.width = width;
+        canvas.height = height;
+      }
+
+      function create() {
+        fireflies = [];
+        for (var i = 0; i < COUNT; i++) {
+          fireflies.push({
+            x: Math.random() * width,
+            y: Math.random() * height,
+            radius: 1.2 + Math.random() * 1,
+            phase: Math.random() * Math.PI * 2,
+            cycleMs: 4000 + Math.random() * 3000,
+            maxOpacity: 0.25 + Math.random() * 0.2,
+          });
+        }
+      }
+
+      function step(ts) {
+        ctx.clearRect(0, 0, width, height);
+        fireflies.forEach(function (f) {
+          var t = (ts / f.cycleMs) * Math.PI * 2 + f.phase;
+          var opacity = ((Math.sin(t) + 1) / 2) * f.maxOpacity;
+          ctx.beginPath();
+          ctx.fillStyle = 'rgba(' + GLOW + ',' + opacity + ')';
+          ctx.shadowColor = 'rgba(' + GLOW + ',' + opacity + ')';
+          ctx.shadowBlur = 6;
+          ctx.arc(f.x, f.y, f.radius, 0, Math.PI * 2);
+          ctx.fill();
+        });
+        requestAnimationFrame(step);
+      }
+
+      resize();
+      create();
+      requestAnimationFrame(step);
+      window.addEventListener('resize', function () {
+        resize();
+        create();
+      }, { passive: true });
+    })();
+  </script>
 </body>
 </html>`;
 }
@@ -179,15 +308,17 @@ function buildLoginForm({ errorMessage } = {}) {
     lang: 'es',
     title: 'Iniciar sesión — Admin',
     bodyHtml: `
-      <h1>Panel de Administración</h1>
-      ${errorMessage ? `<p class="error-message">${errorMessage}</p>` : '<p>Ingresa tus credenciales para continuar.</p>'}
-      <form method="POST" action="/admin/login">
-        <label for="username">Usuario</label>
-        <input type="text" id="username" name="username" autocomplete="username" required autofocus />
-        <label for="password">Contraseña</label>
-        <input type="password" id="password" name="password" autocomplete="current-password" required />
-        <button type="submit">Entrar</button>
-      </form>
+      <div class="card">
+        <h1>Panel de Administración</h1>
+        ${errorMessage ? `<p class="error-message">${errorMessage}</p>` : '<p>Ingresa tus credenciales para continuar.</p>'}
+        <form method="POST" action="/admin/login">
+          <label for="username">Usuario</label>
+          <input type="text" id="username" name="username" autocomplete="username" required autofocus />
+          <label for="password">Contraseña</label>
+          <input type="password" id="password" name="password" autocomplete="current-password" required />
+          <button type="submit">Entrar</button>
+        </form>
+      </div>
     `,
   });
 }
@@ -210,11 +341,14 @@ function buildLockedOutPage(req) {
   return pageShell({
     lang,
     title: heading,
+    wide: true,
     bodyHtml: `
-      <img src="${imageSrc}" alt="${heading}" />
-      <h1>${heading}</h1>
-      <p>${message}</p>
-      <a class="btn" href="/admin">${linkText}</a>
+      <div class="card">
+        <img class="error-image" src="${imageSrc}" alt="${heading}" />
+        <h1>${heading}</h1>
+        <p>${message}</p>
+        <a class="btn" href="/admin">${linkText}</a>
+      </div>
     `,
   });
 }

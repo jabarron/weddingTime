@@ -243,6 +243,19 @@ button {
   text-decoration: none;
 }
 
+/* Hidden on mobile — only shown (and centered) at the 900px breakpoint,
+   replacing the text monogram above. See the media query in the
+   responsive section for the positioning. */
+.site-header__monogram-center {
+  display: none;
+}
+
+.site-header__monogram-center img {
+  display: block;
+  height: 34px;
+  width: auto;
+}
+
 .site-header__nav {
   display: flex;
   align-items: center;
@@ -959,11 +972,9 @@ button {
 }
 
 .site-footer__monogram {
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: 1.8rem;
-  color: var(--color-white);
-  margin-bottom: var(--space-xs);
+  height: 44px;
+  width: auto;
+  margin: 0 auto var(--space-xs);
 }
 
 .site-footer__contact {
@@ -1094,10 +1105,24 @@ button {
 @media (min-width: 900px) {
   .site-header {
     padding: var(--space-sm) var(--space-md);
+    /* The text monogram (which used to anchor the left side) is hidden
+       below, so without this the nav would drift to the left instead of
+       staying right-aligned like before. */
+    justify-content: flex-end;
   }
 
+  /* Swap the corner text monogram for the centered image one — same
+     logo, different position/format, only at this width. */
   .site-header__monogram {
-    font-size: 1.4rem;
+    display: none;
+  }
+
+  .site-header__monogram-center {
+    display: block;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
   }
 
   .lang-toggle button {
