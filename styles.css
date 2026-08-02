@@ -440,23 +440,31 @@ button {
   justify-content: center;
 }
 
-/* On narrow phones, the default gap (2rem) x3 gaps + 4.5rem min-width x4
-   units adds up to more than the available width once the new mobile
-   frame margin is subtracted too — that's what was pushing it to 2 rows.
-   Tighter gap + narrower min-width here brings the total comfortably
-   under a typical ~340-355px available width, keeping all 4 in one row. */
-@media (max-width: 400px) {
+.countdown__unit {
+  min-width: 4.5rem;
+}
+
+/* Previous fix (tighter gap/min-width under 400px) still let "seg" wrap
+   onto its own line on real phones — the exact width math depended on
+   guessing a device's viewport, hero padding, and (now) the frame
+   margin all at once, and real phones landed just outside what I'd
+   calculated. More robust fix: force a single row and let the 4 units
+   shrink to fit whatever space is actually available, instead of
+   betting on a specific pixel breakpoint being right. This has to come
+   AFTER the base .countdown__unit rule above (same specificity, so
+   later wins) — the old 400px version of this fix lived below that
+   base rule instead of above it, which silently made it lose every
+   time; that's corrected here too. */
+@media (max-width: 767px) {
   .countdown {
-    gap: 0.5rem;
+    flex-wrap: nowrap;
+    gap: clamp(0.4rem, 2vw, 1rem);
   }
 
   .countdown__unit {
-    min-width: 3.4rem;
+    min-width: 0;
+    flex: 1 1 0;
   }
-}
-
-.countdown__unit {
-  min-width: 4.5rem;
 }
 
 .countdown__number {
@@ -646,7 +654,7 @@ button {
 .story__text h3 {
   font-family: var(--font-display);
   font-size: clamp(1.3rem, 3vw, 1.7rem);
-  color: var(--color-wine);
+  color: var(--color-navy);
   margin-bottom: 0.3rem;
 }
 
@@ -711,7 +719,7 @@ button {
 .story-milestone__text h3 {
   font-family: var(--font-display);
   font-size: clamp(1.3rem, 3vw, 1.7rem);
-  color: var(--color-wine);
+  color: var(--color-navy);
   margin-bottom: 0.3rem;
 }
 
@@ -980,11 +988,11 @@ button {
 }
 
 .label-icon--heart {
-  fill: var(--color-navy);
+  fill: var(--color-wine);
 }
 
 .label-icon--music {
-  fill: var(--color-navy);
+  fill: var(--color-wine);
 }
 
 .field input[type='text'],
@@ -1208,6 +1216,20 @@ button {
     margin-left: auto;
     margin-right: auto;
   }
+
+  /* Top/bottom margin to match the sides, per the couple's request —
+     same 10px as the side margin above, for a uniform frame all
+     around. See the desktop 1200px block for why padding (not a
+     margin on .hero/.site-footer) is what actually guarantees this
+     shows up instead of silently collapsing. */
+  body {
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  .site-header {
+    top: 10px;
+  }
 }
 
 /* Landscape: same phone, meaningfully more width available (typically
@@ -1232,6 +1254,17 @@ button {
     width: calc(100% - 36px);
     margin-left: auto;
     margin-right: auto;
+  }
+
+  /* Same idea as the portrait block above — matches the 18px side
+     margin here specifically, rather than reusing portrait's 10px. */
+  body {
+    padding-top: 18px;
+    padding-bottom: 18px;
+  }
+
+  .site-header {
+    top: 18px;
   }
 }
 
@@ -1343,6 +1376,22 @@ button {
      unaffected. */
   body {
     background: var(--color-frame);
+    /* Top/bottom frame margin, matching the "give it a margin like the
+       sides" request — my call on size: 24px felt right next to the
+       ~44px left/right margin (a bit less, since vertical space is
+       generally more precious than horizontal). Using padding here
+       (not a margin on .hero/.site-footer) specifically because a last
+       child's margin-bottom can collapse through into the parent with
+       nothing to stop it — padding on body can't collapse, so the gap
+       is guaranteed to actually show. .site-header (fixed, so body's
+       padding doesn't reach it) gets a matching `top` offset below,
+       instead. */
+    padding-top: 24px;
+    padding-bottom: 24px;
+  }
+
+  .site-header {
+    top: 24px;
   }
 
   .site-header,
