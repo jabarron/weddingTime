@@ -1234,6 +1234,25 @@ button {
     overflow: hidden;
   }
 
+  /* THE ACTUAL FIX for the recurring corner bleed-through: .page-frame's
+     overflow:hidden above only clips content that overflows its rounded
+     shape — it does NOT paint anything itself. .hero/.site-footer were
+     plain rectangles, so in each corner there was a small curved sliver
+     between "where the rectangle's square corner ends" and "where the
+     frame's rounded edge is" that neither one painted — showing the
+     sand body background through that gap. Giving these their own
+     matching radius means their actual background (wine, cream,
+     whatever) is what fills that curve, not a gap. .page-frame's
+     overflow:hidden stays as a backstop for anything that doesn't line
+     up by a pixel or two, but this is what does the real work. */
+  .hero {
+    border-radius: 14px 14px 0 0;
+  }
+
+  .site-footer {
+    border-radius: 0 0 14px 14px;
+  }
+
   /* Separate from .page-frame — needs the scrollbar-width correction
      (see setScrollbarWidthVar in main.js) so it lines up exactly with
      the frame's edges, including its own matching rounded top corners.
@@ -1308,6 +1327,17 @@ button {
     border: 1px solid rgba(31, 46, 77, 0.35);
     border-radius: 14px;
     overflow: hidden;
+  }
+
+  /* Same fix as the portrait block — see that comment for the full
+     explanation of why .page-frame's overflow:hidden alone wasn't
+     enough. */
+  .hero {
+    border-radius: 14px 14px 0 0;
+  }
+
+  .site-footer {
+    border-radius: 0 0 14px 14px;
   }
 
   .site-header {
@@ -1499,13 +1529,21 @@ button {
   /* Everything from the hero through the footer lives inside this one
      wrapper now (see index.html) — width/margin/border/radius are set
      ONCE here instead of repeated across .hero/.section/.site-footer
-     individually. That repetition is what kept causing bleed-through
-     bugs at the rounded corners: each element rounding itself
-     separately meant any small mismatch between them (or between them
-     and the fixed header) showed as a gap. overflow:hidden here makes
-     that structurally impossible — nothing inside this box can ever
-     render outside its rounded edge, no matter what's scrolled to the
-     top, bottom, or sides. */
+     individually, which is what kept causing bleed-through bugs
+     whenever any of them (or the separately-fixed header) was a pixel
+     or two out of alignment with the others.
+
+     CORRECTION to what this comment used to claim: overflow:hidden
+     here does NOT by itself make bleed-through "structurally
+     impossible" — it only clips content that overflows the rounded
+     shape. It does not paint anything. .hero/.site-footer are plain
+     rectangles, so each corner still had an unpainted curved sliver
+     between their square corner and this wrapper's rounded edge, with
+     the sand body background showing through it. The actual fix is
+     giving .hero/.site-footer their own matching radius too (below) so
+     their real background fills that curve — this overflow:hidden
+     stays on as a backstop for anything that doesn't line up exactly,
+     but isn't sufficient on its own. */
   .page-frame {
     width: calc(100% - 88px);
     max-width: 1900px;
@@ -1513,6 +1551,14 @@ button {
     border: 1px solid rgba(31, 46, 77, 0.35);
     border-radius: 20px;
     overflow: hidden;
+  }
+
+  .hero {
+    border-radius: 20px 20px 0 0;
+  }
+
+  .site-footer {
+    border-radius: 0 0 20px 20px;
   }
 }
 
