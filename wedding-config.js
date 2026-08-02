@@ -32,16 +32,19 @@ module.exports = {
   // Daylight Saving Time, so the offset below is -06:00 (MDT).
   // Double-check this offset closer to the date in case DST rules change.
   // ---------------------------------------------------------------------
-  weddingDateISO: '2027-05-01T18:00:00-06:00',
+  weddingDateISO: '2027-05-01T12:00:00-06:00',
 
   // ---------------------------------------------------------------------
   // ✏️ EDIT ME: Venue / location
   // `mapsQuery` is used to build the "Open in Google Maps" link.
   // ---------------------------------------------------------------------
   venue: {
-    name: 'Jardín',
+    name: 'Ocua Loft',
     addressLine: 'Cd. Juárez, Chihuahua, México',
-    mapsQuery: 'Jardín, Ciudad Juárez, Chihuahua, México',
+    // Using the exact coordinates given (instead of a text search) so the
+    // "Open in Google Maps" link drops the pin precisely on the venue,
+    // not on whatever a text search happens to resolve to.
+    mapsQuery: '31.691243,-106.350304',
   },
 
   // ---------------------------------------------------------------------

@@ -377,6 +377,24 @@ button {
   display: inline-block;
   color: var(--color-terracotta);
   padding: 0 0.15em;
+  /* Very subtle glow pulse, per the couple's request — chosen over a
+     "heartbeat" scale pulse because even a small scale change on a
+     glyph this size risks looking jittery, while a glow reads as calm
+     ambient light no matter how closely you look. Slow (4s) and low
+     peak-intensity on purpose, to stay "casi imperceptible". Already
+     covered by the site's global prefers-reduced-motion rule (forces
+     all animation-duration to ~0), so no separate override needed here. */
+  animation: ampersand-glow 4s ease-in-out infinite;
+}
+
+@keyframes ampersand-glow {
+  0%,
+  100% {
+    text-shadow: 0 0 0 rgba(195, 99, 77, 0);
+  }
+  50% {
+    text-shadow: 0 0 10px rgba(195, 99, 77, 0.55);
+  }
 }
 
 /* The "lighter version" of the boxed-names idea from a reference image
@@ -386,7 +404,13 @@ button {
 .hero__names::after {
   content: '';
   display: block;
-  width: 70px;
+  /* Was a fixed 70px — widened, and switched to em (relative to the
+     h1's own font-size) so it scales with the names instead of staying
+     a fixed width while the text grows/shrinks responsively. Reads more
+     like an underline for the whole "Ismeraí & Jesús" block now, rather
+     than a small isolated tick that drew attention to the two names
+     having different lengths even though the line itself was centered. */
+  width: 2.5em;
   height: 1px;
   background: rgba(255, 250, 243, 0.4);
   margin: var(--space-sm) auto 0;
@@ -416,6 +440,21 @@ button {
   justify-content: center;
 }
 
+/* On narrow phones, the default gap (2rem) x3 gaps + 4.5rem min-width x4
+   units adds up to more than the available width once the new mobile
+   frame margin is subtracted too — that's what was pushing it to 2 rows.
+   Tighter gap + narrower min-width here brings the total comfortably
+   under a typical ~340-355px available width, keeping all 4 in one row. */
+@media (max-width: 400px) {
+  .countdown {
+    gap: 0.5rem;
+  }
+
+  .countdown__unit {
+    min-width: 3.4rem;
+  }
+}
+
 .countdown__unit {
   min-width: 4.5rem;
 }
@@ -440,6 +479,96 @@ button {
   gap: var(--space-sm);
   flex-wrap: wrap;
   justify-content: center;
+}
+
+/* Scroll hint — a thin line with a dot that falls and fades, on a loop,
+   inviting guests to keep scrolling. Sits above the fade/parallax
+   z-index:-1 layers (default z-index:auto, painted after them) but the
+   hero content itself doesn't need to avoid it — it's pinned to the very
+   bottom of the hero, below everything else. */
+.hero__scroll-hint {
+  position: absolute;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1px;
+  height: 30px;
+  background: rgba(255, 250, 243, 0.35);
+  overflow: hidden;
+  /* Starts once the rest of the entrance sequence below has finished
+     (see the fade-in-up delays) — appears last, as an invitation once
+     everything else has "arrived". */
+  animation: hero-fade-in-up 0.6s ease-out 1.5s both;
+}
+
+.hero__scroll-hint-dot {
+  display: block;
+  width: 5px;
+  height: 5px;
+  margin-left: -2px;
+  border-radius: 50%;
+  background: var(--color-white);
+  position: relative;
+  animation: hero-scroll-dot 2.2s ease-in-out 2.1s infinite;
+}
+
+@keyframes hero-scroll-dot {
+  0% {
+    top: -2px;
+    opacity: 0;
+  }
+  25% {
+    opacity: 1;
+  }
+  75% {
+    opacity: 1;
+  }
+  100% {
+    top: 26px;
+    opacity: 0;
+  }
+}
+
+/* Staggered entrance — each hero element fades in and drifts up into
+   place in sequence, instead of the whole hero appearing at once on
+   load. The upward drift is deliberately tiny (6px — "casi
+   imperceptible", per the request) so it reads as a soft settle, not a
+   slide. Already covered by the site's global prefers-reduced-motion
+   rule (forces animation-duration to ~0), so everything just appears
+   immediately for those guests instead of animating in. */
+@keyframes hero-fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero__eyebrow {
+  animation: hero-fade-in-up 0.6s ease-out 0.1s both;
+}
+
+.hero__names {
+  animation: hero-fade-in-up 0.6s ease-out 0.3s both;
+}
+
+.hero__date {
+  animation: hero-fade-in-up 0.6s ease-out 0.55s both;
+}
+
+.hero__venue {
+  animation: hero-fade-in-up 0.6s ease-out 0.7s both;
+}
+
+.countdown {
+  animation: hero-fade-in-up 0.6s ease-out 0.9s both;
+}
+
+.hero__actions {
+  animation: hero-fade-in-up 0.6s ease-out 1.1s both;
 }
 
 /* ----------------------------------------------------------------------- */
@@ -548,6 +677,12 @@ button {
   border-radius: 50%;
   background: var(--color-terracotta);
   border: 2px solid var(--color-cream);
+}
+
+/* "La propuesta" — same navy accent used elsewhere on the site
+   (religious ceremony icon, photo frames, RSVP heart/music icons). */
+.story-milestone__dot--accent {
+  background: var(--color-navy);
 }
 
 .story-milestone__photo {
@@ -1016,18 +1151,23 @@ button {
    one value means the whole page changes together at the same point. */
 /* Same "framed card" concept as the 1200px+ desktop version further
    below (sand background, navy boundary line, rounded top/bottom
-   corners), scaled down for phone-sized screens (under 768px, this
-   site's existing mobile/tablet boundary). Two margin sizes: a small
-   one in portrait, a bit more in landscape — sizes are my own judgment
-   call (none were specified), reasoning below. Same two technical fixes
-   as the desktop version, for the same reasons (see the corresponding
-   comments in the 1200px block): .site-header never gets its own
-   border-radius (its width is viewport-relative while .hero's is
-   content-area-relative — they can differ by the scrollbar's width,
+   corners), scaled down for phone-sized screens. Two margin sizes: a
+   small one in portrait, a bit more in landscape — sizes are my own
+   judgment call (none were specified), reasoning below. Same two
+   technical fixes as the desktop version, for the same reasons (see the
+   corresponding comments in the 1200px block): .site-header never gets
+   its own border-radius (its width is viewport-relative while .hero's
+   is content-area-relative — they can differ by the scrollbar's width,
    enough to misalign a curve), and .site-header's own boundary border
    only appears once .is-scrolled (otherwise it draws a straight line
-   over the hero's rounded corner at rest). */
-@media (max-width: 767px) {
+   over the hero's rounded corner at rest).
+
+   The comma below is an OR, not a typo — two separate conditions, either
+   one triggers this block: a narrow-width phone in portrait (max-width),
+   OR a short-height phone in landscape (max-height). A single max-width
+   check alone (what this used to be) misses phones in landscape
+   entirely — see the max-height rule further down for why. */
+@media (max-width: 767px), (orientation: landscape) and (max-height: 500px) {
   body {
     background: var(--color-frame);
   }
@@ -1072,8 +1212,19 @@ button {
 
 /* Landscape: same phone, meaningfully more width available (typically
    ~2x the portrait width), so the margin scales up too — 18px/side,
-   proportionally similar to portrait's ratio rather than a fixed jump. */
-@media (max-width: 767px) and (orientation: landscape) {
+   proportionally similar to portrait's ratio rather than a fixed jump.
+
+   BUG FIX: this used to also require max-width: 767px, same as the
+   portrait rule above. That's wrong for landscape specifically — most
+   phones, once rotated, have a landscape WIDTH well over 767px (a
+   fairly ordinary phone is ~844px wide in landscape), so the rule
+   silently never matched on a real phone, only in a same-width desktop
+   testing tool. Detecting by max-height instead is what's actually
+   reliable here: a phone's landscape HEIGHT (its portrait width) stays
+   under ~500px regardless of model, while a tablet/laptop genuinely in
+   landscape is taller than that — so this only catches "phone turned
+   sideways", not other landscape-shaped screens. */
+@media (orientation: landscape) and (max-height: 500px) {
   .site-header,
   .hero,
   .section,
@@ -1323,7 +1474,7 @@ button {
   }
 
   .nav-admin-link:hover {
-    background: var(--color-berry);
+    color: var(--color-navy);
   }
 
   .lang-toggle button {

@@ -39,6 +39,19 @@
   color: var(--color-white);
 }
 
+.admin-home-btn {
+  background: var(--color-white);
+  color: var(--color-wine);
+  border: 1px solid var(--color-wine);
+  text-decoration: none;
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+
+.admin-home-btn:hover {
+  background: var(--color-wine);
+  color: var(--color-white);
+}
+
 .admin-scroll-hint {
   font-size: 0.75rem;
   color: var(--color-berry);

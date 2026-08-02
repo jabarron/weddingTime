@@ -107,6 +107,7 @@ const DICTIONARY = {
     // ✏️ Admin dashboard (/admin) — inherits whichever language was last
     // selected on the public site (see admin.js), no separate toggle.
     admin_title: 'Panel de RSVP',
+    admin_home_btn: 'Regreso a la página de inicio',
     admin_export_btn: 'Descargar Excel',
     admin_refresh_btn: 'Actualizar',
     admin_scroll_hint: 'Desliza izquierda/derecha para ver más columnas →',
@@ -223,6 +224,7 @@ const DICTIONARY = {
     footer_contact: 'If you have any questions, please reach out to us.',
 
     admin_title: 'RSVP Dashboard',
+    admin_home_btn: 'Back to homepage',
     admin_export_btn: 'Download Excel',
     admin_refresh_btn: 'Refresh',
     admin_scroll_hint: 'Swipe left/right to see more columns →',

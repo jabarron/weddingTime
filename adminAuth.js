@@ -223,6 +223,17 @@ function pageShell({ lang, title, bodyHtml, wide = false }) {
     a.btn:hover {
       background: #9d3a56;
     }
+    a.link-secondary {
+      display: inline-block;
+      margin-top: 1rem;
+      color: #48011f;
+      font-size: 0.8rem;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    a.link-secondary:hover {
+      color: #c3634d;
+    }
   </style>
 </head>
 <body>
@@ -317,6 +328,7 @@ function buildLoginForm({ errorMessage } = {}) {
           <input type="password" id="password" name="password" autocomplete="current-password" required />
           <button type="submit">Entrar</button>
         </form>
+        <a class="link-secondary" href="/">Regreso a la página de inicio</a>
       </div>
     `,
   });
@@ -336,6 +348,7 @@ function buildLockedOutPage(req) {
     ? 'Please double-check the password and try again.'
     : 'Por favor verifica la contraseña e intenta de nuevo.';
   const linkText = isEnglish ? 'Try again' : 'Intentar de nuevo';
+  const homeLinkText = isEnglish ? 'Back to homepage' : 'Regreso a la página de inicio';
 
   return pageShell({
     lang,
@@ -347,6 +360,7 @@ function buildLockedOutPage(req) {
         <h1>${heading}</h1>
         <p>${message}</p>
         <a class="btn" href="/admin">${linkText}</a>
+        <a class="link-secondary" href="/">${homeLinkText}</a>
       </div>
     `,
   });
