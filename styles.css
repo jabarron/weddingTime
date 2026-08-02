@@ -1283,6 +1283,14 @@ button {
     border-radius: 14px 14px 0 0;
   }
 
+  /* Once scrolled past the hero, whatever's now behind the header is a
+     square-cornered middle section — square the header to match (see
+     the .past-hero toggle in main.js's setupHeaderScroll for why this
+     needs its own scroll threshold instead of reusing .is-scrolled). */
+  .site-header.past-hero {
+    border-radius: 0;
+  }
+
   /* BUG FIX: moving .site-header down to top:10px (above) opened a
      permanent 10px gap at the very top of the viewport that nothing
      was covering — body's own padding-top only shows its sand
@@ -1356,6 +1364,11 @@ button {
   .site-header {
     top: 18px;
     border-radius: 14px 14px 0 0;
+  }
+
+  /* Same fix as the portrait block above. */
+  .site-header.past-hero {
+    border-radius: 0;
   }
 
   /* Same fix as the portrait block above, for the same reason — see
@@ -1508,6 +1521,14 @@ button {
     max-width: 1900px;
     margin-left: auto;
     margin-right: auto;
+  }
+
+  /* Same fix as the mobile blocks — once scrolled past the hero,
+     square the header to match whatever square-cornered section is
+     now behind it (see the .past-hero toggle in main.js's
+     setupHeaderScroll for the full reasoning). */
+  .site-header.past-hero {
+    border-radius: 0;
   }
 
   /* Same bleed-through fix as the mobile blocks — see the portrait

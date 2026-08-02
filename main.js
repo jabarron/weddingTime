@@ -198,12 +198,38 @@
   /** Adds a background to the fixed header once the page scrolls. */
   function setupHeaderScroll() {
     const header = document.querySelector('.site-header');
+    const hero = document.querySelector('.hero');
     if (!header) return;
+
     const toggle = () => {
       header.classList.toggle('is-scrolled', window.scrollY > 40);
+
+      /* Real fix for the recurring corner mismatch: the header is
+         fixed, so it's ALWAYS overlaying whatever happens to be
+         scrolled underneath it. Its rounded top corners look right
+         while the hero (also rounded, matching) is what's actually
+         behind it — but every section after the hero is deliberately
+         SQUARE (so sections don't look "pinched" against each other),
+         and once one of those scrolls to the top, the header's rounded
+         corner was cutting a hole that revealed that square edge
+         instead. Not a fixed 40px scroll threshold like .is-scrolled
+         above (that's too early — the hero is much taller than 40px,
+         so the header would go square while the hero's own rounded top
+         was still visible behind it, causing the exact same mismatch
+         in the other direction). This has to specifically track
+         whether we've scrolled past the hero's full height — see
+         .past-hero in styles.css for where this then removes the
+         header's radius. */
+      if (hero) {
+        header.classList.toggle('past-hero', window.scrollY >= hero.offsetHeight);
+      }
     };
+
     toggle();
     window.addEventListener('scroll', toggle, { passive: true });
+    // Hero's height can change (e.g. rotating a phone) — recheck so the
+    // threshold above stays accurate instead of using a stale height.
+    window.addEventListener('resize', toggle, { passive: true });
   }
 
   /**
