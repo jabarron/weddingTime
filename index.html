@@ -109,6 +109,13 @@
     </nav>
   </header>
 
+  <!-- Wraps everything from the hero through the footer (NOT the fixed
+       header, which stays outside since it's independently positioned).
+       This is what makes the rounded-corner frame actually bulletproof
+       against scroll — see .page-frame in styles.css for why this
+       replaced having each section try to handle its own rounding. -->
+  <div class="page-frame">
+
   <!-- ===================== Hero ===================== -->
   <section class="hero">
     <canvas class="hero__constellation" aria-hidden="true"></canvas>
@@ -210,7 +217,7 @@
         </li>
 
         <li class="story-milestone story-milestone--left">
-          <span class="story-milestone__dot story-milestone__dot--accent" aria-hidden="true"></span>
+          <span class="story-milestone__dot" aria-hidden="true"></span>
           <div class="story-milestone__photo">
             <img src="/photos/IsmeRing.jpg" alt="Ismeraí sonriendo y mostrando su anillo de compromiso" />
           </div>
@@ -407,6 +414,9 @@
     <img class="site-footer__monogram" src="/monogram.png" alt="I &amp; J" />
     <p class="site-footer__contact" data-i18n="footer_contact">Si tienes dudas, por favor contáctanos.</p>
   </footer>
+
+  </div>
+  <!-- /.page-frame -->
 
   <!-- Scripts load in this order: dictionary first, then page logic, then the form handler. -->
   <script src="/i18n.js"></script>

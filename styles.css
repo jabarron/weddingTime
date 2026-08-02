@@ -702,10 +702,6 @@ button {
 
 /* "La propuesta" — same navy accent used elsewhere on the site
    (religious ceremony icon, photo frames, RSVP heart/music icons). */
-.story-milestone__dot--accent {
-  background: var(--color-navy);
-}
-
 .story-milestone__photo {
   max-width: 200px;
   min-height: 110px;
@@ -806,7 +802,7 @@ button {
 
 .detail-card {
   background: rgba(255, 255, 255, 0.06);
-  border: 1px solid var(--color-navy);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: var(--radius);
   padding: var(--space-md);
   text-align: center;
@@ -911,17 +907,6 @@ button {
   text-align: center;
 }
 
-/* Same idea as .hero__names::after — a thin centered line, here below
-   the "Formal / Elegante" heading instead of the hero names. */
-.dress-code h2::after {
-  content: '';
-  display: block;
-  width: 70px;
-  height: 1px;
-  background: var(--color-mauve);
-  margin: var(--space-sm) auto 0;
-}
-
 .dress-code__swatches {
   display: flex;
   justify-content: center;
@@ -977,7 +962,7 @@ button {
 .gifts__icon {
   width: 40px;
   height: 40px;
-  color: var(--color-navy);
+  color: var(--color-white);
   margin: 0 auto var(--space-sm);
 }
 
@@ -1209,14 +1194,16 @@ button {
    below (sand background, navy boundary line, rounded top/bottom
    corners), scaled down for phone-sized screens. Two margin sizes: a
    small one in portrait, a bit more in landscape — sizes are my own
-   judgment call (none were specified), reasoning below. Same two
-   technical fixes as the desktop version, for the same reasons (see the
-   corresponding comments in the 1200px block): .site-header never gets
-   its own border-radius (its width is viewport-relative while .hero's
-   is content-area-relative — they can differ by the scrollbar's width,
-   enough to misalign a curve), and .site-header's own boundary border
-   only appears once .is-scrolled (otherwise it draws a straight line
-   over the hero's rounded corner at rest).
+   judgment call (none were specified), reasoning below.
+
+   As of this version, .page-frame (wrapping the hero through the
+   footer — see index.html) does the actual clipping, same as the
+   desktop block below. Earlier versions had each of .hero/.section/
+   .site-footer round and border themselves independently, which kept
+   producing bleed-through bugs at the corners whenever any of them (or
+   the separately-fixed header) was a pixel or two out of alignment.
+   overflow:hidden on one wrapper makes that structurally impossible
+   instead of something to keep re-fixing.
 
    The comma below is an OR, not a typo — two separate conditions, either
    one triggers this block: a narrow-width phone in portrait (max-width),
@@ -1228,26 +1215,9 @@ button {
     background: var(--color-frame);
   }
 
-  .hero,
-  .section,
-  .site-footer {
-    border-left: 1px solid rgba(31, 46, 77, 0.35);
-    border-right: 1px solid rgba(31, 46, 77, 0.35);
-  }
-
   .site-header.is-scrolled {
     border-left: 1px solid rgba(31, 46, 77, 0.35);
     border-right: 1px solid rgba(31, 46, 77, 0.35);
-  }
-
-  .hero {
-    border-radius: 14px 14px 0 0;
-    border-top: 1px solid rgba(31, 46, 77, 0.35);
-  }
-
-  .site-footer {
-    border-radius: 0 0 14px 14px;
-    border-bottom: 1px solid rgba(31, 46, 77, 0.35);
   }
 }
 
@@ -1256,20 +1226,20 @@ button {
    without meaningfully narrowing the content on an already-narrow
    screen (a phone at 375px wide only loses ~5% of its width to this). */
 @media (max-width: 767px) and (orientation: portrait) {
-  .hero,
-  .section,
-  .site-footer {
+  .page-frame {
     width: calc(100% - 20px);
-    margin-left: auto;
-    margin-right: auto;
+    margin: 0 auto;
+    border: 1px solid rgba(31, 46, 77, 0.35);
+    border-radius: 14px;
+    overflow: hidden;
   }
 
-  /* Separate from the group above — needs the scrollbar-width
-     correction (see setScrollbarWidthVar in main.js) so it lines up
-     exactly with .hero's edges, including once it gets its own rounded
-     top corners below. Mobile mostly uses overlay scrollbars (0px), so
-     this rarely does anything here in practice — kept anyway for
-     consistency with the desktop block, where it matters more. */
+  /* Separate from .page-frame — needs the scrollbar-width correction
+     (see setScrollbarWidthVar in main.js) so it lines up exactly with
+     the frame's edges, including its own matching rounded top corners.
+     Mobile mostly uses overlay scrollbars (0px), so this rarely does
+     anything here in practice — kept anyway for consistency with the
+     desktop block, where it matters more. */
   .site-header {
     width: calc(100% - 20px - var(--scrollbar-width));
     margin-left: auto;
@@ -1279,8 +1249,8 @@ button {
   /* Top/bottom margin to match the sides, per the couple's request —
      same 10px as the side margin above, for a uniform frame all
      around. See the desktop 1200px block for why padding (not a
-     margin on .hero/.site-footer) is what actually guarantees this
-     shows up instead of silently collapsing. */
+     margin on .page-frame) is what actually guarantees this shows up
+     instead of silently collapsing. */
   body {
     padding-top: 10px;
     padding-bottom: 10px;
@@ -1289,10 +1259,8 @@ button {
   .site-header {
     top: 10px;
     /* Now that the width above accounts for the scrollbar, this lines
-       up with .hero's own 14px radius closely enough to look
-       intentional even once scrolled (previously the header had no
-       radius at all here, which read as a square corner breaking the
-       rounded look established at rest). */
+       up with .page-frame's own 14px radius closely enough to look
+       intentional even once scrolled. */
     border-radius: 14px 14px 0 0;
   }
 
@@ -1334,12 +1302,12 @@ button {
    landscape is taller than that — so this only catches "phone turned
    sideways", not other landscape-shaped screens. */
 @media (orientation: landscape) and (max-height: 500px) {
-  .hero,
-  .section,
-  .site-footer {
+  .page-frame {
     width: calc(100% - 36px);
-    margin-left: auto;
-    margin-right: auto;
+    margin: 0 auto;
+    border: 1px solid rgba(31, 46, 77, 0.35);
+    border-radius: 14px;
+    overflow: hidden;
   }
 
   .site-header {
@@ -1487,10 +1455,10 @@ button {
        sides" request — my call on size: 24px felt right next to the
        ~44px left/right margin (a bit less, since vertical space is
        generally more precious than horizontal). Using padding here
-       (not a margin on .hero/.site-footer) specifically because a last
-       child's margin-bottom can collapse through into the parent with
-       nothing to stop it — padding on body can't collapse, so the gap
-       is guaranteed to actually show. .site-header (fixed, so body's
+       (not a margin on .page-frame) specifically because a last child's
+       margin-bottom can collapse through into the parent with nothing
+       to stop it — padding on body can't collapse, so the gap is
+       guaranteed to actually show. .site-header (fixed, so body's
        padding doesn't reach it) gets a matching `top` offset below,
        instead. */
     padding-top: 24px;
@@ -1500,6 +1468,16 @@ button {
   .site-header {
     top: 24px;
     border-radius: 20px 20px 0 0;
+    /* Needs the scrollbar-width correction (see setScrollbarWidthVar in
+       main.js) so it lines up exactly with .page-frame below — desktop
+       browsers on Windows/Linux typically show a real ~15-17px
+       scrollbar, which without this would make the header that much
+       wider than the frame, enough to visibly misalign the rounded
+       corners once scrolled. */
+    width: calc(100% - 88px - var(--scrollbar-width));
+    max-width: 1900px;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   /* Same bleed-through fix as the mobile blocks — see the portrait
@@ -1518,101 +1496,23 @@ button {
     pointer-events: none;
   }
 
-  .hero,
-  .section,
-  .site-footer {
-    /* Switched from a fixed max-width to a fixed margin. The previous
-       approach (max-width: 1850px) meant the visible margin was
-       "1920px minus 1850px" — which only works out to something
-       reasonable at exactly the screen width used to calculate it. On
-       any window narrower than 1850px (very common — that's not a huge
-       browser window), max-width:1850px does nothing at all, since it
-       only caps width when the natural width would exceed it: the
-       margin silently collapses to 0. This version gives a genuinely
-       consistent ~44px margin per side at any qualifying width (1200px
-       and up), with max-width only as a safety cap for ultra-wide
-       monitors so the card doesn't become absurdly wide past ~1900px. */
+  /* Everything from the hero through the footer lives inside this one
+     wrapper now (see index.html) — width/margin/border/radius are set
+     ONCE here instead of repeated across .hero/.section/.site-footer
+     individually. That repetition is what kept causing bleed-through
+     bugs at the rounded corners: each element rounding itself
+     separately meant any small mismatch between them (or between them
+     and the fixed header) showed as a gap. overflow:hidden here makes
+     that structurally impossible — nothing inside this box can ever
+     render outside its rounded edge, no matter what's scrolled to the
+     top, bottom, or sides. */
+  .page-frame {
     width: calc(100% - 88px);
     max-width: 1900px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  /* Separate from the group above — needs the scrollbar-width
-     correction (see setScrollbarWidthVar in main.js). This is the
-     breakpoint where that correction actually matters most: desktop
-     browsers on Windows/Linux typically show a real ~15-17px
-     scrollbar, which without this would make the header that much
-     wider than .hero/.section/.site-footer below it — enough to
-     visibly misalign the rounded corners once scrolled. */
-  .site-header {
-    width: calc(100% - 88px - var(--scrollbar-width));
-    max-width: 1900px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  /* Boundary line — .hero/.section/.site-footer only, NOT .site-header.
-     Left/right only (not top/bottom) on purpose — these are separate
-     stacked elements, not one wrapper, so a full border would also draw
-     unwanted horizontal lines at every seam between sections. Navy, per
-     the couple's request — same accent used elsewhere on the site
-     (religious ceremony icon, photo frames, RSVP heart/music icons).
-
-     .site-header is deliberately excluded here and instead only gets
-     this same border once it's scrolled (see .is-scrolled below) — it's
-     position:fixed, so its own edges never move or curve with scroll;
-     only its background toggles between transparent and solid. At rest
-     (page not scrolled), the hero sits directly behind/around it with
-     its own rounded top border — giving the header a straight border of
-     its own at that moment would draw a sharp square line across that
-     curve. Once scrolled, the rounded corner is out of view anyway, so
-     a straight border is exactly right — that's what the .is-scrolled
-     rule below adds. */
-  .hero,
-  .section,
-  .site-footer {
-    border-left: 1px solid rgba(31, 46, 77, 0.35);
-    border-right: 1px solid rgba(31, 46, 77, 0.35);
-  }
-
-  .site-header.is-scrolled {
-    border-left: 1px solid rgba(31, 46, 77, 0.35);
-    border-right: 1px solid rgba(31, 46, 77, 0.35);
-  }
-
-  /* Rounded corners only where the "card" actually meets the frame
-     background — the very top (hero + header) and very bottom (footer).
-     Deliberately NOT applied to every .section: they're separate stacked
-     elements with no gap between them, so rounding every one of them
-     would create small pinched notches at each section-to-section seam
-     instead of one clean silhouette.
-
-     .site-header now also gets its own matching radius (set where its
-     `top` is defined, above) — it used to be deliberately left square,
-     reasoning that the hero's own curve would be scrolled out of view
-     by the time the header became solid anyway. In practice that still
-     left a visibly square corner while scrolled, which looked broken
-     against the rounded corners everywhere else — so the header gets
-     rounding too now, made to line up correctly via the
-     --scrollbar-width correction on its width above (see
-     setScrollbarWidthVar in main.js for why that's needed at all). */
-  .hero {
-    border-radius: 20px 20px 0 0;
-    /* Without this, the border-left/border-right above have no
-       border-top to curve into at the corner — border-radius still
-       rounds the background fill correctly, but the border LINE stays
-       sharp/square at the top, poking out past the rounded background
-       like a leftover corner. Adding a matching border-top gives the
-       radius a full edge to round smoothly on all three curved sides. */
-    border-top: 1px solid rgba(31, 46, 77, 0.35);
-  }
-
-  .site-footer {
-    border-radius: 0 0 20px 20px;
-    /* Same fix as .hero's border-top above — gives the bottom corners'
-       radius a border-bottom edge to round into. */
-    border-bottom: 1px solid rgba(31, 46, 77, 0.35);
+    margin: 0 auto;
+    border: 1px solid rgba(31, 46, 77, 0.35);
+    border-radius: 20px;
+    overflow: hidden;
   }
 }
 
