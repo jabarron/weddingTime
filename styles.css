@@ -29,6 +29,9 @@
    so the page never has an unstyled flash before JS runs.
 */
 :root {
+  /* Set precisely by main.js (setScrollbarWidthVar) on load — this 0px
+     is only the fallback for the brief moment before JS runs. */
+  --scrollbar-width: 0px;
   --color-wine: #48011f;
   --color-berry: #9d3a56;
   --color-mauve: #b06f6b;
@@ -308,7 +311,7 @@ button {
 }
 
 .lang-toggle button:hover {
-  background: rgba(255, 255, 255, 0.14);
+  color: var(--color-navy);
 }
 
 .lang-toggle button[aria-pressed='true'] {
@@ -762,7 +765,7 @@ button {
   font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: var(--color-terracotta-on-light);
+  color: var(--color-navy);
 }
 
 /* Lets you clear quote_source to '' in i18n.js and have the (now empty)
@@ -777,6 +780,18 @@ button {
 .details {
   background: var(--color-wine);
   color: var(--color-white);
+  position: relative;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.details__fireflies {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
 }
 
 .details h2 {
@@ -791,7 +806,7 @@ button {
 
 .detail-card {
   background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border: 1px solid var(--color-navy);
   border-radius: var(--radius);
   padding: var(--space-md);
   text-align: center;
@@ -896,6 +911,17 @@ button {
   text-align: center;
 }
 
+/* Same idea as .hero__names::after — a thin centered line, here below
+   the "Formal / Elegante" heading instead of the hero names. */
+.dress-code h2::after {
+  content: '';
+  display: block;
+  width: 70px;
+  height: 1px;
+  background: var(--color-mauve);
+  margin: var(--space-sm) auto 0;
+}
+
 .dress-code__swatches {
   display: flex;
   justify-content: center;
@@ -930,6 +956,18 @@ button {
   background: var(--color-wine);
   color: var(--color-cream);
   text-align: center;
+  position: relative;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.gifts__fireflies {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
 }
 
 .gifts h2 {
@@ -939,7 +977,7 @@ button {
 .gifts__icon {
   width: 40px;
   height: 40px;
-  color: var(--color-terracotta);
+  color: var(--color-navy);
   margin: 0 auto var(--space-sm);
 }
 
@@ -1218,11 +1256,22 @@ button {
    without meaningfully narrowing the content on an already-narrow
    screen (a phone at 375px wide only loses ~5% of its width to this). */
 @media (max-width: 767px) and (orientation: portrait) {
-  .site-header,
   .hero,
   .section,
   .site-footer {
     width: calc(100% - 20px);
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Separate from the group above — needs the scrollbar-width
+     correction (see setScrollbarWidthVar in main.js) so it lines up
+     exactly with .hero's edges, including once it gets its own rounded
+     top corners below. Mobile mostly uses overlay scrollbars (0px), so
+     this rarely does anything here in practice — kept anyway for
+     consistency with the desktop block, where it matters more. */
+  .site-header {
+    width: calc(100% - 20px - var(--scrollbar-width));
     margin-left: auto;
     margin-right: auto;
   }
@@ -1239,6 +1288,12 @@ button {
 
   .site-header {
     top: 10px;
+    /* Now that the width above accounts for the scrollbar, this lines
+       up with .hero's own 14px radius closely enough to look
+       intentional even once scrolled (previously the header had no
+       radius at all here, which read as a square corner breaking the
+       rounded look established at rest). */
+    border-radius: 14px 14px 0 0;
   }
 
   /* BUG FIX: moving .site-header down to top:10px (above) opened a
@@ -1279,11 +1334,16 @@ button {
    landscape is taller than that — so this only catches "phone turned
    sideways", not other landscape-shaped screens. */
 @media (orientation: landscape) and (max-height: 500px) {
-  .site-header,
   .hero,
   .section,
   .site-footer {
     width: calc(100% - 36px);
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .site-header {
+    width: calc(100% - 36px - var(--scrollbar-width));
     margin-left: auto;
     margin-right: auto;
   }
@@ -1297,6 +1357,7 @@ button {
 
   .site-header {
     top: 18px;
+    border-radius: 14px 14px 0 0;
   }
 
   /* Same fix as the portrait block above, for the same reason — see
@@ -1438,6 +1499,7 @@ button {
 
   .site-header {
     top: 24px;
+    border-radius: 20px 20px 0 0;
   }
 
   /* Same bleed-through fix as the mobile blocks — see the portrait
@@ -1456,7 +1518,6 @@ button {
     pointer-events: none;
   }
 
-  .site-header,
   .hero,
   .section,
   .site-footer {
@@ -1472,6 +1533,20 @@ button {
        and up), with max-width only as a safety cap for ultra-wide
        monitors so the card doesn't become absurdly wide past ~1900px. */
     width: calc(100% - 88px);
+    max-width: 1900px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Separate from the group above — needs the scrollbar-width
+     correction (see setScrollbarWidthVar in main.js). This is the
+     breakpoint where that correction actually matters most: desktop
+     browsers on Windows/Linux typically show a real ~15-17px
+     scrollbar, which without this would make the header that much
+     wider than .hero/.section/.site-footer below it — enough to
+     visibly misalign the rounded corners once scrolled. */
+  .site-header {
+    width: calc(100% - 88px - var(--scrollbar-width));
     max-width: 1900px;
     margin-left: auto;
     margin-right: auto;
@@ -1507,23 +1582,21 @@ button {
   }
 
   /* Rounded corners only where the "card" actually meets the frame
-     background — the very top (hero) and very bottom (footer).
+     background — the very top (hero + header) and very bottom (footer).
      Deliberately NOT applied to every .section: they're separate stacked
      elements with no gap between them, so rounding every one of them
      would create small pinched notches at each section-to-section seam
      instead of one clean silhouette.
 
-     NOT applied to .site-header either, even though it sits at the very
-     top too — it's position:fixed, so its width is calculated relative
-     to the viewport, while .hero (normal document flow) calculates its
-     width relative to the content area, which excludes the scrollbar.
-     Those two can differ by the scrollbar's width, which is enough to
-     visibly misalign two independently-rounded corners right at the
-     curve (small straight-edge misalignment is invisible; the same
-     misalignment at a curve is not). Skipping the header's own rounding
-     sidesteps the mismatch entirely — by the time the header becomes
-     solid on scroll (.is-scrolled), the hero's curve is already
-     scrolled out of view anyway, so nothing is lost. */
+     .site-header now also gets its own matching radius (set where its
+     `top` is defined, above) — it used to be deliberately left square,
+     reasoning that the hero's own curve would be scrolled out of view
+     by the time the header became solid anyway. In practice that still
+     left a visibly square corner while scrolled, which looked broken
+     against the rounded corners everywhere else — so the header gets
+     rounding too now, made to line up correctly via the
+     --scrollbar-width correction on its width above (see
+     setScrollbarWidthVar in main.js for why that's needed at all). */
   .hero {
     border-radius: 20px 20px 0 0;
     /* Without this, the border-left/border-right above have no

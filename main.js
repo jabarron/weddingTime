@@ -178,6 +178,23 @@
     setInterval(tick, 1000);
   }
 
+  /**
+   * Measures the actual scrollbar width and exposes it as a CSS
+   * variable (--scrollbar-width). Needed because .site-header is
+   * position:fixed (its 100% width is the full viewport, scrollbar
+   * included) while .hero/.section/.site-footer are normal document
+   * flow (their 100% excludes the scrollbar) — without correcting for
+   * that difference, the header comes out a few pixels wider than the
+   * sections below it, just enough to visibly misalign their rounded
+   * corners once the header becomes solid on scroll. 0 on touch/overlay
+   * -scrollbar devices (most phones), where there's nothing to correct
+   * for anyway.
+   */
+  function setScrollbarWidthVar() {
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+    document.documentElement.style.setProperty('--scrollbar-width', `${scrollbarWidth}px`);
+  }
+
   /** Adds a background to the fixed header once the page scrolls. */
   function setupHeaderScroll() {
     const header = document.querySelector('.site-header');
@@ -231,19 +248,34 @@
     updateFade();
   }
 
+  const TERRACOTTA_RGB = '195, 99, 77';
+  const NAVY_RGB = '31, 46, 77';
+
   /**
-   * Fireflies on the hero background — a handful of warm dots that fade
-   * in and out at fixed spots, each on its own independent (and
-   * slightly randomized) cycle so they never blink in sync. No movement,
-   * no connecting lines — deliberately sparser and calmer than the
-   * constellation version this replaced, so it stays firmly in the
-   * background rather than competing with the text. Skipped for guests
-   * with prefers-reduced-motion on, same as the fade effect above.
+   * Fireflies on a section's background — a handful of warm dots that
+   * fade in and out at fixed spots, each on its own independent (and
+   * slightly randomized) cycle so they never blink in sync. No
+   * movement, no connecting lines — stays firmly in the background
+   * rather than competing with the text. Skipped for guests with
+   * prefers-reduced-motion on.
+   *
+   * Reusable across sections (hero, Details, Gifts) via options instead
+   * of being hardcoded to the hero — each call gets its own count,
+   * timing range, and (for the hero) a few navy fireflies mixed in with
+   * the usual terracotta ones, per the couple's request for "a touch of
+   * blue in each section".
    */
-  function setupHeroConstellation() {
-    const canvas = document.querySelector('.hero__constellation');
-    const hero = document.querySelector('.hero');
-    if (!canvas || !hero) return;
+  function setupFireflies({
+    canvasSelector,
+    containerSelector,
+    count,
+    blueCount = 0,
+    cycleMsRange = [3500, 6500],
+    maxOpacityRange = [0.35, 0.6],
+  }) {
+    const canvas = document.querySelector(canvasSelector);
+    const container = document.querySelector(containerSelector);
+    if (!canvas || !container) return;
 
     const prefersReducedMotion = window.matchMedia(
       '(prefers-reduced-motion: reduce)'
@@ -251,21 +283,19 @@
     if (prefersReducedMotion) return;
 
     const ctx = canvas.getContext('2d');
-    const FIREFLY_COUNT = 14; // kept low on purpose — "no saturar el hero"
-    const GLOW_COLOR = '195, 99, 77'; // --color-terracotta, as an rgb triple
     let fireflies = [];
     let width = 0;
     let height = 0;
 
     function resize() {
-      width = hero.offsetWidth;
-      height = hero.offsetHeight;
+      width = container.offsetWidth;
+      height = container.offsetHeight;
       canvas.width = width;
       canvas.height = height;
     }
 
     function createFireflies() {
-      fireflies = Array.from({ length: FIREFLY_COUNT }, () => ({
+      fireflies = Array.from({ length: count }, (_, i) => ({
         x: Math.random() * width,
         y: Math.random() * height,
         radius: 1.3 + Math.random() * 1.2,
@@ -273,8 +303,12 @@
         // its own slightly different cycle length, so they drift in and
         // out of sync with each other rather than blinking together.
         phase: Math.random() * Math.PI * 2,
-        cycleMs: 3500 + Math.random() * 3000,
-        maxOpacity: 0.35 + Math.random() * 0.25,
+        cycleMs: cycleMsRange[0] + Math.random() * (cycleMsRange[1] - cycleMsRange[0]),
+        maxOpacity:
+          maxOpacityRange[0] + Math.random() * (maxOpacityRange[1] - maxOpacityRange[0]),
+        // The first `blueCount` fireflies (of otherwise-random position)
+        // are navy; the rest stay the usual terracotta.
+        color: i < blueCount ? NAVY_RGB : TERRACOTTA_RGB,
       }));
     }
 
@@ -287,8 +321,8 @@
         const opacity = ((Math.sin(t) + 1) / 2) * f.maxOpacity;
 
         ctx.beginPath();
-        ctx.fillStyle = `rgba(${GLOW_COLOR}, ${opacity})`;
-        ctx.shadowColor = `rgba(${GLOW_COLOR}, ${opacity})`;
+        ctx.fillStyle = `rgba(${f.color}, ${opacity})`;
+        ctx.shadowColor = `rgba(${f.color}, ${opacity})`;
         ctx.shadowBlur = 6;
         ctx.arc(f.x, f.y, f.radius, 0, Math.PI * 2);
         ctx.fill();
@@ -324,10 +358,35 @@
 
   async function init() {
     await loadWeddingInfo();
+    setScrollbarWidthVar();
+    window.addEventListener('resize', setScrollbarWidthVar, { passive: true });
     setupLanguageToggle();
     setupHeaderScroll();
     setupHeroScrollEffects();
-    setupHeroConstellation();
+    setupFireflies({
+      canvasSelector: '.hero__constellation',
+      containerSelector: '.hero',
+      count: 14, // kept low on purpose — "no saturar el hero"
+      blueCount: 2, // a few navy ones mixed in with the terracotta, per the couple's request
+    });
+    // Details and Gifts: sparser and dimmer than the hero ("tenues y
+    // esporádicas, que no vayan a saturar") — fewer fireflies, a wider/
+    // slower cycle range so they feel occasional rather than a constant
+    // ambient presence, and a lower opacity ceiling.
+    setupFireflies({
+      canvasSelector: '.details__fireflies',
+      containerSelector: '.details',
+      count: 6,
+      cycleMsRange: [4000, 9000],
+      maxOpacityRange: [0.2, 0.4],
+    });
+    setupFireflies({
+      canvasSelector: '.gifts__fireflies',
+      containerSelector: '.gifts',
+      count: 6,
+      cycleMsRange: [4000, 9000],
+      maxOpacityRange: [0.2, 0.4],
+    });
     applyLanguage(currentLanguage);
     startCountdown();
   }
