@@ -319,13 +319,20 @@ button {
 /* 5. Hero                                                                  */
 /* ----------------------------------------------------------------------- */
 .hero {
-  min-height: 100vh;
+  /* svh (small viewport height) instead of vh — accounts for mobile
+     browser chrome (address bar etc.), so this doesn't overshoot the
+     actual visible area the way 100vh can on phones. */
+  min-height: 100svh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: var(--space-xl) var(--space-md);
+  /* Was --space-xl (112px) top/bottom — a big part of why the hero's
+     content could run taller than the visible screen and need its own
+     scroll. --space-lg is still generous breathing room, just not as
+     much of it. */
+  padding: var(--space-lg) var(--space-md);
   background: radial-gradient(120% 120% at 50% 0%, #5c0526 0%, var(--color-wine) 55%, #34011a 100%);
   color: var(--color-white);
   position: relative;
@@ -368,9 +375,12 @@ button {
   font-weight: 600;
   font-size: clamp(3.25rem, 9vw, 6.5rem);
   color: var(--color-white);
-  /* Was --space-sm, then --space-md — still felt cramped per feedback,
-     now --space-lg for real breathing room around the script flourishes. */
-  margin: 0 0 var(--space-lg);
+  /* Was --space-sm, then --space-md, then --space-lg — good breathing
+     room, but combined with everything else added up to more height
+     than the hero could fit on a typical screen without scrolling
+     inside itself. --space-md is the compromise: still noticeably more
+     than the original --space-sm, just not the largest step. */
+  margin: 0 0 var(--space-md);
 }
 
 .hero__ampersand {
@@ -429,13 +439,13 @@ button {
 .hero__venue {
   font-size: 0.95rem;
   color: var(--color-mauve-on-dark);
-  margin-bottom: var(--space-lg);
+  margin-bottom: var(--space-md);
 }
 
 .countdown {
   display: flex;
   gap: var(--space-md);
-  margin-bottom: var(--space-lg);
+  margin-bottom: var(--space-md);
   flex-wrap: wrap;
   justify-content: center;
 }
@@ -1230,6 +1240,28 @@ button {
   .site-header {
     top: 10px;
   }
+
+  /* BUG FIX: moving .site-header down to top:10px (above) opened a
+     permanent 10px gap at the very top of the viewport that nothing
+     was covering — body's own padding-top only shows its sand
+     background for the first 10px of the DOCUMENT, which scrolls away
+     immediately once the guest scrolls at all. After that, whatever
+     section happens to be scrolled to the very top shows through that
+     10px sliver instead of sand, since the header (fixed, but starting
+     at 10px) doesn't reach that high. Fix: a separate fixed strip, ON
+     TOP of the header (z-index 60 > header's 50), that stays sand-
+     colored no matter what's scrolled underneath it. */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 10px;
+    background: var(--color-frame);
+    z-index: 60;
+    pointer-events: none;
+  }
 }
 
 /* Landscape: same phone, meaningfully more width available (typically
@@ -1265,6 +1297,20 @@ button {
 
   .site-header {
     top: 18px;
+  }
+
+  /* Same fix as the portrait block above, for the same reason — see
+     that comment for the full explanation. */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 18px;
+    background: var(--color-frame);
+    z-index: 60;
+    pointer-events: none;
   }
 }
 
@@ -1392,6 +1438,22 @@ button {
 
   .site-header {
     top: 24px;
+  }
+
+  /* Same bleed-through fix as the mobile blocks — see the portrait
+     block's comment for the full explanation. Without this, whatever
+     section is scrolled to the very top of the viewport shows through
+     the 24px gap above the header instead of sand. */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 24px;
+    background: var(--color-frame);
+    z-index: 60;
+    pointer-events: none;
   }
 
   .site-header,
