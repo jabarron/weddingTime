@@ -27,6 +27,26 @@
   flex-wrap: wrap;
 }
 
+/* Overrides the base .btn's text-button padding/sizing — these three
+   are icon-only now (too wide with visible text, per the couple's
+   feedback), a compact square instead. The label text still exists in
+   the HTML (aria-label, translated via data-i18n-label in admin.js) for
+   screen readers — just not shown on screen. */
+.admin-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+}
+
+.admin-icon-btn svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
 .admin-export-btn {
   background: var(--color-white);
   color: var(--color-wine);

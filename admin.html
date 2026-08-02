@@ -31,9 +31,15 @@
   <header class="admin-header">
     <h1><span data-i18n="admin_title">RSVP Dashboard</span> — Ismeraí &amp; Jesús</h1>
     <div class="admin-header__actions">
-      <a href="/" class="btn admin-home-btn" data-i18n="admin_home_btn">Back to homepage</a>
-      <a href="/api/admin/rsvps/export" class="btn admin-export-btn" id="export-btn" data-i18n="admin_export_btn">Download Excel</a>
-      <button id="refresh-btn" class="btn btn--primary" data-i18n="admin_refresh_btn">Refresh</button>
+      <a href="/" class="btn admin-icon-btn admin-home-btn" data-i18n-label="admin_home_btn" aria-label="Back to homepage">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5" /><path d="M5.5 10v9a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-9" /><path d="M10 20v-6h4v6" /></svg>
+      </a>
+      <a href="/api/admin/rsvps/export" class="btn admin-icon-btn admin-export-btn" id="export-btn" data-i18n-label="admin_export_btn" aria-label="Download Excel">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11" /><path d="M7.5 11 12 15.5 16.5 11" /><path d="M4.5 18.5v1.5a1 1 0 0 0 1 1h13a1 1 0 0 0 1-1v-1.5" /></svg>
+      </a>
+      <button id="refresh-btn" class="btn btn--primary admin-icon-btn" data-i18n-label="admin_refresh_btn" aria-label="Refresh">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10a8 8 0 0 1 14.5-4.5M20 4v5.5h-5.5" /><path d="M20 14a8 8 0 0 1-14.5 4.5M4 20v-5.5h5.5" /></svg>
+      </button>
     </div>
   </header>
 

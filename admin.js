@@ -61,6 +61,12 @@
       const key = el.getAttribute('data-i18n');
       if (dict[key]) el.textContent = dict[key];
     });
+    // Icon-only buttons (no visible text) — translates the accessible
+    // name instead of any on-screen text, since there isn't any.
+    document.querySelectorAll('[data-i18n-label]').forEach((el) => {
+      const key = el.getAttribute('data-i18n-label');
+      if (dict[key]) el.setAttribute('aria-label', dict[key]);
+    });
   }
 
   function escapeHtml(value) {

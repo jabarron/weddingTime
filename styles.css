@@ -111,6 +111,19 @@ h1, h2, h3, h4 {
   color: var(--color-wine);
 }
 
+/* Section headings (Detalles, Itinerario, Vestimenta, Regalos, RSVP) had
+   no explicit size at all — just the browser's fixed ~24px h2 default,
+   the one spot in the site not using the same clamp()-based responsive
+   scale as everything else (hero names, quote text, milestone
+   headings...). This brings them in line with that. Scoped to plain
+   `h2` (not the h1/h2/h3/h4 group above) so it doesn't touch
+   admin.html's <h1> title or any of the more specific h3 overrides
+   elsewhere (story headings, milestone headings), which already have
+   their own sizing. */
+h2 {
+  font-size: clamp(1.8rem, 4vw, 2.4rem);
+}
+
 p {
   margin: 0 0 var(--space-sm);
 }
@@ -963,7 +976,7 @@ button {
   width: 40px;
   height: 40px;
   color: var(--color-white);
-  margin: 0 auto var(--space-sm);
+  margin: var(--space-sm) auto var(--space-sm);
 }
 
 .gifts p {
