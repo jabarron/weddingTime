@@ -98,12 +98,12 @@
   function renderReadRow(r) {
     return `
       <tr data-id="${r.id}" class="${r.attending ? '' : 'is-declined'}">
-        <td>${escapeHtml(r.full_name)}</td>
+        <td>${r.full_name ? `<span class="admin-popup-cell" tabindex="0">${escapeHtml(r.full_name)}</span>` : ''}</td>
         <td>${escapeHtml(r.phone)}</td>
         <td>${r.attending ? dict.admin_yes : dict.admin_no}</td>
         <td>${escapeHtml(r.guest_count)}</td>
-        <td>${escapeHtml(r.song_request)}</td>
-        <td>${r.message ? `<span class="admin-message-cell" tabindex="0">${escapeHtml(r.message)}</span>` : ''}</td>
+        <td>${r.song_request ? `<span class="admin-popup-cell" tabindex="0">${escapeHtml(r.song_request)}</span>` : ''}</td>
+        <td>${r.message ? `<span class="admin-popup-cell" tabindex="0">${escapeHtml(r.message)}</span>` : ''}</td>
         <td>${formatDate(r.submitted_at)}</td>
         <td class="admin-actions">
           <button class="admin-edit-btn" data-id="${r.id}">${dict.admin_edit_btn}</button>
@@ -258,10 +258,11 @@
   refreshBtn.addEventListener('click', loadRsvps);
 
   /**
-   * Full-text popup for truncated message cells (.admin-message-cell,
-   * added in renderReadRow). One reusable popup element (#message-popup
-   * in admin.html) that JS repositions and refills rather than creating
-   * a new one per row — cheaper, and there's only ever one open at a
+   * Full-text popup for truncated cells (.admin-popup-cell, added in
+   * renderReadRow for Nombre, Canción, and Mensaje). One reusable popup
+   * element (#message-popup in admin.html) that JS repositions and
+   * refills rather than creating a new one per row — cheaper, and
+   * there's only ever one open at a
    * time anyway.
    *
    * Positioned with getBoundingClientRect() + position:fixed instead of
@@ -325,16 +326,16 @@
 
     if (canHover) {
       tableBody.addEventListener('mouseover', (e) => {
-        const cell = e.target.closest('.admin-message-cell');
+        const cell = e.target.closest('.admin-popup-cell');
         if (cell) openPopup(cell);
       });
       tableBody.addEventListener('mouseout', (e) => {
-        const cell = e.target.closest('.admin-message-cell');
+        const cell = e.target.closest('.admin-popup-cell');
         if (cell) closePopup();
       });
     } else {
       tableBody.addEventListener('click', (e) => {
-        const cell = e.target.closest('.admin-message-cell');
+        const cell = e.target.closest('.admin-popup-cell');
         if (!cell) return;
         e.stopPropagation();
         if (popup.classList.contains('is-open')) {

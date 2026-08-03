@@ -430,7 +430,10 @@ button {
   50% {
     /* Back to 10px/0.55 per explicit request — history: started here,
        went to 12px/0.6, then 16px/0.8 (too much), landed back here. */
-    text-shadow: 0 0 10px rgba(195, 99, 77, 0.55);
+    /* Reduced to near-imperceptible per request (choosing this over
+       removing it outright) — history: 10px/0.55 -> 12px/0.6 ->
+       16px/0.8 -> back to 10px/0.55 -> now much lower. */
+    text-shadow: 0 0 6px rgba(195, 99, 77, 0.25);
   }
 }
 
@@ -1441,6 +1444,57 @@ button {
 
   .story-milestone--left .story-milestone__photo {
     margin-left: auto;
+  }
+
+  /* EXPERIMENTAL layout, desktop only (this whole @media block is
+     768px+) — per the couple's request to test photo and text side by
+     side instead of stacked, text on the side closer to the timeline
+     line rather than below the photo. Mobile is completely untouched.
+     These are added AFTER the shared .timeline__item/.story-milestone
+     rules above (not edited in place) so the itinerary's .timeline__item
+     keeps its existing stacked layout — only .story-milestone changes.
+
+     Switches each item from "confined to one 50%-wide column, photo
+     above text" to "full width, photo and text side by side" — the
+     50%-column approach didn't leave enough room for a readable line
+     length next to a photo without also shrinking the photo
+     uncomfortably small. Since the item is full width now, the dot
+     needs to move from "the item's own edge" (which used to sit right
+     at the centerline because the item stopped there) to explicitly
+     the centerline itself (left: 50%). */
+  .story-milestone {
+    display: flex;
+    align-items: center;
+    gap: var(--space-lg);
+    width: 100%;
+    margin-left: 0;
+    padding-right: 0;
+  }
+
+  .story-milestone--left {
+    flex-direction: row;
+    text-align: left;
+  }
+
+  .story-milestone--right {
+    flex-direction: row-reverse;
+  }
+
+  .story-milestone__dot {
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+  }
+
+  .story-milestone__photo {
+    flex: 0 0 auto;
+    margin-left: 0;
+  }
+
+  .story-milestone__text {
+    flex: 1 1 auto;
+    min-width: 0;
+    text-align: left;
   }
 }
 

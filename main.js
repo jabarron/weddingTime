@@ -45,7 +45,9 @@
     toast: '<path d="M7 3h3l-.6 8.2a1.4 1.4 0 0 1-1.8 0L7 3z"/><path d="M8.5 11.2V18M6 18h5"/><path d="M14 6h3l-.5 6a1.4 1.4 0 0 1-2 0L14 6z"/><path d="M15.5 12v6M13 18h5"/>',
     // Corte de Pastel — round-topped single-tier cake with a wavy
     // decorative line, matching the couple's reference image.
-    cake: '<path d="M7 21V11a5 5 0 0 1 10 0v10"/><path d="M5 21h14"/><path d="M7.5 15c1-.8 2-.8 3 0s2 .8 3 0 2-.8 3-.8"/>',
+    // Corte de Pastel — a simple cake slice (was a whole round-top
+    // cake in the previous version).
+    cake: '<path d="M4 19h16"/><path d="M6 19 12 6l6 13z"/><path d="M8.5 14h7"/><circle cx="12" cy="4" r="1"/>',
     // Fiesta y Baile — disco ball with a sparkle accent, matching the
     // couple's reference image (2nd redesign — an earlier version used
     // falling streamers/confetti instead).

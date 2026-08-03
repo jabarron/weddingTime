@@ -330,7 +330,7 @@ tr.is-declined td {
    full text via #message-popup. Underline + cursor makes it visually
    obvious there's more to see, rather than a plain truncated string
    that looks like it's just missing text. */
-.admin-message-cell {
+.admin-popup-cell {
   cursor: pointer;
   text-decoration: underline dotted;
   text-decoration-color: var(--color-mauve);
@@ -391,10 +391,20 @@ tr.is-declined td {
 
   .admin-summary {
     order: 1;
+    /* Explicit align-items/align-self on both this and
+       .admin-header__actions below, redundant with .admin-toolbar's
+       own align-items:center above — belt-and-suspenders against the
+       two ending up visually offset from each other, since they don't
+       necessarily have identical natural heights (stat cards carry a
+       number + label; the buttons are a fixed 44px square). */
+    align-items: center;
+    align-self: center;
   }
 
   .admin-header__actions {
     order: 2;
+    align-items: center;
+    align-self: center;
   }
 
   .admin-header h1 {
