@@ -169,13 +169,14 @@ function pageShell({ lang, title, bodyHtml, wide = false }) {
       .card--stagger > * { animation: none; opacity: 1; }
     }
     img.error-image {
-      width: 100%;
+      width: 90%;
+      margin: 0 auto 1.5rem;
       max-height: 85vh;
       height: auto;
       object-fit: contain;
       border-radius: 8px;
       border: 1px solid #b06f6b;
-      margin-bottom: 1.5rem;
+      display: block;
     }
     h1 {
       font-family: 'Cormorant Garamond', Georgia, serif;

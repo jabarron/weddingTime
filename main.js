@@ -46,7 +46,9 @@
     // Corte de Pastel — an actual tiered wedding cake with a topper.
     cake: '<rect x="7" y="15" width="10" height="6" rx="1"/><rect x="9" y="10" width="6" height="5" rx="1"/><path d="M12 10V7"/><circle cx="12" cy="6" r="1"/>',
     // Fiesta y Baile — disco ball, refined with a hanging stand.
-    disco: '<circle cx="12" cy="11" r="6"/><path d="M6 11h12M12 5v12"/><path d="M8 7l8 8M16 7l-8 8"/><path d="M12 17v4"/><path d="M9 21h6"/>',
+    // Fiesta y Baile — falling streamers + confetti (replaces an
+    // earlier disco-ball version the couple didn't like).
+    disco: '<path d="M6 4c2 2 0 4 2 6s0 4 2 6"/><path d="M12 3c2 2 0 4 2 6s0 4 2 6"/><path d="M18 5c1.5 1.5 0 3 1.5 4.5"/><circle cx="5" cy="18" r="1"/><circle cx="11" cy="20" r="1"/><circle cx="17" cy="17" r="1"/>',
     // Despedida — a single elegant sparkle/firework burst for the
     // midnight send-off, with two small trailing accent dots.
     sparkle: '<path d="M12 4l1.5 5.5L19 11l-5.5 1.5L12 18l-1.5-5.5L5 11l5.5-1.5z"/><circle cx="19" cy="5" r="1"/><circle cx="5" cy="18" r="1"/>',
@@ -248,8 +250,7 @@
     updateFade();
   }
 
-  const TERRACOTTA_RGB = '195, 99, 77';
-  const NAVY_RGB = '31, 46, 77';
+  const FIREFLY_RGB = '255, 250, 243'; // --color-white, as an rgb triple
 
   /**
    * Fireflies on a section's background — a handful of warm dots that
@@ -259,17 +260,19 @@
    * rather than competing with the text. Skipped for guests with
    * prefers-reduced-motion on.
    *
+   * White, and deliberately small — was a terracotta/navy mix before,
+   * but white reads more clearly as "firefly glow" against the wine
+   * backgrounds; kept the dots themselves tiny so that extra visibility
+   * doesn't turn into extra visual weight.
+   *
    * Reusable across sections (hero, Details, Gifts) via options instead
-   * of being hardcoded to the hero — each call gets its own count,
-   * timing range, and (for the hero) a few navy fireflies mixed in with
-   * the usual terracotta ones, per the couple's request for "a touch of
-   * blue in each section".
+   * of being hardcoded to the hero — each call gets its own count and
+   * timing range.
    */
   function setupFireflies({
     canvasSelector,
     containerSelector,
     count,
-    blueCount = 0,
     cycleMsRange = [3500, 6500],
     maxOpacityRange = [0.35, 0.6],
   }) {
@@ -295,10 +298,12 @@
     }
 
     function createFireflies() {
-      fireflies = Array.from({ length: count }, (_, i) => ({
+      fireflies = Array.from({ length: count }, () => ({
         x: Math.random() * width,
         y: Math.random() * height,
-        radius: 1.3 + Math.random() * 1.2,
+        // Was 1.3-2.5px — shrunk to keep the brighter white color from
+        // reading as more prominent than the old terracotta version.
+        radius: 0.8 + Math.random() * 0.7,
         // Each firefly has its own random starting point in the cycle and
         // its own slightly different cycle length, so they drift in and
         // out of sync with each other rather than blinking together.
@@ -306,9 +311,6 @@
         cycleMs: cycleMsRange[0] + Math.random() * (cycleMsRange[1] - cycleMsRange[0]),
         maxOpacity:
           maxOpacityRange[0] + Math.random() * (maxOpacityRange[1] - maxOpacityRange[0]),
-        // The first `blueCount` fireflies (of otherwise-random position)
-        // are navy; the rest stay the usual terracotta.
-        color: i < blueCount ? NAVY_RGB : TERRACOTTA_RGB,
       }));
     }
 
@@ -321,8 +323,8 @@
         const opacity = ((Math.sin(t) + 1) / 2) * f.maxOpacity;
 
         ctx.beginPath();
-        ctx.fillStyle = `rgba(${f.color}, ${opacity})`;
-        ctx.shadowColor = `rgba(${f.color}, ${opacity})`;
+        ctx.fillStyle = `rgba(${FIREFLY_RGB}, ${opacity})`;
+        ctx.shadowColor = `rgba(${FIREFLY_RGB}, ${opacity})`;
         ctx.shadowBlur = 6;
         ctx.arc(f.x, f.y, f.radius, 0, Math.PI * 2);
         ctx.fill();
@@ -365,7 +367,6 @@
       canvasSelector: '.hero__constellation',
       containerSelector: '.hero',
       count: 14, // kept low on purpose — "no saturar el hero"
-      blueCount: 2, // a few navy ones mixed in with the terracotta, per the couple's request
     });
     // Details and Gifts: sparser and dimmer than the hero ("tenues y
     // esporádicas, que no vayan a saturar") — fewer fireflies, a wider/

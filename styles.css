@@ -424,9 +424,10 @@ button {
     text-shadow: 0 0 0 rgba(195, 99, 77, 0);
   }
   50% {
-    /* Was 10px blur / 0.55 opacity — bumped both up a bit per feedback
-       that it was too subtle to notice. Still a glow, not a beacon. */
-    text-shadow: 0 0 16px rgba(195, 99, 77, 0.8);
+    /* Landed on 12px blur / 0.60 opacity after two rounds of feedback
+       (10px/0.55 too subtle, 16px/0.8 too much) — this specific value
+       given directly. */
+    text-shadow: 0 0 12px rgba(195, 99, 77, 0.6);
   }
 }
 

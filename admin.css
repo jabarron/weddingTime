@@ -4,8 +4,17 @@
    ============================================================================ */
 
 .admin-body {
-  padding: var(--space-sm);
-  background: var(--color-cream-soft);
+  /* Same "framed" idea as the public site (sand background, visible
+     margin on all sides) — simpler than the public site's responsive
+     breakpoint system since this page doesn't need the same level of
+     device-specific tuning, but clamp() still keeps it proportional
+     across screen sizes instead of one fixed value. Stored as a
+     variable (not just used inline) so .admin-ribbon's negative margin
+     below can reference the exact same value instead of risking the
+     two drifting out of sync. */
+  --admin-body-padding: clamp(10px, 3vw, 28px);
+  padding: var(--admin-body-padding);
+  background: var(--color-frame);
 }
 
 /* Same wine ribbon + monogram used on the login form and lockout page
@@ -18,7 +27,7 @@
   padding: 0.9rem 1rem;
   display: flex;
   justify-content: center;
-  margin: calc(-1 * var(--space-sm)) calc(-1 * var(--space-sm)) var(--space-md);
+  margin: calc(-1 * var(--admin-body-padding)) calc(-1 * var(--admin-body-padding)) var(--space-md);
 }
 
 .admin-ribbon img {
@@ -28,10 +37,10 @@
 
 .admin-header {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
+  text-align: center;
   margin-bottom: var(--space-sm);
-  flex-wrap: wrap;
   gap: var(--space-sm);
 }
 
@@ -124,6 +133,22 @@
   color: var(--color-berry);
   text-transform: uppercase;
   letter-spacing: 0.05em;
+}
+
+/* Overrides the generic h1-h4/h2 styles from styles.css (large serif,
+   wine color) — this is meant to read as a small section label above
+   the stat boxes, same font/size family as .admin-stat__label below it
+   (just slightly bigger, since it's introducing a group rather than
+   labeling one box), not as a big heading. */
+.admin-responses-heading {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--color-berry);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  text-align: center;
+  margin: 0 0 var(--space-sm);
 }
 
 .admin-table-wrap {
