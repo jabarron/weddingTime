@@ -37,12 +37,21 @@
 }
 
 .admin-header {
+  text-align: center;
+  margin-bottom: var(--space-sm);
+}
+
+/* Mobile: stacked, actions above stats (natural DOM order — see
+   admin.html) — this was already the layout the couple liked, just
+   restructured under a shared wrapper rather than nesting actions
+   inside .admin-header, so desktop below can rearrange them without
+   needing a different DOM order per breakpoint. */
+.admin-toolbar {
   display: flex;
   flex-direction: column;
   align-items: center;
-  text-align: center;
-  margin-bottom: var(--space-sm);
   gap: var(--space-sm);
+  margin-bottom: var(--space-sm);
 }
 
 .admin-header h1 {
@@ -109,7 +118,6 @@
 .admin-summary {
   display: flex;
   gap: 0.6rem;
-  margin-bottom: var(--space-sm);
   flex-wrap: wrap;
 }
 
@@ -128,14 +136,18 @@
 .admin-stat__number {
   display: block;
   font-family: var(--font-display);
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   color: var(--color-wine);
 }
 
 .admin-stat__label {
-  font-size: 0.55rem;
+  /* Was 0.55rem — bumped slightly for legibility now that these are
+     full phrases again ("Invitaciones confirmadas") rather than single
+     words, and text-transform brought back to uppercase per request. */
+  font-size: 0.62rem;
   color: var(--color-berry);
-  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
 }
 
 .admin-table-wrap {
@@ -213,15 +225,23 @@
 
 .admin-table th:nth-child(7),
 .admin-table td:nth-child(7) {
-  width: 145px;
-  max-width: 145px;
+  /* Was 145px (needed room for a full date + time, e.g. "May 1, 2027,
+     10:30 AM") — now that this is a short numeric-only date
+     ("1/08/2026"), it needs much less. */
+  width: 90px;
+  max-width: 90px;
 }
 
 .admin-table th:nth-child(8),
 .admin-table td:nth-child(8) {
-  width: 140px;
-  max-width: 140px;
-  white-space: normal;
+  /* Was 140px + white-space:normal — that combination is exactly what
+     let "Editar"/"Eliminar" wrap onto two lines instead of staying
+     side by side. Widened enough for both buttons at their normal size
+     with nowrap enforced, rather than trying to buy space by letting
+     them wrap. */
+  width: 165px;
+  max-width: 165px;
+  white-space: nowrap;
 }
 
 .admin-table th {
@@ -286,6 +306,13 @@ tr.is-editing td {
   background: var(--color-cream-soft);
 }
 
+/* Very subtle wine tint for rows where the guest declined — enough to
+   notice on a scan down the table, not so much it reads as an error/
+   warning state. */
+tr.is-declined td {
+  background: rgba(72, 1, 31, 0.05);
+}
+
 .admin-table td input,
 .admin-table td select {
   width: 100%;
@@ -348,6 +375,28 @@ tr.is-editing td {
     margin-bottom: var(--space-md);
   }
 
+  /* Row instead of mobile's stacked column — stats on the left, action
+     buttons on the right, per the couple's request that the buttons
+     were leaving too much empty space of their own on a wide screen.
+     .admin-summary gets order:1 and .admin-header__actions order:2 to
+     swap their visual order (stats first/left instead of actions
+     first/top) without needing a different element order in the HTML
+     for each breakpoint. */
+  .admin-toolbar {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-md);
+  }
+
+  .admin-summary {
+    order: 1;
+  }
+
+  .admin-header__actions {
+    order: 2;
+  }
+
   .admin-header h1 {
     font-size: 1.5rem;
   }
@@ -368,11 +417,11 @@ tr.is-editing td {
   }
 
   .admin-stat__number {
-    font-size: 1.3rem;
+    font-size: 1.35rem;
   }
 
   .admin-stat__label {
-    font-size: 0.65rem;
+    font-size: 0.72rem;
   }
 
   .admin-table {

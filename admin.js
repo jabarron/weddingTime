@@ -84,16 +84,20 @@
   }
 
   function formatDate(isoString) {
-    return new Date(isoString).toLocaleString(lang === 'es' ? 'es-MX' : 'en-US', {
-      dateStyle: 'medium',
-      timeStyle: 'short',
+    // Numeric date only, no time, per request — the database itself
+    // still stores the full timestamp (submitted_at) unchanged; this
+    // only affects how it's displayed here.
+    return new Date(isoString).toLocaleDateString(lang === 'es' ? 'es-MX' : 'en-US', {
+      day: 'numeric',
+      month: 'numeric',
+      year: 'numeric',
     });
   }
 
   /** Normal, read-only row. */
   function renderReadRow(r) {
     return `
-      <tr data-id="${r.id}">
+      <tr data-id="${r.id}" class="${r.attending ? '' : 'is-declined'}">
         <td>${escapeHtml(r.full_name)}</td>
         <td>${escapeHtml(r.phone)}</td>
         <td>${r.attending ? dict.admin_yes : dict.admin_no}</td>

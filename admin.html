@@ -36,6 +36,15 @@
 
   <header class="admin-header">
     <h1 data-i18n="admin_title">RSVP</h1>
+  </header>
+
+  <!-- Wraps the action buttons + stat cards together so desktop can lay
+       them out side by side (stats left, buttons right — see
+       .admin-toolbar in admin.css) while mobile keeps them stacked in
+       their original order (actions, then stats) via the `order`
+       property rather than needing a different DOM order per
+       breakpoint. -->
+  <div class="admin-toolbar">
     <div class="admin-header__actions">
       <a href="/" class="btn admin-icon-btn admin-home-btn" data-i18n-label="admin_home_btn" aria-label="Back to homepage">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5" /><path d="M5.5 10v9a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-9" /><path d="M10 20v-6h4v6" /></svg>
@@ -47,22 +56,22 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10a8 8 0 0 1 14.5-4.5M20 4v5.5h-5.5" /><path d="M20 14a8 8 0 0 1-14.5 4.5M4 20v-5.5h5.5" /></svg>
       </button>
     </div>
-  </header>
 
-  <section class="admin-summary" id="admin-summary">
-    <div class="admin-stat">
-      <span class="admin-stat__number" id="stat-attending">–</span>
-      <span class="admin-stat__label" data-i18n="admin_stat_attending">asistentes confirmados</span>
-    </div>
-    <div class="admin-stat">
-      <span class="admin-stat__number" id="stat-guests">–</span>
-      <span class="admin-stat__label" data-i18n="admin_stat_guests">asistentes totales</span>
-    </div>
-    <div class="admin-stat">
-      <span class="admin-stat__number" id="stat-declined">–</span>
-      <span class="admin-stat__label" data-i18n="admin_stat_declined">no podrán asistir</span>
-    </div>
-  </section>
+    <section class="admin-summary" id="admin-summary">
+      <div class="admin-stat">
+        <span class="admin-stat__number" id="stat-attending">–</span>
+        <span class="admin-stat__label" data-i18n="admin_stat_attending">Invitaciones confirmadas</span>
+      </div>
+      <div class="admin-stat">
+        <span class="admin-stat__number" id="stat-guests">–</span>
+        <span class="admin-stat__label" data-i18n="admin_stat_guests">Total de asistentes</span>
+      </div>
+      <div class="admin-stat">
+        <span class="admin-stat__number" id="stat-declined">–</span>
+        <span class="admin-stat__label" data-i18n="admin_stat_declined">Invitaciones declinadas</span>
+      </div>
+    </section>
+  </div>
 
   <p class="admin-scroll-hint" data-i18n="admin_scroll_hint">Swipe left/right to see more columns →</p>
 
