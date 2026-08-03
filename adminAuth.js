@@ -143,8 +143,30 @@ function pageShell({ lang, title, bodyHtml, wide = false }) {
       from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
     }
+    /* Error/lockout page only — same idea as the public site's hero
+       entrance (each element fades/slides up in its own turn instead of
+       the whole block appearing at once), just compressed to finish in
+       about the same ~0.5s the plain .card fade above takes, rather
+       than the hero's slower ~1.5s sequence. This card's own fadeIn is
+       turned off so it doesn't double up with its children's — each
+       child fades in on its own instead of the whole box fading as one
+       unit first. */
+    .card--stagger {
+      animation: none;
+      opacity: 1;
+    }
+    .card--stagger > * {
+      opacity: 0;
+      animation: fadeIn 0.25s ease-out both;
+    }
+    .card--stagger > img { animation-delay: 0s; }
+    .card--stagger > h1 { animation-delay: 0.08s; }
+    .card--stagger > p { animation-delay: 0.16s; }
+    .card--stagger > a.btn { animation-delay: 0.24s; }
+    .card--stagger > a.link-secondary { animation-delay: 0.32s; }
     @media (prefers-reduced-motion: reduce) {
       .card { animation: none; }
+      .card--stagger > * { animation: none; opacity: 1; }
     }
     img.error-image {
       width: 100%;
@@ -355,7 +377,7 @@ function buildLockedOutPage(req) {
     title: heading,
     wide: true,
     bodyHtml: `
-      <div class="card">
+      <div class="card card--stagger">
         <img class="error-image" src="${imageSrc}" alt="${heading}" />
         <h1>${heading}</h1>
         <p>${message}</p>

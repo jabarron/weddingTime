@@ -8,6 +8,24 @@
   background: var(--color-cream-soft);
 }
 
+/* Same wine ribbon + monogram used on the login form and lockout page
+   (adminAuth.js), for visual consistency across all of /admin — this is
+   the one page of the three that didn't have it yet. Negative margins
+   counteract .admin-body's own padding so the ribbon spans the full
+   width edge-to-edge instead of being inset like the rest of the page. */
+.admin-ribbon {
+  background: var(--color-wine);
+  padding: 0.9rem 1rem;
+  display: flex;
+  justify-content: center;
+  margin: calc(-1 * var(--space-sm)) calc(-1 * var(--space-sm)) var(--space-md);
+}
+
+.admin-ribbon img {
+  height: 36px;
+  width: auto;
+}
+
 .admin-header {
   display: flex;
   align-items: center;
@@ -89,7 +107,7 @@
   background: var(--color-white);
   border: 1px solid var(--color-mauve);
   border-radius: var(--radius);
-  padding: 0.6rem 0.8rem;
+  padding: 0.5rem 0.65rem;
   min-width: 0;
   flex: 1 1 30%;
 }
@@ -97,7 +115,7 @@
 .admin-stat__number {
   display: block;
   font-family: var(--font-display);
-  font-size: 1.6rem;
+  font-size: 1.3rem;
   color: var(--color-wine);
 }
 

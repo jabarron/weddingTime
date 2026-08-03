@@ -63,7 +63,7 @@ module.exports = {
   // ---------------------------------------------------------------------
   itinerary: [
     { time: '12:00 PM', es: 'Ceremonia Civil', en: 'Civil Ceremony', icon: 'rings' },
-    { time: '5:00 PM', es: 'Ceremonia Religiosa', en: 'Religious Ceremony', icon: 'book' },
+    { time: '5:00 PM', es: 'Ceremonia Religiosa', en: 'Religious Ceremony', icon: 'church' },
     { time: '6:30 PM', es: 'Cóctel de Bienvenida', en: 'Welcome Cocktail', icon: 'cocktail' },
     { time: '8:30 PM', es: 'Primer Baile', en: 'First Dance', icon: 'music' },
     { time: '9:00 PM', es: 'Brindis', en: 'Toasts', icon: 'toast' },

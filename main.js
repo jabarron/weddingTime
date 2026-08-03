@@ -22,17 +22,34 @@
 
   // Small line-icon set for the itinerary timeline, keyed by the `icon`
   // value in wedding-config.js -> itinerary. Same thin-stroke style as the
-  // header nav icons. `dot` is the fallback for an unknown/omitted icon.
+  // header nav icons — more detailed/specific than before (per the
+  // couple's reference photo of hand-drawn wedding doodles), but kept in
+  // this same clean-line style rather than copying that hand-drawn look,
+  // so they still match the rest of the site instead of feeling like a
+  // different sub-site. `dot` is the fallback for an unknown/omitted icon.
   const TIMELINE_ICONS = {
-    rings: '<circle cx="8" cy="14" r="5"/><circle cx="14" cy="14" r="5"/>',
-    book: '<path d="M4 5c2-1 5-1 8 1 3-2 6-2 8-1v13c-2-1-5-1-8 1-3-2-6-2-8-1V5z"/><path d="M12 6v13"/>',
-    cocktail: '<path d="M5 4h14l-7 8v7"/><path d="M9 19h6"/>',
-    dinner: '<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/>',
-    music: '<path d="M9 18V5l10-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="16" cy="16" r="3"/>',
-    toast: '<path d="M6 3h4l-1 8a1 1 0 0 1-2 0L6 3z"/><path d="M14 5h4l-.8 6a1 1 0 0 1-2 0L14 5z"/><path d="M8 11v8M17 11v8"/>',
-    cake: '<path d="M4 20l8-12 8 12z"/><path d="M4 20h16"/><circle cx="12" cy="7" r="1"/>',
-    disco: '<circle cx="12" cy="10" r="6"/><path d="M6 10h12M12 4v12M8.3 6.3l7.4 7.4M15.7 6.3l-7.4 7.4"/><path d="M12 16v5"/>',
-    sparkle: '<path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"/>',
+    // Ceremonia Civil — interlocked wedding rings with a small gem accent.
+    rings: '<circle cx="8.5" cy="15" r="4.5"/><circle cx="15.5" cy="15" r="4.5"/><path d="M15 4l2 2.5-2 2.5-2-2.5z"/>',
+    // Ceremonia Religiosa — a small church (cross, peaked roof, door).
+    // Renamed from "book" to "church" for clarity — see wedding-config.js
+    // and the timeline__icon--accent check below, both updated to match.
+    church: '<path d="M12 2v3"/><path d="M10.5 3.5h3"/><path d="M5 21V11L12 5l7 6v10"/><path d="M9.5 21v-5.5h5v5.5"/>',
+    // Cóctel de Bienvenida — a single cocktail glass with a garnish line
+    // (distinct from "toast" below, which is two glasses specifically
+    // for the clinking/toasting moment).
+    cocktail: '<path d="M5 4h14l-7 8v7"/><path d="M9 19h6"/><path d="M8 6.5h8"/>',
+    // Primer Baile — kept music-themed (a proper pair of beamed eighth
+    // notes) since the event is literally about the first dance's music.
+    music: '<circle cx="7" cy="18" r="3"/><circle cx="15" cy="14" r="3"/><path d="M10 18V5l8-2v11"/>',
+    // Brindis — two champagne flutes clinking together.
+    toast: '<path d="M7 3h3l-.6 8.2a1.4 1.4 0 0 1-1.8 0L7 3z"/><path d="M8.5 11.2V18M6 18h5"/><path d="M14 6h3l-.5 6a1.4 1.4 0 0 1-2 0L14 6z"/><path d="M15.5 12v6M13 18h5"/>',
+    // Corte de Pastel — an actual tiered wedding cake with a topper.
+    cake: '<rect x="7" y="15" width="10" height="6" rx="1"/><rect x="9" y="10" width="6" height="5" rx="1"/><path d="M12 10V7"/><circle cx="12" cy="6" r="1"/>',
+    // Fiesta y Baile — disco ball, refined with a hanging stand.
+    disco: '<circle cx="12" cy="11" r="6"/><path d="M6 11h12M12 5v12"/><path d="M8 7l8 8M16 7l-8 8"/><path d="M12 17v4"/><path d="M9 21h6"/>',
+    // Despedida — a single elegant sparkle/firework burst for the
+    // midnight send-off, with two small trailing accent dots.
+    sparkle: '<path d="M12 4l1.5 5.5L19 11l-5.5 1.5L12 18l-1.5-5.5L5 11l5.5-1.5z"/><circle cx="19" cy="5" r="1"/><circle cx="5" cy="18" r="1"/>',
     dot: '<circle cx="12" cy="12" r="3"/>',
   };
 
@@ -134,7 +151,7 @@
           // Religious ceremony gets the navy accent instead of the usual
           // terracotta badge — a small, deliberate exception (see the
           // --color-navy comment in styles.css for why only this one).
-          const accent = event.icon === 'book' ? ' timeline__icon--accent' : '';
+          const accent = event.icon === 'church' ? ' timeline__icon--accent' : '';
           return `
         <li class="timeline__item timeline__item--${side}">
           <span class="timeline__icon${accent}" aria-hidden="true">
@@ -178,58 +195,15 @@
     setInterval(tick, 1000);
   }
 
-  /**
-   * Measures the actual scrollbar width and exposes it as a CSS
-   * variable (--scrollbar-width). Needed because .site-header is
-   * position:fixed (its 100% width is the full viewport, scrollbar
-   * included) while .hero/.section/.site-footer are normal document
-   * flow (their 100% excludes the scrollbar) — without correcting for
-   * that difference, the header comes out a few pixels wider than the
-   * sections below it, just enough to visibly misalign their rounded
-   * corners once the header becomes solid on scroll. 0 on touch/overlay
-   * -scrollbar devices (most phones), where there's nothing to correct
-   * for anyway.
-   */
-  function setScrollbarWidthVar() {
-    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
-    document.documentElement.style.setProperty('--scrollbar-width', `${scrollbarWidth}px`);
-  }
-
   /** Adds a background to the fixed header once the page scrolls. */
   function setupHeaderScroll() {
     const header = document.querySelector('.site-header');
-    const hero = document.querySelector('.hero');
     if (!header) return;
-
     const toggle = () => {
       header.classList.toggle('is-scrolled', window.scrollY > 40);
-
-      /* Real fix for the recurring corner mismatch: the header is
-         fixed, so it's ALWAYS overlaying whatever happens to be
-         scrolled underneath it. Its rounded top corners look right
-         while the hero (also rounded, matching) is what's actually
-         behind it — but every section after the hero is deliberately
-         SQUARE (so sections don't look "pinched" against each other),
-         and once one of those scrolls to the top, the header's rounded
-         corner was cutting a hole that revealed that square edge
-         instead. Not a fixed 40px scroll threshold like .is-scrolled
-         above (that's too early — the hero is much taller than 40px,
-         so the header would go square while the hero's own rounded top
-         was still visible behind it, causing the exact same mismatch
-         in the other direction). This has to specifically track
-         whether we've scrolled past the hero's full height — see
-         .past-hero in styles.css for where this then removes the
-         header's radius. */
-      if (hero) {
-        header.classList.toggle('past-hero', window.scrollY >= hero.offsetHeight);
-      }
     };
-
     toggle();
     window.addEventListener('scroll', toggle, { passive: true });
-    // Hero's height can change (e.g. rotating a phone) — recheck so the
-    // threshold above stays accurate instead of using a stale height.
-    window.addEventListener('resize', toggle, { passive: true });
   }
 
   /**
@@ -384,8 +358,6 @@
 
   async function init() {
     await loadWeddingInfo();
-    setScrollbarWidthVar();
-    window.addEventListener('resize', setScrollbarWidthVar, { passive: true });
     setupLanguageToggle();
     setupHeaderScroll();
     setupHeroScrollEffects();

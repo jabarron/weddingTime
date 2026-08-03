@@ -27,10 +27,10 @@ const DICTIONARY = {
     hero_eyebrow: 'Nos Casamos',
     hero_cta: 'Confirmar Asistencia',
 
-    countdown_days: 'Días',
-    countdown_hours: 'Horas',
-    countdown_minutes: 'Min',
-    countdown_seconds: 'Seg',
+    countdown_days: 'D',
+    countdown_hours: 'H',
+    countdown_minutes: 'M',
+    countdown_seconds: 'S',
 
     story_eyebrow: 'Nuestra Historia',
     story_heading: 'Cómo empezó todo',
@@ -149,10 +149,10 @@ const DICTIONARY = {
     hero_eyebrow: "We're Getting Married",
     hero_cta: 'RSVP',
 
-    countdown_days: 'Days',
-    countdown_hours: 'Hours',
-    countdown_minutes: 'Min',
-    countdown_seconds: 'Sec',
+    countdown_days: 'D',
+    countdown_hours: 'H',
+    countdown_minutes: 'M',
+    countdown_seconds: 'S',
 
     story_eyebrow: 'Our Story',
     story_heading: 'How it all began',
