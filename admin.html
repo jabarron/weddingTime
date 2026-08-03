@@ -32,6 +32,8 @@
     <img src="/monogram.png" alt="I &amp; J" />
   </div>
 
+  <div class="admin-content">
+
   <header class="admin-header">
     <h1 data-i18n="admin_title">RSVP</h1>
     <div class="admin-header__actions">
@@ -47,19 +49,18 @@
     </div>
   </header>
 
-  <h2 class="admin-responses-heading" data-i18n="admin_responses_heading">Respuestas</h2>
   <section class="admin-summary" id="admin-summary">
     <div class="admin-stat">
       <span class="admin-stat__number" id="stat-attending">–</span>
-      <span class="admin-stat__label" data-i18n="admin_stat_attending">Confirmadas</span>
-    </div>
-    <div class="admin-stat">
-      <span class="admin-stat__number" id="stat-declined">–</span>
-      <span class="admin-stat__label" data-i18n="admin_stat_declined">Declinadas</span>
+      <span class="admin-stat__label" data-i18n="admin_stat_attending">asistentes confirmados</span>
     </div>
     <div class="admin-stat">
       <span class="admin-stat__number" id="stat-guests">–</span>
-      <span class="admin-stat__label" data-i18n="admin_stat_guests">Totales</span>
+      <span class="admin-stat__label" data-i18n="admin_stat_guests">asistentes totales</span>
+    </div>
+    <div class="admin-stat">
+      <span class="admin-stat__number" id="stat-declined">–</span>
+      <span class="admin-stat__label" data-i18n="admin_stat_declined">no podrán asistir</span>
     </div>
   </section>
 
@@ -84,6 +85,14 @@
       </tbody>
     </table>
   </section>
+
+  </div>
+  <!-- /.admin-content -->
+
+  <!-- Reusable popup for the full text of a truncated message cell (see
+       admin.js's setupMessagePopup) — one element, JS moves/fills it and
+       toggles .is-open rather than creating a new one per row. -->
+  <div class="admin-message-popup" id="message-popup" role="tooltip"></div>
 
   <!-- i18n.js must load before admin.js, which reads window.DICTIONARY. -->
   <script src="/i18n.js"></script>

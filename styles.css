@@ -329,7 +329,11 @@ button {
 }
 
 .lang-toggle button:hover {
-  color: var(--color-navy);
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.lang-toggle button[aria-pressed='true']:hover {
+  background: var(--color-berry);
 }
 
 .lang-toggle button[aria-pressed='true'] {
@@ -424,10 +428,9 @@ button {
     text-shadow: 0 0 0 rgba(195, 99, 77, 0);
   }
   50% {
-    /* Landed on 12px blur / 0.60 opacity after two rounds of feedback
-       (10px/0.55 too subtle, 16px/0.8 too much) — this specific value
-       given directly. */
-    text-shadow: 0 0 12px rgba(195, 99, 77, 0.6);
+    /* Back to 10px/0.55 per explicit request — history: started here,
+       went to 12px/0.6, then 16px/0.8 (too much), landed back here. */
+    text-shadow: 0 0 10px rgba(195, 99, 77, 0.55);
   }
 }
 
@@ -1565,7 +1568,7 @@ button {
   }
 
   .nav-admin-link:hover {
-    color: var(--color-navy);
+    background: var(--color-berry);
   }
 
   .lang-toggle button {

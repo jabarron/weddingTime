@@ -43,12 +43,13 @@
     music: '<circle cx="7" cy="18" r="3"/><circle cx="15" cy="14" r="3"/><path d="M10 18V5l8-2v11"/>',
     // Brindis — two champagne flutes clinking together.
     toast: '<path d="M7 3h3l-.6 8.2a1.4 1.4 0 0 1-1.8 0L7 3z"/><path d="M8.5 11.2V18M6 18h5"/><path d="M14 6h3l-.5 6a1.4 1.4 0 0 1-2 0L14 6z"/><path d="M15.5 12v6M13 18h5"/>',
-    // Corte de Pastel — an actual tiered wedding cake with a topper.
-    cake: '<rect x="7" y="15" width="10" height="6" rx="1"/><rect x="9" y="10" width="6" height="5" rx="1"/><path d="M12 10V7"/><circle cx="12" cy="6" r="1"/>',
-    // Fiesta y Baile — disco ball, refined with a hanging stand.
-    // Fiesta y Baile — falling streamers + confetti (replaces an
-    // earlier disco-ball version the couple didn't like).
-    disco: '<path d="M6 4c2 2 0 4 2 6s0 4 2 6"/><path d="M12 3c2 2 0 4 2 6s0 4 2 6"/><path d="M18 5c1.5 1.5 0 3 1.5 4.5"/><circle cx="5" cy="18" r="1"/><circle cx="11" cy="20" r="1"/><circle cx="17" cy="17" r="1"/>',
+    // Corte de Pastel — round-topped single-tier cake with a wavy
+    // decorative line, matching the couple's reference image.
+    cake: '<path d="M7 21V11a5 5 0 0 1 10 0v10"/><path d="M5 21h14"/><path d="M7.5 15c1-.8 2-.8 3 0s2 .8 3 0 2-.8 3-.8"/>',
+    // Fiesta y Baile — disco ball with a sparkle accent, matching the
+    // couple's reference image (2nd redesign — an earlier version used
+    // falling streamers/confetti instead).
+    disco: '<circle cx="10" cy="12" r="6"/><path d="M4 12h12M10 6v12"/><path d="M6 8l8 8M14 8l-8 8"/><path d="M19 5.5l1 2.2 2.2 1-2.2 1-1 2.2-1-2.2-2.2-1 2.2-1z"/>',
     // Despedida — a single elegant sparkle/firework burst for the
     // midnight send-off, with two small trailing accent dots.
     sparkle: '<path d="M12 4l1.5 5.5L19 11l-5.5 1.5L12 18l-1.5-5.5L5 11l5.5-1.5z"/><circle cx="19" cy="5" r="1"/><circle cx="5" cy="18" r="1"/>',

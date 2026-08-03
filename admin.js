@@ -99,7 +99,7 @@
         <td>${r.attending ? dict.admin_yes : dict.admin_no}</td>
         <td>${escapeHtml(r.guest_count)}</td>
         <td>${escapeHtml(r.song_request)}</td>
-        <td>${escapeHtml(r.message)}</td>
+        <td>${r.message ? `<span class="admin-message-cell" tabindex="0">${escapeHtml(r.message)}</span>` : ''}</td>
         <td>${formatDate(r.submitted_at)}</td>
         <td class="admin-actions">
           <button class="admin-edit-btn" data-id="${r.id}">${dict.admin_edit_btn}</button>
@@ -253,8 +253,107 @@
 
   refreshBtn.addEventListener('click', loadRsvps);
 
+  /**
+   * Full-text popup for truncated message cells (.admin-message-cell,
+   * added in renderReadRow). One reusable popup element (#message-popup
+   * in admin.html) that JS repositions and refills rather than creating
+   * a new one per row — cheaper, and there's only ever one open at a
+   * time anyway.
+   *
+   * Positioned with getBoundingClientRect() + position:fixed instead of
+   * living inside the table cell itself, because .admin-table-wrap has
+   * overflow-x:auto for the horizontal scroll on mobile — a popup
+   * nested inside would get clipped by that instead of floating freely
+   * above the table.
+   *
+   * Interaction differs by input type, detected via the CSS
+   * (hover: none) media feature (more reliable than checking for touch
+   * event support, which some hybrid laptop/tablet devices report even
+   * with a mouse attached):
+   *   - Devices that can hover (desktop/trackpad): mouseover/mouseout,
+   *     matching how a tooltip normally behaves.
+   *   - Devices that can't (phones/tablets): tap to open, tap anywhere
+   *     outside to close — hover has no real equivalent on touch, and a
+   *     tap-to-toggle is the standard, expected pattern there.
+   */
+  function setupMessagePopup() {
+    const popup = document.getElementById('message-popup');
+    const tableBody = document.getElementById('admin-table-body');
+    if (!popup || !tableBody) return;
+
+    const canHover = window.matchMedia('(hover: hover)').matches;
+
+    function positionPopup(target) {
+      const rect = target.getBoundingClientRect();
+      const margin = 8;
+      popup.style.maxWidth = `min(320px, ${window.innerWidth - margin * 2}px)`;
+      // Show first (but invisible) so its real height can be measured —
+      // needed to decide whether it fits below the cell or should flip
+      // above it instead.
+      popup.style.visibility = 'hidden';
+      popup.classList.add('is-open');
+      const popupHeight = popup.offsetHeight;
+      const popupWidth = popup.offsetWidth;
+
+      const spaceBelow = window.innerHeight - rect.bottom;
+      const top =
+        spaceBelow > popupHeight + margin
+          ? rect.bottom + margin
+          : rect.top - popupHeight - margin;
+
+      let left = rect.left;
+      left = Math.min(left, window.innerWidth - popupWidth - margin);
+      left = Math.max(left, margin);
+
+      popup.style.top = `${Math.max(top, margin)}px`;
+      popup.style.left = `${left}px`;
+      popup.style.visibility = 'visible';
+    }
+
+    function openPopup(target) {
+      popup.textContent = target.textContent;
+      positionPopup(target);
+    }
+
+    function closePopup() {
+      popup.classList.remove('is-open');
+    }
+
+    if (canHover) {
+      tableBody.addEventListener('mouseover', (e) => {
+        const cell = e.target.closest('.admin-message-cell');
+        if (cell) openPopup(cell);
+      });
+      tableBody.addEventListener('mouseout', (e) => {
+        const cell = e.target.closest('.admin-message-cell');
+        if (cell) closePopup();
+      });
+    } else {
+      tableBody.addEventListener('click', (e) => {
+        const cell = e.target.closest('.admin-message-cell');
+        if (!cell) return;
+        e.stopPropagation();
+        if (popup.classList.contains('is-open')) {
+          closePopup();
+        } else {
+          openPopup(cell);
+        }
+      });
+      document.addEventListener('click', (e) => {
+        if (!popup.contains(e.target)) closePopup();
+      });
+    }
+
+    // Scrolling/resizing while a popup is open could leave it pointing
+    // at the wrong spot — simplest fix is just closing it, rather than
+    // trying to keep repositioning it live.
+    window.addEventListener('scroll', closePopup, { passive: true, capture: true });
+    window.addEventListener('resize', closePopup, { passive: true });
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
     applyLanguage();
     loadRsvps();
+    setupMessagePopup();
   });
 })();

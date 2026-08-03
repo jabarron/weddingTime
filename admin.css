@@ -4,35 +4,36 @@
    ============================================================================ */
 
 .admin-body {
-  /* Same "framed" idea as the public site (sand background, visible
-     margin on all sides) — simpler than the public site's responsive
-     breakpoint system since this page doesn't need the same level of
-     device-specific tuning, but clamp() still keeps it proportional
-     across screen sizes instead of one fixed value. Stored as a
-     variable (not just used inline) so .admin-ribbon's negative margin
-     below can reference the exact same value instead of risking the
-     two drifting out of sync. */
-  --admin-body-padding: clamp(10px, 3vw, 28px);
-  padding: var(--admin-body-padding);
   background: var(--color-frame);
 }
 
 /* Same wine ribbon + monogram used on the login form and lockout page
-   (adminAuth.js), for visual consistency across all of /admin — this is
-   the one page of the three that didn't have it yet. Negative margins
-   counteract .admin-body's own padding so the ribbon spans the full
-   width edge-to-edge instead of being inset like the rest of the page. */
+   (adminAuth.js), for visual consistency across all of /admin. Sits
+   directly in .admin-body (full width, no padding to fight) — the rest
+   of the page's content is in .admin-content below instead, which is
+   what carries the "framed" padding now. The previous version had the
+   padding on .admin-body itself and used a negative margin on the
+   ribbon to cancel it back out — that's what was causing the ribbon to
+   render cut off (the negative-margin math and the browser's own
+   scrollbar-width adjustment don't always settle the same way). This
+   avoids the whole class of bug instead of tuning around it. */
 .admin-ribbon {
   background: var(--color-wine);
   padding: 0.9rem 1rem;
   display: flex;
   justify-content: center;
-  margin: calc(-1 * var(--admin-body-padding)) calc(-1 * var(--admin-body-padding)) var(--space-md);
 }
 
 .admin-ribbon img {
   height: 36px;
   width: auto;
+}
+
+.admin-content {
+  /* clamp() keeps this proportional across screen sizes instead of one
+     fixed value — same "framed" idea as the public site (sand
+     background showing as a margin on all sides). */
+  padding: clamp(10px, 3vw, 28px);
 }
 
 .admin-header {
@@ -116,7 +117,10 @@
   background: var(--color-white);
   border: 1px solid var(--color-mauve);
   border-radius: var(--radius);
-  padding: 0.5rem 0.65rem;
+  /* Was 0.5rem 0.65rem — shrunk substantially per feedback that the
+     cards were too big; not a literal /3 on every value (a 7px number
+     would be unreadable) but the same spirit: noticeably more compact. */
+  padding: 0.3rem 0.45rem;
   min-width: 0;
   flex: 1 1 30%;
 }
@@ -124,31 +128,14 @@
 .admin-stat__number {
   display: block;
   font-family: var(--font-display);
-  font-size: 1.3rem;
+  font-size: 0.9rem;
   color: var(--color-wine);
 }
 
 .admin-stat__label {
-  font-size: 0.7rem;
+  font-size: 0.55rem;
   color: var(--color-berry);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-/* Overrides the generic h1-h4/h2 styles from styles.css (large serif,
-   wine color) — this is meant to read as a small section label above
-   the stat boxes, same font/size family as .admin-stat__label below it
-   (just slightly bigger, since it's introducing a group rather than
-   labeling one box), not as a big heading. */
-.admin-responses-heading {
-  font-family: var(--font-body);
-  font-weight: 600;
-  font-size: 0.85rem;
-  color: var(--color-berry);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  text-align: center;
-  margin: 0 0 var(--space-sm);
+  letter-spacing: 0.02em;
 }
 
 .admin-table-wrap {
@@ -171,9 +158,70 @@
   padding: 0.5rem 0.6rem;
   border-bottom: 1px solid var(--color-cream-soft);
   white-space: nowrap;
-  max-width: 180px;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+/* Per-column widths instead of one shared max-width for all of them —
+   a uniform cap left short columns (Asiste, Invitados) sized to fit
+   their own HEADER LABEL rather than their actual data, since a table
+   column naturally sizes to its widest content across every row
+   including the header. "Sí"/"No" or a single digit don't need
+   anywhere near as much room as a full name or song title. Values
+   below aren't the bare minimum either (that would look cramped/
+   inconsistent) — sized generously enough for the longest realistic
+   value in each column, consistent in feel with each other. */
+.admin-table th:nth-child(1),
+.admin-table td:nth-child(1) {
+  width: 150px;
+  max-width: 150px;
+}
+
+.admin-table th:nth-child(2),
+.admin-table td:nth-child(2) {
+  /* Phone numbers top out at 12 digits/characters (incl. spaces, e.g.
+     "656 123 1234"). */
+  width: 115px;
+  max-width: 115px;
+}
+
+.admin-table th:nth-child(3),
+.admin-table td:nth-child(3) {
+  /* "Sí" / "No" — this is genuinely as narrow as it needs to be. */
+  width: 70px;
+  max-width: 70px;
+}
+
+.admin-table th:nth-child(4),
+.admin-table td:nth-child(4) {
+  /* Single digit (0-2 guests). */
+  width: 65px;
+  max-width: 65px;
+}
+
+.admin-table th:nth-child(5),
+.admin-table td:nth-child(5) {
+  width: 140px;
+  max-width: 140px;
+}
+
+.admin-table th:nth-child(6),
+.admin-table td:nth-child(6) {
+  width: 140px;
+  max-width: 140px;
+}
+
+.admin-table th:nth-child(7),
+.admin-table td:nth-child(7) {
+  width: 145px;
+  max-width: 145px;
+}
+
+.admin-table th:nth-child(8),
+.admin-table td:nth-child(8) {
+  width: 140px;
+  max-width: 140px;
+  white-space: normal;
 }
 
 .admin-table th {
@@ -250,12 +298,49 @@ tr.is-editing td {
   background: var(--color-white);
 }
 
+/* Message cells are truncated (see .admin-table td's text-overflow:
+   ellipsis) — this is what's actually clickable/hoverable to reveal the
+   full text via #message-popup. Underline + cursor makes it visually
+   obvious there's more to see, rather than a plain truncated string
+   that looks like it's just missing text. */
+.admin-message-cell {
+  cursor: pointer;
+  text-decoration: underline dotted;
+  text-decoration-color: var(--color-mauve);
+  text-underline-offset: 2px;
+}
+
+/* Full message text popup — navy border/accent, matching the photo
+   frames and other navy touches elsewhere on the site, per the
+   couple's request. Fixed positioning + JS-calculated top/left (see
+   setupMessagePopup in admin.js) so it floats freely above the table
+   instead of being clipped by .admin-table-wrap's horizontal scroll. */
+.admin-message-popup {
+  display: none;
+  position: fixed;
+  z-index: 100;
+  background: var(--color-white);
+  border: 1px solid var(--color-navy);
+  border-radius: var(--radius);
+  box-shadow: 0 8px 24px rgba(31, 46, 77, 0.18);
+  padding: 0.7rem 0.9rem;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  color: var(--color-wine);
+  white-space: normal;
+  word-wrap: break-word;
+}
+
+.admin-message-popup.is-open {
+  display: block;
+}
+
 /* ----------------------------------------------------------------------- */
 /* Desktop: restore the original, more spacious sizing. The scroll hint is
    mobile-only — on wider screens the table just fits without scrolling. */
 /* ----------------------------------------------------------------------- */
 @media (min-width: 700px) {
-  .admin-body {
+  .admin-content {
     padding: var(--space-md);
   }
 
@@ -272,22 +357,22 @@ tr.is-editing td {
   }
 
   .admin-summary {
-    gap: var(--space-md);
+    gap: var(--space-sm);
     margin-bottom: var(--space-md);
   }
 
   .admin-stat {
-    padding: var(--space-sm) var(--space-md);
+    padding: 0.4rem 0.7rem;
     flex: 0 1 auto;
-    min-width: 180px;
+    min-width: 0;
   }
 
   .admin-stat__number {
-    font-size: 2rem;
+    font-size: 1.3rem;
   }
 
   .admin-stat__label {
-    font-size: 0.8rem;
+    font-size: 0.65rem;
   }
 
   .admin-table {
