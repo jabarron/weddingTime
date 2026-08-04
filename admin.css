@@ -4,21 +4,18 @@
    ============================================================================ */
 
 .admin-body {
-  background: var(--color-frame);
+  background: var(--color-paper);
 }
 
-/* Same wine ribbon + monogram used on the login form and lockout page
-   (adminAuth.js), for visual consistency across all of /admin. Sits
-   directly in .admin-body (full width, no padding to fight) — the rest
-   of the page's content is in .admin-content below instead, which is
-   what carries the "framed" padding now. The previous version had the
-   padding on .admin-body itself and used a negative margin on the
-   ribbon to cancel it back out — that's what was causing the ribbon to
-   render cut off (the negative-margin math and the browser's own
-   scrollbar-width adjustment don't always settle the same way). This
-   avoids the whole class of bug instead of tuning around it. */
+/* Same light ribbon + monogram used on the login form and lockout page
+   (adminAuth.js), for visual consistency across all of /admin — a
+   hairline-bordered bar, matching the public site's header, rather than
+   a dark filled bar. Sits directly in .admin-body (full width, no
+   padding to fight) — the rest of the page's content is in
+   .admin-content below instead, which is what carries the padding. */
 .admin-ribbon {
-  background: var(--color-wine);
+  background: var(--color-paper);
+  border-bottom: 1px solid var(--color-line);
   padding: 0.9rem 1rem;
   display: flex;
   justify-content: center;
@@ -86,32 +83,32 @@
 
 .admin-export-btn {
   background: var(--color-white);
-  color: var(--color-wine);
-  border: 1px solid var(--color-wine);
+  color: var(--color-ink);
+  border: 1px solid var(--color-ink);
   transition: background var(--transition-fast), color var(--transition-fast);
 }
 
 .admin-export-btn:hover {
-  background: var(--color-wine);
+  background: var(--color-ink);
   color: var(--color-white);
 }
 
 .admin-home-btn {
   background: var(--color-white);
-  color: var(--color-wine);
-  border: 1px solid var(--color-wine);
+  color: var(--color-ink);
+  border: 1px solid var(--color-ink);
   text-decoration: none;
   transition: background var(--transition-fast), color var(--transition-fast);
 }
 
 .admin-home-btn:hover {
-  background: var(--color-wine);
+  background: var(--color-ink);
   color: var(--color-white);
 }
 
 .admin-scroll-hint {
   font-size: 0.75rem;
-  color: var(--color-berry);
+  color: var(--color-ink-soft);
   margin: 0 0 0.4rem;
 }
 
@@ -123,7 +120,7 @@
 
 .admin-stat {
   background: var(--color-white);
-  border: 1px solid var(--color-mauve);
+  border: 1px solid var(--color-taupe);
   border-radius: var(--radius);
   /* Was 0.5rem 0.65rem — shrunk substantially per feedback that the
      cards were too big; not a literal /3 on every value (a 7px number
@@ -137,7 +134,7 @@
   display: block;
   font-family: var(--font-display);
   font-size: 0.95rem;
-  color: var(--color-wine);
+  color: var(--color-ink);
 }
 
 .admin-stat__label {
@@ -145,7 +142,7 @@
      full phrases again ("Invitaciones confirmadas") rather than single
      words, and text-transform brought back to uppercase per request. */
   font-size: 0.62rem;
-  color: var(--color-berry);
+  color: var(--color-ink-soft);
   text-transform: uppercase;
   letter-spacing: 0.03em;
 }
@@ -155,7 +152,7 @@
   -webkit-overflow-scrolling: touch;
   background: var(--color-white);
   border-radius: var(--radius);
-  border: 1px solid var(--color-mauve);
+  border: 1px solid var(--color-taupe);
 }
 
 .admin-table {
@@ -168,7 +165,7 @@
 .admin-table td {
   text-align: left;
   padding: 0.5rem 0.6rem;
-  border-bottom: 1px solid var(--color-cream-soft);
+  border-bottom: 1px solid var(--color-parchment);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -245,14 +242,14 @@
 }
 
 .admin-table th {
-  background: var(--color-wine);
+  background: var(--color-ink);
   color: var(--color-white);
   position: sticky;
   top: 0;
 }
 
 .admin-table tr:hover td {
-  background: var(--color-cream-soft);
+  background: var(--color-parchment);
 }
 
 .admin-actions {
@@ -269,8 +266,8 @@
 
 .admin-delete-btn {
   background: transparent;
-  border: 1px solid var(--color-terracotta);
-  color: var(--color-terracotta);
+  border: 1px solid var(--color-ink);
+  color: var(--color-ink);
   border-radius: var(--radius);
   padding: 0.3rem 0.6rem;
   font-size: 0.75rem;
@@ -278,7 +275,7 @@
 }
 
 .admin-delete-btn:hover {
-  background: var(--color-terracotta);
+  background: var(--color-ink);
   color: var(--color-white);
 }
 
@@ -286,8 +283,8 @@
 .admin-save-btn,
 .admin-cancel-btn {
   background: transparent;
-  border: 1px solid var(--color-berry);
-  color: var(--color-berry);
+  border: 1px solid var(--color-ink-soft);
+  color: var(--color-ink-soft);
   border-radius: var(--radius);
   padding: 0.3rem 0.6rem;
   font-size: 0.75rem;
@@ -297,20 +294,20 @@
 .admin-edit-btn:hover,
 .admin-save-btn:hover,
 .admin-cancel-btn:hover {
-  background: var(--color-berry);
+  background: var(--color-ink-soft);
   color: var(--color-white);
 }
 
 /* Highlight the row currently being edited. */
 tr.is-editing td {
-  background: var(--color-cream-soft);
+  background: var(--color-parchment);
 }
 
-/* Very subtle wine tint for rows where the guest declined — enough to
+/* Very subtle ink tint for rows where the guest declined — enough to
    notice on a scan down the table, not so much it reads as an error/
    warning state. */
 tr.is-declined td {
-  background: rgba(72, 1, 31, 0.05);
+  background: rgba(43, 38, 33, 0.05);
 }
 
 .admin-table td input,
@@ -318,7 +315,7 @@ tr.is-declined td {
   width: 100%;
   min-width: 90px;
   padding: 0.35rem 0.5rem;
-  border: 1px solid var(--color-mauve);
+  border: 1px solid var(--color-taupe);
   border-radius: 4px;
   font-family: var(--font-body);
   font-size: 0.85rem;
@@ -333,13 +330,12 @@ tr.is-declined td {
 .admin-popup-cell {
   cursor: pointer;
   text-decoration: underline dotted;
-  text-decoration-color: var(--color-mauve);
+  text-decoration-color: var(--color-taupe);
   text-underline-offset: 2px;
 }
 
-/* Full message text popup — navy border/accent, matching the photo
-   frames and other navy touches elsewhere on the site, per the
-   couple's request. Fixed positioning + JS-calculated top/left (see
+/* Full message text popup — hairline ink border, matching the rest of
+   the neutral system. Fixed positioning + JS-calculated top/left (see
    setupMessagePopup in admin.js) so it floats freely above the table
    instead of being clipped by .admin-table-wrap's horizontal scroll. */
 .admin-message-popup {
@@ -347,13 +343,13 @@ tr.is-declined td {
   position: fixed;
   z-index: 100;
   background: var(--color-white);
-  border: 1px solid var(--color-navy);
+  border: 1px solid var(--color-ink);
   border-radius: var(--radius);
-  box-shadow: 0 8px 24px rgba(31, 46, 77, 0.18);
+  box-shadow: 0 8px 24px rgba(43, 38, 33, 0.14);
   padding: 0.7rem 0.9rem;
   font-size: 0.85rem;
   line-height: 1.4;
-  color: var(--color-wine);
+  color: var(--color-ink);
   white-space: normal;
   word-wrap: break-word;
 }

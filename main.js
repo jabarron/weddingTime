@@ -5,14 +5,13 @@
  *  Load order (see index.html <script> tags at the bottom of <body>):
  *    1. i18n.js          defines window.DICTIONARY
  *    2. main.js          (this file) fetches wedding facts, wires up
- *                         language switching, countdown, header scroll
+ *                         language switching and the countdown
  *    3. rsvp-form.js      handles the RSVP form specifically
  *
  *  Responsibilities of this file:
  *    - fetch /api/wedding-info and fill in names/date/venue/colors
  *    - apply the selected language across every [data-i18n] element
  *    - run the live countdown to the wedding date
- *    - toggle the header background once the page is scrolled
  * ============================================================================
  */
 
@@ -153,9 +152,10 @@
         .map((event, index) => {
           const iconPath = TIMELINE_ICONS[event.icon] || TIMELINE_ICONS.dot;
           const side = index % 2 === 0 ? 'left' : 'right';
-          // Religious ceremony gets the navy accent instead of the usual
-          // terracotta badge — a small, deliberate exception (see the
-          // --color-navy comment in styles.css for why only this one).
+          // Religious ceremony gets a slightly stronger ring than the
+          // other icons — the one deliberate accent in an otherwise
+          // monochrome itinerary (see .timeline__icon--accent in
+          // styles.css).
           const accent = event.icon === 'church' ? ' timeline__icon--accent' : '';
           return `
         <li class="timeline__item timeline__item--${side}">
@@ -201,159 +201,6 @@
   }
 
   /** Adds a background to the fixed header once the page scrolls. */
-  function setupHeaderScroll() {
-    const header = document.querySelector('.site-header');
-    if (!header) return;
-    const toggle = () => {
-      header.classList.toggle('is-scrolled', window.scrollY > 40);
-    };
-    toggle();
-    window.addEventListener('scroll', toggle, { passive: true });
-  }
-
-  /**
-   * Hero fades to a maximum of 10% transparent as the guest scrolls
-   * through it, tied to scroll progress across the hero's own height —
-   * by the time it's fully scrolled past (out of view), the value stops
-   * mattering visually, so there's no need to extend the effect further.
-   *
-   * Smoothed two ways: a CSS transition on .hero's opacity (see
-   * styles.css) interpolates between updates instead of jumping, and
-   * requestAnimationFrame avoids piling up redundant work on scroll.
-   *
-   * Skipped entirely for guests with prefers-reduced-motion on — the
-   * hero just stays fully opaque and static for them instead.
-   */
-  function setupHeroScrollEffects() {
-    const hero = document.querySelector('.hero');
-    if (!hero) return;
-
-    const prefersReducedMotion = window.matchMedia(
-      '(prefers-reduced-motion: reduce)'
-    ).matches;
-    if (prefersReducedMotion) return;
-
-    let ticking = false;
-
-    function updateFade() {
-      const heroHeight = hero.offsetHeight;
-      const progress = Math.min(Math.max(window.scrollY / heroHeight, 0), 1);
-      // Fade: 1 (fully opaque) down to 0.9 (10% transparent) — never past that.
-      hero.style.opacity = String(1 - progress * 0.1);
-      ticking = false;
-    }
-
-    function onScroll() {
-      if (ticking) return;
-      ticking = true;
-      requestAnimationFrame(updateFade);
-    }
-
-    window.addEventListener('scroll', onScroll, { passive: true });
-    updateFade();
-  }
-
-  const FIREFLY_RGB = '255, 250, 243'; // --color-white, as an rgb triple
-
-  /**
-   * Fireflies on a section's background — a handful of warm dots that
-   * fade in and out at fixed spots, each on its own independent (and
-   * slightly randomized) cycle so they never blink in sync. No
-   * movement, no connecting lines — stays firmly in the background
-   * rather than competing with the text. Skipped for guests with
-   * prefers-reduced-motion on.
-   *
-   * White, and deliberately small — was a terracotta/navy mix before,
-   * but white reads more clearly as "firefly glow" against the wine
-   * backgrounds; kept the dots themselves tiny so that extra visibility
-   * doesn't turn into extra visual weight.
-   *
-   * Reusable across sections (hero, Details, Gifts) via options instead
-   * of being hardcoded to the hero — each call gets its own count and
-   * timing range.
-   */
-  function setupFireflies({
-    canvasSelector,
-    containerSelector,
-    count,
-    cycleMsRange = [3500, 6500],
-    maxOpacityRange = [0.35, 0.6],
-  }) {
-    const canvas = document.querySelector(canvasSelector);
-    const container = document.querySelector(containerSelector);
-    if (!canvas || !container) return;
-
-    const prefersReducedMotion = window.matchMedia(
-      '(prefers-reduced-motion: reduce)'
-    ).matches;
-    if (prefersReducedMotion) return;
-
-    const ctx = canvas.getContext('2d');
-    let fireflies = [];
-    let width = 0;
-    let height = 0;
-
-    function resize() {
-      width = container.offsetWidth;
-      height = container.offsetHeight;
-      canvas.width = width;
-      canvas.height = height;
-    }
-
-    function createFireflies() {
-      fireflies = Array.from({ length: count }, () => ({
-        x: Math.random() * width,
-        y: Math.random() * height,
-        // Was 1.3-2.5px — shrunk to keep the brighter white color from
-        // reading as more prominent than the old terracotta version.
-        radius: 0.8 + Math.random() * 0.7,
-        // Each firefly has its own random starting point in the cycle and
-        // its own slightly different cycle length, so they drift in and
-        // out of sync with each other rather than blinking together.
-        phase: Math.random() * Math.PI * 2,
-        cycleMs: cycleMsRange[0] + Math.random() * (cycleMsRange[1] - cycleMsRange[0]),
-        maxOpacity:
-          maxOpacityRange[0] + Math.random() * (maxOpacityRange[1] - maxOpacityRange[0]),
-      }));
-    }
-
-    function step(timestamp) {
-      ctx.clearRect(0, 0, width, height);
-
-      fireflies.forEach((f) => {
-        const t = (timestamp / f.cycleMs) * Math.PI * 2 + f.phase;
-        // (sin(t) + 1) / 2 oscillates smoothly between 0 and 1.
-        const opacity = ((Math.sin(t) + 1) / 2) * f.maxOpacity;
-
-        ctx.beginPath();
-        ctx.fillStyle = `rgba(${FIREFLY_RGB}, ${opacity})`;
-        ctx.shadowColor = `rgba(${FIREFLY_RGB}, ${opacity})`;
-        ctx.shadowBlur = 6;
-        ctx.arc(f.x, f.y, f.radius, 0, Math.PI * 2);
-        ctx.fill();
-      });
-
-      requestAnimationFrame(step);
-    }
-
-    resize();
-    createFireflies();
-    requestAnimationFrame(step);
-
-    let resizeTimeout;
-    window.addEventListener(
-      'resize',
-      () => {
-        clearTimeout(resizeTimeout);
-        resizeTimeout = setTimeout(() => {
-          resize();
-          createFireflies();
-        }, 200);
-      },
-      { passive: true }
-    );
-  }
-
   /** Wires up the ES/EN buttons in the header. */
   function setupLanguageToggle() {
     document.querySelectorAll('.lang-toggle button').forEach((btn) => {
@@ -364,31 +211,6 @@
   async function init() {
     await loadWeddingInfo();
     setupLanguageToggle();
-    setupHeaderScroll();
-    setupHeroScrollEffects();
-    setupFireflies({
-      canvasSelector: '.hero__constellation',
-      containerSelector: '.hero',
-      count: 14, // kept low on purpose — "no saturar el hero"
-    });
-    // Details and Gifts: sparser and dimmer than the hero ("tenues y
-    // esporádicas, que no vayan a saturar") — fewer fireflies, a wider/
-    // slower cycle range so they feel occasional rather than a constant
-    // ambient presence, and a lower opacity ceiling.
-    setupFireflies({
-      canvasSelector: '.details__fireflies',
-      containerSelector: '.details',
-      count: 6,
-      cycleMsRange: [4000, 9000],
-      maxOpacityRange: [0.2, 0.4],
-    });
-    setupFireflies({
-      canvasSelector: '.gifts__fireflies',
-      containerSelector: '.gifts',
-      count: 6,
-      cycleMsRange: [4000, 9000],
-      maxOpacityRange: [0.2, 0.4],
-    });
     applyLanguage(currentLanguage);
     startCountdown();
   }

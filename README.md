@@ -125,6 +125,19 @@ migration step needed (see `db-pool.js` → `initDb()`).
 
 ## 5. Notes on current setup
 
+- **V2 visual redesign:** the site's structure, routes, and features are
+  unchanged from V1 — this was a styling-only pass. What changed:
+  a full neutral/editorial color palette (no wine/terracotta accent —
+  see the color note below), the hero is now a full-bleed three-photo
+  band with the names/date/countdown below it instead of a single dark
+  panel, the desktop "framed card" layout and the mobile/desktop sand
+  margins are gone (the site runs edge-to-edge at every width now), and
+  the ambient firefly/constellation canvas animations were removed
+  site-wide (including on `/admin` and the login/lockout pages) in favor
+  of a static, photography-led look. `monogram-ink.png` (a dark
+  recolor of `monogram.png`) is now used everywhere the monogram sits on
+  a light background — regenerate it the same way if you ever replace
+  the source monogram artwork.
 - **RSVP access:** the form is open to anyone with the site link — there is
   no guest-list validation. If you want to restrict who can submit later,
   that logic belongs in `routes-rsvp.js`.
@@ -176,13 +189,16 @@ migration step needed (see `db-pool.js` → `initDb()`).
   site's own colors/fonts (not real photos yet). When you have engagement
   photos, regenerate `og-image.jpg` with one of them for a more personal
   link preview on WhatsApp/iMessage — it should stay 1200×630px.
-- **Color contrast:** `terracotta` and `mauve` are used as backgrounds/
-  accents throughout, but are too light to pass WCAG AA as small text on
-  their own. `styles.css` defines adjusted text-only variants
-  (`--color-terracotta-on-light`, `--color-terracotta-on-dark`,
-  `--color-mauve-text`, `--color-mauve-on-dark`) — always use one of these
-  instead of the base color if you're setting a `color:` (text) property,
-  not a `background`/`border`.
+- **Color palette (V2 redesign):** the site now uses a full neutral,
+  editorial palette — `paper`/`parchment` backgrounds, `ink`/`ink-soft`
+  text, `taupe` for hairline borders and dots — with no brand accent
+  color; photography and typography carry the visual weight instead.
+  All five variables live in the `:root` block at the top of
+  `styles.css` and are documented in `wedding-config.js` -> `colors`.
+  Contrast is comfortably within WCAG AA as-is (`ink`/`ink-soft` on
+  `paper`/`parchment` both clear 4.5:1), so there are no separate
+  "text-only" variants to remember — just use `--color-ink` or
+  `--color-ink-soft` for any text color.
 - **Form limits:** name (100 chars), phone (30), song request (150), and
   message (500) all have a `maxlength` in `index.html` and a matching
   server-side cap in `routes-rsvp.js` — adjust both together if you change

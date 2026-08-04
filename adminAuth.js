@@ -27,15 +27,13 @@
  *                            no/bad session -> 401 JSON (admin.js reacts
  *                              to this by redirecting the browser to /admin)
  *
- *  Both pages share a look via pageShell() below: a wine ribbon with the
- *  monogram at the top, a few drifting fireflies in the background
- *  (skipped for prefers-reduced-motion), and a soft fade-in on load —
- *  the same visual language as the main site, just toned down since this
- *  is a functional utility screen, not guest-facing romantic content.
+ *  Both pages share a look via pageShell() below: a light hairline-
+ *  bordered ribbon with the monogram at the top, plain and static — the
+ *  same neutral visual language as the main site.
  *
  *  Nothing about the wedding is hardcoded in here — this whole file is
  *  meant to be reusable as-is for a future event, just by changing the
- *  env vars, monogram.png, and the two error-page images.
+ *  env vars, monogram-ink.png, and the two error-page images.
  * ============================================================================
  */
 
@@ -73,9 +71,9 @@ function safeCompare(a, b) {
 }
 
 /**
- * Shared page chrome: wine ribbon + monogram, cream body with a few
- * drifting fireflies, fonts + base styles — so the login form and error
- * page look like they belong to the same system without duplicating it.
+ * Shared page chrome: hairline ribbon + monogram, paper body, fonts +
+ * base styles — so the login form and error page look like they belong
+ * to the same system without duplicating it.
  * `bodyHtml` is whatever goes inside the main content area (below the
  * ribbon); `wide` loosens the content area's own max-width, used by the
  * error page so its much bigger image has room.
@@ -88,7 +86,7 @@ function pageShell({ lang, title, bodyHtml, wide = false }) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>${title}</title>
   <link
-    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,600&family=Jost:wght@400;500;600&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Jost:wght@400;500;600&display=swap"
     rel="stylesheet"
   />
   <style>
@@ -98,18 +96,19 @@ function pageShell({ lang, title, bodyHtml, wide = false }) {
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      background: #dfd8c6;
+      background: #f4efe6;
       font-family: 'Jost', 'Segoe UI', sans-serif;
       text-align: center;
     }
     .ribbon {
-      background: #48011f;
+      background: #f4efe6;
+      border-bottom: 1px solid rgba(43, 38, 33, 0.14);
       padding: 0.9rem 1rem;
       display: flex;
       justify-content: center;
     }
     .ribbon img {
-      height: 42px;
+      height: 34px;
       width: auto;
     }
     .content {
@@ -122,51 +121,14 @@ function pageShell({ lang, title, bodyHtml, wide = false }) {
       overflow: hidden;
       padding: 2.5rem 1rem;
     }
-    .fireflies {
-      position: absolute;
-      inset: 0;
-      z-index: 0;
-      pointer-events: none;
-    }
     .card {
       position: relative;
       z-index: 1;
-      background: #fffaf3;
-      border-radius: 8px;
-      box-shadow: 0 12px 40px rgba(72, 1, 31, 0.15);
+      background: #fbf9f4;
+      border: 1px solid rgba(43, 38, 33, 0.14);
       padding: 2.25rem 2rem;
       width: 100%;
       max-width: ${wide ? '600px' : '360px'};
-      animation: fadeIn 0.5s ease-out;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    /* Error/lockout page only — same idea as the public site's hero
-       entrance (each element fades/slides up in its own turn instead of
-       the whole block appearing at once), just compressed to finish in
-       about the same ~0.5s the plain .card fade above takes, rather
-       than the hero's slower ~1.5s sequence. This card's own fadeIn is
-       turned off so it doesn't double up with its children's — each
-       child fades in on its own instead of the whole box fading as one
-       unit first. */
-    .card--stagger {
-      animation: none;
-      opacity: 1;
-    }
-    .card--stagger > * {
-      opacity: 0;
-      animation: fadeIn 0.25s ease-out both;
-    }
-    .card--stagger > img { animation-delay: 0s; }
-    .card--stagger > h1 { animation-delay: 0.08s; }
-    .card--stagger > p { animation-delay: 0.16s; }
-    .card--stagger > a.btn { animation-delay: 0.24s; }
-    .card--stagger > a.link-secondary { animation-delay: 0.32s; }
-    @media (prefers-reduced-motion: reduce) {
-      .card { animation: none; }
-      .card--stagger > * { animation: none; opacity: 1; }
     }
     img.error-image {
       width: 90%;
@@ -174,21 +136,20 @@ function pageShell({ lang, title, bodyHtml, wide = false }) {
       max-height: 85vh;
       height: auto;
       object-fit: contain;
-      border-radius: 8px;
-      border: 1px solid #b06f6b;
+      border: 1px solid rgba(43, 38, 33, 0.14);
       display: block;
     }
     h1 {
       font-family: 'Cormorant Garamond', Georgia, serif;
       font-style: italic;
-      font-weight: 600;
+      font-weight: 500;
       font-size: 1.8rem;
-      color: #48011f;
+      color: #2b2621;
       margin: 0 0 0.5rem;
     }
     p {
       font-size: 0.95rem;
-      color: #48011f;
+      color: #6b6255;
       margin: 0 0 1.5rem;
     }
     form {
@@ -196,30 +157,29 @@ function pageShell({ lang, title, bodyHtml, wide = false }) {
     }
     label {
       display: block;
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       text-transform: uppercase;
-      letter-spacing: 0.06em;
-      font-weight: 600;
-      color: #48011f;
+      letter-spacing: 0.1em;
+      font-weight: 500;
+      color: #2b2621;
       margin-bottom: 0.3rem;
     }
     input {
       width: 100%;
       padding: 0.75rem 1rem;
       margin-bottom: 1.1rem;
-      border: 1px solid #b06f6b;
-      border-radius: 8px;
+      border: 1px solid rgba(43, 38, 33, 0.14);
       font-family: inherit;
       font-size: 1rem;
-      background: #fffaf3;
-      color: #2a0512;
+      background: #fbf9f4;
+      color: #2b2621;
     }
     input:focus-visible {
-      outline: 2px solid #c3634d;
+      outline: 2px solid #2b2621;
       outline-offset: 2px;
     }
     .error-message {
-      color: #c3634d;
+      color: #9a3b30;
       font-size: 0.85rem;
       margin: -0.5rem 0 1rem;
     }
@@ -227,109 +187,45 @@ function pageShell({ lang, title, bodyHtml, wide = false }) {
     a.btn {
       display: inline-block;
       width: 100%;
-      background: #c3634d;
-      color: #fffaf3;
+      background: #2b2621;
+      color: #f4efe6;
       text-decoration: none;
-      border: none;
+      border: 1px solid #2b2621;
       padding: 0.85rem 2rem;
-      border-radius: 4px;
       font-family: inherit;
-      font-weight: 600;
+      font-weight: 500;
       text-transform: uppercase;
-      font-size: 0.8rem;
-      letter-spacing: 0.05em;
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
       cursor: pointer;
       text-align: center;
-      transition: background 0.15s ease;
+      transition: background 0.15s ease, color 0.15s ease;
     }
     button:hover,
     a.btn:hover {
-      background: #9d3a56;
+      background: transparent;
+      color: #2b2621;
     }
     a.link-secondary {
       display: inline-block;
       margin-top: 1rem;
-      color: #48011f;
+      color: #6b6255;
       font-size: 0.8rem;
       text-decoration: underline;
       text-underline-offset: 3px;
     }
     a.link-secondary:hover {
-      color: #c3634d;
+      color: #2b2621;
     }
   </style>
 </head>
 <body>
   <div class="ribbon">
-    <img src="/monogram.png" alt="I &amp; J" />
+    <img src="/monogram-ink.png" alt="I &amp; J" />
   </div>
   <div class="content">
-    <canvas class="fireflies" aria-hidden="true"></canvas>
     ${bodyHtml}
   </div>
-  <script>
-    // A handful of very subtle drifting fireflies — same idea as the
-    // hero on the main site, just toned down further (fewer, dimmer)
-    // since this is a functional screen, not guest-facing content.
-    // Skipped entirely for prefers-reduced-motion, same reasoning as
-    // the main site's version.
-    (function () {
-      var canvas = document.querySelector('.fireflies');
-      var container = document.querySelector('.content');
-      if (!canvas || !container) return;
-      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-      var ctx = canvas.getContext('2d');
-      var COUNT = 7;
-      var GLOW = '195, 99, 77'; // terracotta
-      var fireflies = [];
-      var width = 0, height = 0;
-
-      function resize() {
-        width = container.offsetWidth;
-        height = container.offsetHeight;
-        canvas.width = width;
-        canvas.height = height;
-      }
-
-      function create() {
-        fireflies = [];
-        for (var i = 0; i < COUNT; i++) {
-          fireflies.push({
-            x: Math.random() * width,
-            y: Math.random() * height,
-            radius: 1.2 + Math.random() * 1,
-            phase: Math.random() * Math.PI * 2,
-            cycleMs: 4000 + Math.random() * 3000,
-            maxOpacity: 0.25 + Math.random() * 0.2,
-          });
-        }
-      }
-
-      function step(ts) {
-        ctx.clearRect(0, 0, width, height);
-        fireflies.forEach(function (f) {
-          var t = (ts / f.cycleMs) * Math.PI * 2 + f.phase;
-          var opacity = ((Math.sin(t) + 1) / 2) * f.maxOpacity;
-          ctx.beginPath();
-          ctx.fillStyle = 'rgba(' + GLOW + ',' + opacity + ')';
-          ctx.shadowColor = 'rgba(' + GLOW + ',' + opacity + ')';
-          ctx.shadowBlur = 6;
-          ctx.arc(f.x, f.y, f.radius, 0, Math.PI * 2);
-          ctx.fill();
-        });
-        requestAnimationFrame(step);
-      }
-
-      resize();
-      create();
-      requestAnimationFrame(step);
-      window.addEventListener('resize', function () {
-        resize();
-        create();
-      }, { passive: true });
-    })();
-  </script>
 </body>
 </html>`;
 }
@@ -378,7 +274,7 @@ function buildLockedOutPage(req) {
     title: heading,
     wide: true,
     bodyHtml: `
-      <div class="card card--stagger">
+      <div class="card">
         <img class="error-image" src="${imageSrc}" alt="${heading}" />
         <h1>${heading}</h1>
         <p>${message}</p>

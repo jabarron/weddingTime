@@ -78,18 +78,17 @@ module.exports = {
   contactEmail: 'ismerai.jesus.boda@example.com',
 
   // ---------------------------------------------------------------------
-  // Color palette — pulled directly from the couple's chosen palette.
-  // Used both by the frontend (via /api/wedding-info) and documented
-  // here as the single source of truth. Change with care: these values
-  // are threaded through styles.css as CSS custom properties
-  // AND injected at runtime, so update BOTH places if you change a value
-  // (see the :root block at the top of styles.css).
+  // Color palette — full neutral/editorial system (no brand accent
+  // color; photography and typography carry the visual weight instead).
+  // Documented here as the single source of truth, and threaded through
+  // styles.css as CSS custom properties — update BOTH places if you
+  // change a value (see the :root block at the top of styles.css).
   // ---------------------------------------------------------------------
   colors: {
-    wine: '#48011F', // deep wine — headers, nav, footer, primary text on light bg
-    berry: '#9D3A56', // berry rose — links, secondary accents
-    mauve: '#B06F6B', // dusty mauve — soft dividers, secondary buttons
-    terracotta: '#C3634D', // terracotta — primary CTA buttons, highlights
-    cream: '#DFD8C6', // warm cream — base background, cards
+    paper: '#F4EFE6', // base background
+    parchment: '#EAE3D3', // alternate section background, cards
+    taupe: '#B9AE99', // decorative borders, dots, dividers
+    ink: '#2B2621', // headings, primary text, filled buttons
+    inkSoft: '#6B6255', // secondary text, eyebrows, captions
   },
 };
