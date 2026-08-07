@@ -39,7 +39,9 @@
  *                                       check (adminAuth.js)
  *         everything else           -> static files (index.html, styles.css,
  *                                       main.js, i18n.js, rsvp-form.js,
- *                                       admin.css, admin.js)
+ *                                       admin.css, admin.js), or a styled
+ *                                       404 (notFoundPage.js) for a page
+ *                                       that matches nothing above
  *    5. Start listening on process.env.PORT (Railway sets this for you)
  * ============================================================================
  */
@@ -51,6 +53,7 @@ const express = require('express');
 
 const { initDb } = require('./db-pool');
 const { handleAdminPage, handleLoginSubmit, requireSession } = require('./adminAuth');
+const { buildNotFoundPage } = require('./notFoundPage');
 const { rsvpRateLimit, loginRateLimit } = require('./rateLimiter');
 
 const infoRoutes = require('./routes-info');
@@ -138,9 +141,17 @@ app.use(express.static(__dirname));
 
 // ---------------------------------------------------------------------------
 // 404 handler — anything that reaches here matched no route or static file.
+// A request under /api/* is a program talking to the server (main.js,
+// admin.js, or a guest's browser doing fetch()), so it gets plain JSON,
+// same as before. Anything else is a person who followed a bad/old link
+// in their browser, so they get the styled 404 page (notFoundPage.js) —
+// V2 had no visual 404 at all, this is new for this redesign pass.
 // ---------------------------------------------------------------------------
 app.use((req, res) => {
-  res.status(404).json({ error: 'Not found.' });
+  if (req.path.startsWith('/api/')) {
+    return res.status(404).json({ error: 'Not found.' });
+  }
+  res.status(404).send(buildNotFoundPage(req));
 });
 
 // ---------------------------------------------------------------------------

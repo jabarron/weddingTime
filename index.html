@@ -43,11 +43,12 @@
   <meta name="twitter:description" content="1 de mayo, 2027 · Jardín, Cd. Juárez, Chihuahua" />
   <meta name="twitter:image" content="/og-image.jpg" />
 
-  <!-- Fonts: Cormorant Garamond (display) + Jost (body) -->
+  <!-- Fonts: Alex Brush (script, hero names only) + Cormorant Garamond
+       (display, every other heading) + Jost (body) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
-    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Jost:wght@400;500;600&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,400;1,500;1,600&family=Jost:wght@400;500;600&display=swap"
     rel="stylesheet"
   />
 
@@ -110,22 +111,17 @@
   </header>
 
   <!-- ===================== Hero ===================== -->
-  <!-- Signature element of this design: a full-bleed, three-photo band
-       instead of a single dark hero panel. Swap these three <img> src
-       values for professional photos later — any file dropped into
-       /photos works with no other change needed. -->
+  <!-- Signature element of this redesign: one full-bleed photo fills the
+       opening viewport (per the couple's reference photo) instead of
+       V2's 3-photo band, with the nameplate overlaid directly on it.
+       usCDMX.jpg is the only current photo with both partners in frame —
+       swap the src for a professional portrait later, no other change
+       needed. -->
   <section class="hero">
-    <div class="hero__band">
-      <div class="hero__band-photo">
-        <img src="/photos/holdingHands.jpg" alt="Ismeraí y Jesús tomados de la mano" />
-      </div>
-      <div class="hero__band-photo">
-        <img src="/photos/IsmeCoffeRoof.jpg" alt="Ismeraí en una terraza" />
-      </div>
-      <div class="hero__band-photo">
-        <img src="/photos/IsmeCDMXsmile.jpg" alt="Ismeraí sonriendo en la Ciudad de México" />
-      </div>
+    <div class="hero__photo">
+      <img src="/photos/usCDMX.jpg" alt="Ismeraí y Jesús" />
     </div>
+    <div class="hero__scrim" aria-hidden="true"></div>
 
     <div class="hero__content">
       <span class="hero__eyebrow" data-i18n="hero_eyebrow">Nos Casamos</span>
@@ -160,7 +156,7 @@
       </div>
 
       <div class="hero__actions">
-        <a href="#rsvp" class="btn btn--primary" data-i18n="hero_cta">Confirmar Asistencia</a>
+        <a href="#rsvp" class="btn btn--on-photo" data-i18n="hero_cta">Confirmar Asistencia</a>
       </div>
     </div>
   </section>
@@ -276,10 +272,16 @@
       </div>
       <div class="details__grid">
         <div class="detail-card">
+          <span class="detail-card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="8.5" cy="15" r="4.5"/><circle cx="15.5" cy="15" r="4.5"/><path d="M15 4l2 2.5-2 2.5-2-2.5z"/></svg>
+          </span>
           <h3 data-i18n="details_date_label">Fecha</h3>
           <p data-field="wedding-date-full">1 de mayo de 2027</p>
         </div>
         <div class="detail-card">
+          <span class="detail-card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-6-5.2-6-10a6 6 0 1 1 12 0c0 4.8-6 10-6 10z"/><circle cx="12" cy="11" r="2.2"/></svg>
+          </span>
           <h3 data-i18n="details_venue_label">Lugar</h3>
           <p>
             <span data-field="venue-name">Jardín</span><br />

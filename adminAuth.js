@@ -27,9 +27,10 @@
  *                            no/bad session -> 401 JSON (admin.js reacts
  *                              to this by redirecting the browser to /admin)
  *
- *  Both pages share a look via pageShell() below: a light hairline-
- *  bordered ribbon with the monogram at the top, plain and static — the
- *  same neutral visual language as the main site.
+ *  Both pages share a look via pageShell() (./page-shell.js): a light
+ *  hairline-bordered ribbon with the monogram at the top, plain and
+ *  static — the same warm cream + terracotta visual language as the
+ *  main site. The public 404 page (server.js) reuses the same shell.
  *
  *  Nothing about the wedding is hardcoded in here — this whole file is
  *  meant to be reusable as-is for a future event, just by changing the
@@ -45,6 +46,7 @@ const {
   setSessionCookie,
 } = require('./session');
 const { recordFailedAttempt, resetAttempts } = require('./loginAttempts');
+const { pageShell } = require('./page-shell');
 
 const adminUser = process.env.ADMIN_USER || 'admin';
 const adminPassword = process.env.ADMIN_PASSWORD || 'change-me';
@@ -68,166 +70,6 @@ function safeCompare(a, b) {
   const bufB = Buffer.from(String(b), 'utf8');
   if (bufA.length !== bufB.length) return false;
   return crypto.timingSafeEqual(bufA, bufB);
-}
-
-/**
- * Shared page chrome: hairline ribbon + monogram, paper body, fonts +
- * base styles — so the login form and error page look like they belong
- * to the same system without duplicating it.
- * `bodyHtml` is whatever goes inside the main content area (below the
- * ribbon); `wide` loosens the content area's own max-width, used by the
- * error page so its much bigger image has room.
- */
-function pageShell({ lang, title, bodyHtml, wide = false }) {
-  return `<!DOCTYPE html>
-<html lang="${lang}">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>${title}</title>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Jost:wght@400;500;600&display=swap"
-    rel="stylesheet"
-  />
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      background: #f4efe6;
-      font-family: 'Jost', 'Segoe UI', sans-serif;
-      text-align: center;
-    }
-    .ribbon {
-      background: #f4efe6;
-      border-bottom: 1px solid rgba(43, 38, 33, 0.14);
-      padding: 0.9rem 1rem;
-      display: flex;
-      justify-content: center;
-    }
-    .ribbon img {
-      height: 34px;
-      width: auto;
-    }
-    .content {
-      position: relative;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      padding: 2.5rem 1rem;
-    }
-    .card {
-      position: relative;
-      z-index: 1;
-      background: #fbf9f4;
-      border: 1px solid rgba(43, 38, 33, 0.14);
-      padding: 2.25rem 2rem;
-      width: 100%;
-      max-width: ${wide ? '600px' : '360px'};
-    }
-    img.error-image {
-      width: 90%;
-      margin: 0 auto 1.5rem;
-      max-height: 85vh;
-      height: auto;
-      object-fit: contain;
-      border: 1px solid rgba(43, 38, 33, 0.14);
-      display: block;
-    }
-    h1 {
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      font-style: italic;
-      font-weight: 500;
-      font-size: 1.8rem;
-      color: #2b2621;
-      margin: 0 0 0.5rem;
-    }
-    p {
-      font-size: 0.95rem;
-      color: #6b6255;
-      margin: 0 0 1.5rem;
-    }
-    form {
-      text-align: left;
-    }
-    label {
-      display: block;
-      font-size: 0.72rem;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      font-weight: 500;
-      color: #2b2621;
-      margin-bottom: 0.3rem;
-    }
-    input {
-      width: 100%;
-      padding: 0.75rem 1rem;
-      margin-bottom: 1.1rem;
-      border: 1px solid rgba(43, 38, 33, 0.14);
-      font-family: inherit;
-      font-size: 1rem;
-      background: #fbf9f4;
-      color: #2b2621;
-    }
-    input:focus-visible {
-      outline: 2px solid #2b2621;
-      outline-offset: 2px;
-    }
-    .error-message {
-      color: #9a3b30;
-      font-size: 0.85rem;
-      margin: -0.5rem 0 1rem;
-    }
-    button,
-    a.btn {
-      display: inline-block;
-      width: 100%;
-      background: #2b2621;
-      color: #f4efe6;
-      text-decoration: none;
-      border: 1px solid #2b2621;
-      padding: 0.85rem 2rem;
-      font-family: inherit;
-      font-weight: 500;
-      text-transform: uppercase;
-      font-size: 0.72rem;
-      letter-spacing: 0.14em;
-      cursor: pointer;
-      text-align: center;
-      transition: background 0.15s ease, color 0.15s ease;
-    }
-    button:hover,
-    a.btn:hover {
-      background: transparent;
-      color: #2b2621;
-    }
-    a.link-secondary {
-      display: inline-block;
-      margin-top: 1rem;
-      color: #6b6255;
-      font-size: 0.8rem;
-      text-decoration: underline;
-      text-underline-offset: 3px;
-    }
-    a.link-secondary:hover {
-      color: #2b2621;
-    }
-  </style>
-</head>
-<body>
-  <div class="ribbon">
-    <img src="/monogram-ink.png" alt="I &amp; J" />
-  </div>
-  <div class="content">
-    ${bodyHtml}
-  </div>
-</body>
-</html>`;
 }
 
 /** The login form itself. `errorMessage` is shown above the fields when

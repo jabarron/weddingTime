@@ -82,7 +82,7 @@ router.get('/rsvps/export', async (req, res) => {
     sheet.getRow(1).fill = {
       type: 'pattern',
       pattern: 'solid',
-      fgColor: { argb: 'FF48011F' }, // wine, matches the site palette
+      fgColor: { argb: 'FF96603C' }, // terracotta-deep, matches the site palette (wedding-config.js -> colors.terracottaDeep)
     };
     sheet.getRow(1).font = { bold: true, color: { argb: 'FFFFFFFF' } };
 

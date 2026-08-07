@@ -1,18 +1,22 @@
 /* ============================================================================
    admin.css — small set of extra styles for the RSVP dashboard.
-   Reuses the color tokens defined in /css/styles.css (loaded first).
+   Reuses the color/type/radius tokens defined in styles.css (loaded
+   first). V3 REDESIGN: same class names as V2 (nothing here changes
+   admin.js hooks), values updated to the warm cream + terracotta system
+   — every var(--color-taupe) reference from V2 became var(--color-line)
+   or var(--color-terracotta) below, since that token no longer exists.
    ============================================================================ */
 
 .admin-body {
   background: var(--color-paper);
+  font-family: var(--font-body);
 }
 
 /* Same light ribbon + monogram used on the login form and lockout page
-   (adminAuth.js), for visual consistency across all of /admin — a
-   hairline-bordered bar, matching the public site's header, rather than
-   a dark filled bar. Sits directly in .admin-body (full width, no
-   padding to fight) — the rest of the page's content is in
-   .admin-content below instead, which is what carries the padding. */
+   (adminAuth.js), for visual consistency across all of /admin. Sits
+   directly in .admin-body (full width, no padding to fight) — the rest
+   of the page's content is in .admin-content below instead, which is
+   what carries the padding. */
 .admin-ribbon {
   background: var(--color-paper);
   border-bottom: 1px solid var(--color-line);
@@ -27,9 +31,7 @@
 }
 
 .admin-content {
-  /* clamp() keeps this proportional across screen sizes instead of one
-     fixed value — same "framed" idea as the public site (sand
-     background showing as a margin on all sides). */
+  /* clamp() keeps this proportional across screen sizes. */
   padding: clamp(10px, 3vw, 28px);
 }
 
@@ -38,21 +40,20 @@
   margin-bottom: var(--space-sm);
 }
 
+.admin-header h1 {
+  font-style: italic;
+  font-size: 1.4rem;
+}
+
 /* Mobile: stacked, actions above stats (natural DOM order — see
-   admin.html) — this was already the layout the couple liked, just
-   restructured under a shared wrapper rather than nesting actions
-   inside .admin-header, so desktop below can rearrange them without
-   needing a different DOM order per breakpoint. */
+   admin.html) — under a shared wrapper so desktop below can rearrange
+   them without needing a different DOM order per breakpoint. */
 .admin-toolbar {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: var(--space-sm);
   margin-bottom: var(--space-sm);
-}
-
-.admin-header h1 {
-  font-size: 1.2rem;
 }
 
 .admin-header__actions {
@@ -62,10 +63,9 @@
 }
 
 /* Overrides the base .btn's text-button padding/sizing — these three
-   are icon-only now (too wide with visible text, per the couple's
-   feedback), a compact square instead. The label text still exists in
-   the HTML (aria-label, translated via data-i18n-label in admin.js) for
-   screen readers — just not shown on screen. */
+   are icon-only (aria-label + data-i18n-label carry the text for screen
+   readers), a compact circle instead of a pill, to read as a toolbar
+   icon rather than a text button. */
 .admin-icon-btn {
   display: inline-flex;
   align-items: center;
@@ -73,6 +73,7 @@
   width: 44px;
   height: 44px;
   padding: 0;
+  border-radius: 50%;
 }
 
 .admin-icon-btn svg {
@@ -84,25 +85,27 @@
 .admin-export-btn {
   background: var(--color-white);
   color: var(--color-ink);
-  border: 1px solid var(--color-ink);
+  border: 1px solid var(--color-terracotta);
   transition: background var(--transition-fast), color var(--transition-fast);
 }
 
 .admin-export-btn:hover {
-  background: var(--color-ink);
+  background: var(--color-terracotta-deep);
+  border-color: var(--color-terracotta-deep);
   color: var(--color-white);
 }
 
 .admin-home-btn {
   background: var(--color-white);
   color: var(--color-ink);
-  border: 1px solid var(--color-ink);
+  border: 1px solid var(--color-terracotta);
   text-decoration: none;
   transition: background var(--transition-fast), color var(--transition-fast);
 }
 
 .admin-home-btn:hover {
-  background: var(--color-ink);
+  background: var(--color-terracotta-deep);
+  border-color: var(--color-terracotta-deep);
   color: var(--color-white);
 }
 
@@ -120,12 +123,9 @@
 
 .admin-stat {
   background: var(--color-white);
-  border: 1px solid var(--color-taupe);
+  border: 1px solid var(--color-line);
   border-radius: var(--radius);
-  /* Was 0.5rem 0.65rem — shrunk substantially per feedback that the
-     cards were too big; not a literal /3 on every value (a 7px number
-     would be unreadable) but the same spirit: noticeably more compact. */
-  padding: 0.3rem 0.45rem;
+  padding: 0.4rem 0.6rem;
   min-width: 0;
   flex: 1 1 30%;
 }
@@ -133,14 +133,12 @@
 .admin-stat__number {
   display: block;
   font-family: var(--font-display);
-  font-size: 0.95rem;
-  color: var(--color-ink);
+  font-style: italic;
+  font-size: 1.05rem;
+  color: var(--color-terracotta-deep);
 }
 
 .admin-stat__label {
-  /* Was 0.55rem — bumped slightly for legibility now that these are
-     full phrases again ("Invitaciones confirmadas") rather than single
-     words, and text-transform brought back to uppercase per request. */
   font-size: 0.62rem;
   color: var(--color-ink-soft);
   text-transform: uppercase;
@@ -152,7 +150,7 @@
   -webkit-overflow-scrolling: touch;
   background: var(--color-white);
   border-radius: var(--radius);
-  border: 1px solid var(--color-taupe);
+  border: 1px solid var(--color-line);
 }
 
 .admin-table {
@@ -173,13 +171,9 @@
 
 /* Per-column widths instead of one shared max-width for all of them —
    a uniform cap left short columns (Asiste, Invitados) sized to fit
-   their own HEADER LABEL rather than their actual data, since a table
-   column naturally sizes to its widest content across every row
-   including the header. "Sí"/"No" or a single digit don't need
-   anywhere near as much room as a full name or song title. Values
-   below aren't the bare minimum either (that would look cramped/
-   inconsistent) — sized generously enough for the longest realistic
-   value in each column, consistent in feel with each other. */
+   their own HEADER LABEL rather than their actual data. Values below
+   are sized generously enough for the longest realistic value in each
+   column, consistent in feel with each other. */
 .admin-table th:nth-child(1),
 .admin-table td:nth-child(1) {
   width: 150px;
@@ -188,22 +182,18 @@
 
 .admin-table th:nth-child(2),
 .admin-table td:nth-child(2) {
-  /* Phone numbers top out at 12 digits/characters (incl. spaces, e.g.
-     "656 123 1234"). */
   width: 115px;
   max-width: 115px;
 }
 
 .admin-table th:nth-child(3),
 .admin-table td:nth-child(3) {
-  /* "Sí" / "No" — this is genuinely as narrow as it needs to be. */
   width: 70px;
   max-width: 70px;
 }
 
 .admin-table th:nth-child(4),
 .admin-table td:nth-child(4) {
-  /* Single digit (0-2 guests). */
   width: 65px;
   max-width: 65px;
 }
@@ -222,20 +212,12 @@
 
 .admin-table th:nth-child(7),
 .admin-table td:nth-child(7) {
-  /* Was 145px (needed room for a full date + time, e.g. "May 1, 2027,
-     10:30 AM") — now that this is a short numeric-only date
-     ("1/08/2026"), it needs much less. */
   width: 90px;
   max-width: 90px;
 }
 
 .admin-table th:nth-child(8),
 .admin-table td:nth-child(8) {
-  /* Was 140px + white-space:normal — that combination is exactly what
-     let "Editar"/"Eliminar" wrap onto two lines instead of staying
-     side by side. Widened enough for both buttons at their normal size
-     with nowrap enforced, rather than trying to buy space by letting
-     them wrap. */
   width: 165px;
   max-width: 165px;
   white-space: nowrap;
@@ -246,6 +228,10 @@
   color: var(--color-white);
   position: sticky;
   top: 0;
+  font-weight: 500;
+  text-transform: uppercase;
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
 }
 
 .admin-table tr:hover td {
@@ -266,16 +252,16 @@
 
 .admin-delete-btn {
   background: transparent;
-  border: 1px solid var(--color-ink);
-  color: var(--color-ink);
-  border-radius: var(--radius);
-  padding: 0.3rem 0.6rem;
+  border: 1px solid #9a3b30;
+  color: #9a3b30;
+  border-radius: var(--radius-pill);
+  padding: 0.3rem 0.7rem;
   font-size: 0.75rem;
   transition: background var(--transition-fast), color var(--transition-fast);
 }
 
 .admin-delete-btn:hover {
-  background: var(--color-ink);
+  background: #9a3b30;
   color: var(--color-white);
 }
 
@@ -285,8 +271,8 @@
   background: transparent;
   border: 1px solid var(--color-ink-soft);
   color: var(--color-ink-soft);
-  border-radius: var(--radius);
-  padding: 0.3rem 0.6rem;
+  border-radius: var(--radius-pill);
+  padding: 0.3rem 0.7rem;
   font-size: 0.75rem;
   transition: background var(--transition-fast), color var(--transition-fast);
 }
@@ -307,7 +293,7 @@ tr.is-editing td {
    notice on a scan down the table, not so much it reads as an error/
    warning state. */
 tr.is-declined td {
-  background: rgba(43, 38, 33, 0.05);
+  background: rgba(60, 51, 43, 0.05);
 }
 
 .admin-table td input,
@@ -315,8 +301,8 @@ tr.is-declined td {
   width: 100%;
   min-width: 90px;
   padding: 0.35rem 0.5rem;
-  border: 1px solid var(--color-taupe);
-  border-radius: 4px;
+  border: 1px solid var(--color-line);
+  border-radius: 6px;
   font-family: var(--font-body);
   font-size: 0.85rem;
   background: var(--color-white);
@@ -325,27 +311,26 @@ tr.is-declined td {
 /* Message cells are truncated (see .admin-table td's text-overflow:
    ellipsis) — this is what's actually clickable/hoverable to reveal the
    full text via #message-popup. Underline + cursor makes it visually
-   obvious there's more to see, rather than a plain truncated string
-   that looks like it's just missing text. */
+   obvious there's more to see. */
 .admin-popup-cell {
   cursor: pointer;
   text-decoration: underline dotted;
-  text-decoration-color: var(--color-taupe);
+  text-decoration-color: var(--color-terracotta);
   text-underline-offset: 2px;
 }
 
-/* Full message text popup — hairline ink border, matching the rest of
-   the neutral system. Fixed positioning + JS-calculated top/left (see
-   setupMessagePopup in admin.js) so it floats freely above the table
-   instead of being clipped by .admin-table-wrap's horizontal scroll. */
+/* Full message text popup — fixed positioning + JS-calculated top/left
+   (see setupMessagePopup in admin.js) so it floats freely above the
+   table instead of being clipped by .admin-table-wrap's horizontal
+   scroll. */
 .admin-message-popup {
   display: none;
   position: fixed;
   z-index: 100;
   background: var(--color-white);
-  border: 1px solid var(--color-ink);
+  border: 1px solid var(--color-line);
   border-radius: var(--radius);
-  box-shadow: 0 8px 24px rgba(43, 38, 33, 0.14);
+  box-shadow: 0 8px 24px rgba(60, 51, 43, 0.18);
   padding: 0.7rem 0.9rem;
   font-size: 0.85rem;
   line-height: 1.4;
@@ -371,13 +356,14 @@ tr.is-declined td {
     margin-bottom: var(--space-md);
   }
 
+  .admin-header h1 {
+    font-size: 1.9rem;
+  }
+
   /* Row instead of mobile's stacked column — stats on the left, action
-     buttons on the right, per the couple's request that the buttons
-     were leaving too much empty space of their own on a wide screen.
-     .admin-summary gets order:1 and .admin-header__actions order:2 to
-     swap their visual order (stats first/left instead of actions
-     first/top) without needing a different element order in the HTML
-     for each breakpoint. */
+     buttons on the right. .admin-summary gets order:1 and
+     .admin-header__actions order:2 to swap their visual order without
+     needing a different element order in the HTML for each breakpoint. */
   .admin-toolbar {
     flex-direction: row;
     justify-content: space-between;
@@ -387,14 +373,10 @@ tr.is-declined td {
 
   .admin-summary {
     order: 1;
-    /* Explicit align-items/align-self on both this and
-       .admin-header__actions below, redundant with .admin-toolbar's
-       own align-items:center above — belt-and-suspenders against the
-       two ending up visually offset from each other, since they don't
-       necessarily have identical natural heights (stat cards carry a
-       number + label; the buttons are a fixed 44px square). */
     align-items: center;
     align-self: center;
+    gap: var(--space-sm);
+    margin-bottom: 0;
   }
 
   .admin-header__actions {
@@ -403,27 +385,18 @@ tr.is-declined td {
     align-self: center;
   }
 
-  .admin-header h1 {
-    font-size: 1.5rem;
-  }
-
   .admin-scroll-hint {
     display: none;
   }
 
-  .admin-summary {
-    gap: var(--space-sm);
-    margin-bottom: var(--space-md);
-  }
-
   .admin-stat {
-    padding: 0.4rem 0.7rem;
+    padding: 0.45rem 0.85rem;
     flex: 0 1 auto;
     min-width: 0;
   }
 
   .admin-stat__number {
-    font-size: 1.35rem;
+    font-size: 1.5rem;
   }
 
   .admin-stat__label {

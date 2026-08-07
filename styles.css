@@ -1,12 +1,19 @@
 /* ============================================================================
    styles.css — Ismeraí & Jesús wedding site
    ============================================================================
+   V3 REDESIGN — visual style only. Every class name, id, and data attribute
+   below is unchanged from V2 so main.js / rsvp-form.js / admin.js keep
+   working exactly as before — only property VALUES changed (colors, type,
+   spacing, shape), plus a handful of new classes for new decorative
+   elements (hero photo overlay, detail icons, radio pills) that don't
+   touch any existing JS hook.
+
    TABLE OF CONTENTS
      1. Design tokens (colors, type, spacing)
      2. Reset & base
      3. Layout helpers (container, section, eyebrow, buttons)
      4. Header / nav / language toggle
-     5. Hero (photo band + nameplate)
+     5. Hero (single full-bleed photo + overlay nameplate)
      6. Our story (+ story timeline)
      7. Quote / verse
      8. Details (date / venue)
@@ -27,21 +34,24 @@
    The values are duplicated here (rather than only injected at runtime)
    so the page never has an unstyled flash before JS runs.
 
-   Full neutral palette — editorial, photography-led, no brand accent
-   color. "ink" is the one strong color in the system; everything else
-   (parchment, taupe, ink-soft) exists to support it quietly.
+   Warm cream + dusty terracotta system — sampled directly from the
+   couple's reference (crema/beige base, terracotta accent), then
+   adjusted where needed for WCAG AA contrast (see the comment above
+   --color-terracotta-deep below for why there are two terracotta tones).
 */
 :root {
-  --color-paper: #f4efe6;      /* base background */
-  --color-parchment: #eae3d3;  /* alternate section background, cards */
-  --color-taupe: #b9ae99;      /* decorative borders, dots, dividers */
-  --color-ink: #2b2621;        /* headings, primary text, filled buttons */
-  --color-ink-soft: #6b6255;   /* secondary text, eyebrows, captions */
-  --color-white: #fbf9f4;      /* lightest surface — form fields, cards */
-  --color-line: rgba(43, 38, 33, 0.14); /* hairline dividers/borders */
+  --color-paper: #f7f1e7;        /* base background */
+  --color-parchment: #eee3d2;    /* alternate section background */
+  --color-terracotta: #bc8060;   /* light accent: borders, icons, dots, dates — decorative only, NOT for small text (2.9:1 contrast on paper) */
+  --color-terracotta-deep: #96603c; /* filled buttons, links-on-terracotta — passes AA (4.9:1) with white text on top */
+  --color-ink: #3c332b;          /* headings, primary text, filled buttons */
+  --color-ink-soft: #6e6156;     /* secondary text, eyebrows, captions */
+  --color-white: #fcf9f4;        /* lightest surface — form fields, cards */
+  --color-line: rgba(60, 51, 43, 0.16); /* hairline dividers/borders */
 
-  --font-display: 'Cormorant Garamond', Georgia, serif;
-  --font-body: 'Jost', 'Segoe UI', sans-serif;
+  --font-script: 'Alex Brush', cursive;             /* hero couple names ONLY — see header comment */
+  --font-display: 'Cormorant Garamond', Georgia, serif; /* every other heading + nav */
+  --font-body: 'Jost', 'Segoe UI', sans-serif;        /* paragraphs, labels, buttons, form fields */
 
   --space-xs: 0.5rem;
   --space-sm: 1rem;
@@ -49,7 +59,8 @@
   --space-lg: 4rem;
   --space-xl: 7rem;
 
-  --radius: 2px;
+  --radius: 14px;       /* soft default — cards, photos, form fields, popups */
+  --radius-pill: 999px; /* buttons, chips, language toggle — the shape signature of this redesign */
   --max-width: 1100px;
 
   --transition-fast: 180ms ease;
@@ -87,7 +98,8 @@ h1, h2, h3, h4 {
 }
 
 h2 {
-  font-size: clamp(1.8rem, 4vw, 2.4rem);
+  font-style: italic;
+  font-size: clamp(2rem, 4.4vw, 2.8rem);
 }
 
 p {
@@ -95,14 +107,15 @@ p {
 }
 
 a {
-  color: var(--color-ink);
+  color: var(--color-terracotta-deep);
   text-decoration: underline;
-  text-decoration-color: var(--color-taupe);
+  text-decoration-color: var(--color-terracotta);
   text-underline-offset: 3px;
-  transition: text-decoration-color var(--transition-fast);
+  transition: text-decoration-color var(--transition-fast), color var(--transition-fast);
 }
 
 a:hover {
+  color: var(--color-ink);
   text-decoration-color: var(--color-ink);
 }
 
@@ -127,7 +140,7 @@ button {
 }
 
 .section {
-  padding: 6rem 0;
+  padding: 5.5rem 0;
 }
 
 .section--tight {
@@ -137,9 +150,9 @@ button {
 .eyebrow {
   font-family: var(--font-body);
   text-transform: uppercase;
-  letter-spacing: 0.22em;
+  letter-spacing: 0.24em;
   font-size: 0.72rem;
-  color: var(--color-ink-soft);
+  color: var(--color-terracotta-deep);
   font-weight: 500;
   display: block;
   margin-bottom: var(--space-xs);
@@ -149,28 +162,35 @@ button {
   text-align: center;
 }
 
+/* Pill buttons — the clearest shape signature of this redesign (square/
+   sharp in V2, fully rounded here). Two visual roles, same as before:
+   solid primary CTA, and a ghost/outline variant for secondary actions
+   or buttons sitting on top of a photo. */
 .btn {
   display: inline-block;
   border: 1px solid var(--color-ink);
-  border-radius: 0;
-  padding: 0.9rem 2.1rem;
+  border-radius: var(--radius-pill);
+  padding: 0.95rem 2.3rem;
   font-size: 0.72rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   font-weight: 500;
   background: transparent;
   color: var(--color-ink);
-  transition: background var(--transition-fast), color var(--transition-fast);
+  text-decoration: none;
+  transition: background var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
 }
 
 .btn--primary {
-  background: var(--color-ink);
-  color: var(--color-paper);
+  background: var(--color-terracotta-deep);
+  border-color: var(--color-terracotta-deep);
+  color: var(--color-white);
 }
 
 .btn--primary:hover {
-  background: transparent;
-  color: var(--color-ink);
+  background: var(--color-ink);
+  border-color: var(--color-ink);
+  color: var(--color-white);
 }
 
 .btn--ghost {
@@ -184,14 +204,24 @@ button {
   color: var(--color-paper);
 }
 
+/* Used only inside the hero, where the button sits directly on a photo —
+   cream border/text instead of ink, so it stays legible on any photo. */
+.btn--on-photo {
+  background: rgba(247, 241, 231, 0.12);
+  border-color: rgba(252, 249, 244, 0.85);
+  color: var(--color-white);
+  backdrop-filter: blur(2px);
+}
+
+.btn--on-photo:hover {
+  background: var(--color-white);
+  border-color: var(--color-white);
+  color: var(--color-ink);
+}
+
 /* ----------------------------------------------------------------------- */
 /* 4. Header / nav / language toggle                                       */
 /* ----------------------------------------------------------------------- */
-/* Static (sticky, not overlaid) — sits on its own hairline-bordered row
-   above the hero photo band, the way the reference's nav does, rather
-   than floating transparent over a full-bleed hero. Sticky (not fixed)
-   so it keeps a normal place in the layout and never needs a scroll-
-   triggered background swap. */
 .site-header {
   position: sticky;
   top: 0;
@@ -200,8 +230,13 @@ button {
   align-items: center;
   justify-content: space-between;
   padding: var(--space-xs) var(--space-sm);
-  background: var(--color-paper);
+  background: rgba(247, 241, 231, 0.92);
+  backdrop-filter: blur(6px);
   border-bottom: 1px solid var(--color-line);
+}
+
+.site-header__monogram {
+  text-decoration: none;
 }
 
 .site-header__monogram img {
@@ -218,6 +253,8 @@ button {
 
 .nav-admin-link {
   display: none; /* shown only at the 900px breakpoint, see below */
+  font-family: var(--font-display);
+  font-style: italic;
 }
 
 .site-header__nav {
@@ -230,6 +267,7 @@ button {
   display: flex;
   align-items: center;
   color: var(--color-ink-soft);
+  text-decoration: none;
 }
 
 .nav-icon {
@@ -239,7 +277,7 @@ button {
 }
 
 .nav-link:hover {
-  color: var(--color-ink);
+  color: var(--color-terracotta-deep);
 }
 
 /* Mobile-first: the text label is present for screen readers and for the
@@ -262,6 +300,8 @@ button {
 .lang-toggle {
   display: flex;
   border: 1px solid var(--color-line);
+  border-radius: var(--radius-pill);
+  overflow: hidden; /* clips the button backgrounds to the pill shape */
 }
 
 .lang-toggle button {
@@ -271,7 +311,7 @@ button {
   font-size: 0.68rem;
   font-weight: 500;
   text-transform: uppercase;
-  padding: 0.3rem 0.55rem;
+  padding: 0.32rem 0.7rem;
   letter-spacing: 0.08em;
   transition: background var(--transition-fast), color var(--transition-fast);
 }
@@ -282,92 +322,113 @@ button {
 }
 
 .lang-toggle button[aria-pressed='true'] {
-  background: var(--color-ink);
-  color: var(--color-paper);
+  background: var(--color-terracotta-deep);
+  color: var(--color-white);
 }
 
 .lang-toggle button[aria-pressed='true']:hover {
-  background: var(--color-ink);
-  color: var(--color-paper);
+  background: var(--color-terracotta-deep);
+  color: var(--color-white);
 }
 
 /* ----------------------------------------------------------------------- */
-/* 5. Hero (photo band + nameplate)                                        */
+/* 5. Hero (single full-bleed photo + overlay nameplate)                   */
 /* ----------------------------------------------------------------------- */
-/* Signature element of the redesign: a full-bleed, three-photo band —
-   the site's opening statement — instead of a single hero photo or a
-   dark full-viewport panel. Names, date, venue and the countdown sit
-   below it on plain paper, letting the photography carry the moment. */
+/* Signature moment of this redesign: one full-bleed photo fills the
+   opening viewport (per the couple's reference) instead of V2's 3-photo
+   band, with the names/date/countdown overlaid directly on it behind a
+   soft ink-to-transparent scrim for legibility — same idea as the
+   reference's veil photo. Uses an existing project photo (usCDMX.jpg,
+   the only shot with both partners together); swap the src for a
+   professional portrait later, no other markup change needed. */
 .hero {
-  background: var(--color-paper);
-}
-
-.hero__band {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  height: 60vh;
-  min-height: 300px;
-  max-height: 620px;
-}
-
-.hero__band-photo {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  align-items: flex-end;
   overflow: hidden;
+  background: var(--color-ink);
 }
 
-.hero__band-photo img {
+.hero__photo {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.hero__photo img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  display: block;
+  object-position: 50% 22%; /* keeps both faces in frame on tall/narrow screens */
+}
+
+/* Two layered scrims: a flat dark wash so cream text stays readable
+   over any part of the photo, plus a stronger bottom gradient where the
+   nameplate content actually sits. */
+.hero__scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(to top, rgba(30, 24, 19, 0.78) 0%, rgba(30, 24, 19, 0.32) 42%, rgba(30, 24, 19, 0.22) 100%);
 }
 
 .hero__content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
   text-align: center;
-  max-width: 640px;
+  max-width: 680px;
   margin: 0 auto;
-  padding: var(--space-lg) var(--space-md) var(--space-md);
+  padding: var(--space-xl) var(--space-md) var(--space-lg);
+  color: var(--color-white);
 }
 
 .hero__eyebrow {
   display: block;
   text-transform: uppercase;
-  letter-spacing: 0.22em;
+  letter-spacing: 0.28em;
   font-size: 0.72rem;
-  color: var(--color-ink-soft);
+  color: var(--color-paper);
+  opacity: 0.85;
   font-weight: 500;
   margin-bottom: var(--space-sm);
 }
 
+/* The one true script moment on the whole site (per the couple's
+   choice — everywhere else stays elegant serif, not cursive). Alex
+   Brush is a loose brush script, closest free match to the reference's
+   flowing "Amelia & Kyson" nameplate. */
 .hero__names {
-  font-family: var(--font-display);
-  font-weight: 500;
-  font-size: clamp(2.6rem, 7vw, 4.6rem);
-  line-height: 1.05;
-  color: var(--color-ink);
+  font-family: var(--font-script);
+  font-weight: 400;
+  font-size: clamp(3.4rem, 11vw, 6.6rem);
+  line-height: 1;
+  color: var(--color-white);
   margin: 0 0 var(--space-sm);
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.25);
 }
 
 .hero__ampersand {
   display: inline-block;
-  font-style: italic;
-  font-weight: 500;
-  color: var(--color-ink-soft);
-  padding: 0 0.15em;
+  padding: 0 0.05em;
 }
 
 .hero__date {
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  font-size: 0.85rem;
-  color: var(--color-ink-soft);
-  margin-bottom: 0.35rem;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.05rem;
+  color: var(--color-paper);
+  margin-bottom: 0.15rem;
 }
 
 .hero__venue {
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  font-size: 0.85rem;
-  color: var(--color-ink-soft);
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.05rem;
+  color: var(--color-paper);
+  opacity: 0.85;
   margin-bottom: var(--space-md);
 }
 
@@ -399,7 +460,7 @@ button {
   font-family: var(--font-display);
   font-weight: 500;
   font-size: clamp(1.6rem, 4vw, 2.2rem);
-  color: var(--color-ink);
+  color: var(--color-white);
   display: block;
   line-height: 1;
 }
@@ -408,7 +469,8 @@ button {
   font-size: 0.68rem;
   text-transform: uppercase;
   letter-spacing: 0.12em;
-  color: var(--color-ink-soft);
+  color: var(--color-paper);
+  opacity: 0.75;
 }
 
 .hero__actions {
@@ -416,13 +478,6 @@ button {
   gap: var(--space-sm);
   flex-wrap: wrap;
   justify-content: center;
-}
-
-@media (max-width: 480px) {
-  .hero__band {
-    height: 48vh;
-    min-height: 260px;
-  }
 }
 
 /* ----------------------------------------------------------------------- */
@@ -443,9 +498,10 @@ button {
 .story__photo {
   aspect-ratio: 4 / 5;
   background: var(--color-parchment);
-  border: 1px solid var(--color-line);
+  border-radius: var(--radius);
   position: relative;
   overflow: hidden;
+  box-shadow: 0 18px 40px -20px rgba(60, 51, 43, 0.35);
 }
 
 .story__photo img {
@@ -457,9 +513,8 @@ button {
 }
 
 .story__text h3 {
-  font-family: var(--font-display);
-  font-weight: 500;
-  font-size: clamp(1.5rem, 3.4vw, 2.1rem);
+  font-style: italic;
+  font-size: clamp(1.7rem, 3.6vw, 2.3rem);
   color: var(--color-ink);
   margin-bottom: 0.4rem;
 }
@@ -468,7 +523,18 @@ button {
   color: var(--color-ink-soft);
 }
 
+/* Story timeline — the section the couple flagged as misaligned before.
+   One spine, one formula, at both breakpoints: a left border IS the
+   line for every item, and the dot is pulled left by exactly half its
+   own width so it straddles that border evenly — this is true at
+   mobile AND desktop (desktop only changes each item's INNER layout
+   from stacked to side-by-side; the spine/dot math never changes, so
+   there's no separate "is it still aligned at this breakpoint" case to
+   get wrong). See the desktop override below for why this replaced an
+   earlier centered-line version that looked correct on paper but
+   didn't account for photo and text being different widths. */
 .story-timeline {
+  --dot-size: 9px;
   list-style: none;
   max-width: 480px;
   margin: var(--space-xl) auto 0;
@@ -477,32 +543,36 @@ button {
 
 .story-milestone {
   position: relative;
-  border-left: 1px solid var(--color-line);
+  border-left: 1px solid var(--color-terracotta);
   padding-left: var(--space-md);
   padding-bottom: var(--space-xl);
 }
 
 .story-milestone:last-child {
   padding-bottom: 0;
+  border-left-color: transparent; /* line has nothing left to connect to past the last dot */
 }
 
 .story-milestone__dot {
   position: absolute;
-  left: -4px;
-  top: 0.4rem;
-  width: 7px;
-  height: 7px;
+  left: calc(var(--dot-size) / -2 - 0.5px); /* centers the dot exactly on the 1px border above */
+  top: 0.35rem;
+  width: var(--dot-size);
+  height: var(--dot-size);
   border-radius: 50%;
-  background: var(--color-ink);
+  background: var(--color-terracotta-deep);
+  box-shadow: 0 0 0 4px var(--color-paper);
+  z-index: 1;
 }
 
 .story-milestone__photo {
   max-width: 250px;
   min-height: 110px;
-  border: 1px solid var(--color-line);
+  border-radius: var(--radius);
   background: var(--color-parchment);
   margin-bottom: var(--space-sm);
   overflow: hidden;
+  box-shadow: 0 12px 30px -16px rgba(60, 51, 43, 0.35);
 }
 
 .story-milestone__photo img {
@@ -512,9 +582,8 @@ button {
 }
 
 .story-milestone__text h3 {
-  font-family: var(--font-display);
-  font-weight: 500;
-  font-size: clamp(1.5rem, 3.4vw, 2.1rem);
+  font-style: italic;
+  font-size: clamp(1.5rem, 3.4vw, 2rem);
   color: var(--color-ink);
   margin-bottom: 0.35rem;
 }
@@ -531,6 +600,19 @@ button {
 .quote {
   background: var(--color-parchment);
   text-align: center;
+  position: relative;
+}
+
+/* Decorative opening mark — pure CSS, no markup change, so it can never
+   be picked up by a screen reader or throw off the translated text. */
+.quote__text::before {
+  content: '“';
+  display: block;
+  font-family: var(--font-script);
+  font-size: 3.5rem;
+  line-height: 1;
+  color: var(--color-terracotta);
+  margin-bottom: 0.25rem;
 }
 
 .quote__text {
@@ -571,19 +653,39 @@ button {
 .details__grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: var(--space-md);
+  gap: var(--space-lg);
+  margin-top: var(--space-lg);
 }
 
 .detail-card {
-  background: var(--color-white);
-  border: 1px solid var(--color-line);
-  padding: var(--space-md);
   text-align: center;
+}
+
+/* Thin-line icon in a hairline circle — same visual family as the
+   reference's Ceremony/Reception/Dress-code icons. Pure decoration
+   (aria-hidden in the HTML), one per existing card — no new content
+   sections added. */
+.detail-card__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 1px solid var(--color-terracotta);
+  color: var(--color-terracotta-deep);
+  margin-bottom: var(--space-sm);
+}
+
+.detail-card__icon svg {
+  width: 26px;
+  height: 26px;
 }
 
 .detail-card h3 {
   color: var(--color-ink);
-  font-size: 1.3rem;
+  font-style: italic;
+  font-size: 1.5rem;
 }
 
 .detail-card p {
@@ -611,7 +713,7 @@ button {
 
 .timeline__item {
   position: relative;
-  border-left: 1px solid var(--color-line);
+  border-left: 1px solid var(--color-terracotta);
   padding-left: calc(var(--space-md) + 16px);
   padding-bottom: 2.25rem;
   min-height: 42px;
@@ -629,11 +731,11 @@ button {
   height: 42px;
   border-radius: 50%;
   background: var(--color-white);
-  border: 1px solid var(--color-line);
+  border: 1px solid var(--color-terracotta);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--color-ink);
+  color: var(--color-terracotta-deep);
   z-index: 1;
 }
 
@@ -642,11 +744,12 @@ button {
   height: 18px;
 }
 
-/* Religious ceremony gets a slightly stronger ring instead of a fill
-   color — the one deliberate exception in the itinerary, kept
-   monochrome to match the rest of the neutral system. */
+/* Religious ceremony gets a filled circle instead of an outline — the
+   one deliberate accent moment in an otherwise consistent icon set. */
 .timeline__icon--accent {
-  border: 1px solid var(--color-ink);
+  background: var(--color-terracotta-deep);
+  border-color: var(--color-terracotta-deep);
+  color: var(--color-white);
 }
 
 .timeline__content {
@@ -720,7 +823,7 @@ button {
 .gifts__icon {
   width: 32px;
   height: 32px;
-  color: var(--color-ink-soft);
+  color: var(--color-terracotta-deep);
   margin: var(--space-sm) auto;
 }
 
@@ -744,7 +847,9 @@ button {
   margin: 0 auto;
   background: var(--color-white);
   border: 1px solid var(--color-line);
+  border-radius: var(--radius);
   padding: var(--space-lg) var(--space-md);
+  box-shadow: 0 24px 60px -32px rgba(60, 51, 43, 0.4);
 }
 
 .field {
@@ -772,11 +877,11 @@ button {
 }
 
 .label-icon--heart {
-  fill: var(--color-ink-soft);
+  fill: var(--color-terracotta-deep);
 }
 
 .label-icon--music {
-  fill: var(--color-ink-soft);
+  fill: var(--color-terracotta-deep);
 }
 
 .field input[type='text'],
@@ -784,13 +889,21 @@ button {
 .field input[type='number'],
 .field textarea {
   width: 100%;
-  padding: 0.75rem;
+  padding: 0.75rem 1rem;
   border: 1px solid var(--color-line);
   border-radius: var(--radius);
   font-family: var(--font-body);
   font-size: 1rem;
   background: var(--color-white);
   color: var(--color-ink);
+  transition: border-color var(--transition-fast);
+}
+
+.field input[type='text']:focus,
+.field input[type='tel']:focus,
+.field input[type='number']:focus,
+.field textarea:focus {
+  border-color: var(--color-terracotta-deep);
 }
 
 .field select {
@@ -806,7 +919,7 @@ button {
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232B2621' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233C332B' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 0.9rem center;
   background-size: 16px;
@@ -814,7 +927,7 @@ button {
 }
 
 .field select:hover {
-  border-color: var(--color-ink);
+  border-color: var(--color-terracotta-deep);
 }
 
 .field textarea {
@@ -838,14 +951,54 @@ button {
 
 .field--radio-group {
   display: flex;
-  gap: var(--space-md);
+  gap: 0.7rem;
 }
 
+/* Pill-shaped selectable chips instead of native radio circles — same
+   two <input type="radio"> elements as before (nothing changed for
+   rsvp-form.js or the server), just restyled with :has(), which every
+   evergreen browser has supported since 2023. The native input stays in
+   the DOM and focusable (visually hidden via the same clip technique as
+   .nav-label, not display:none) so keyboard/screen-reader use is
+   unaffected. */
 .radio-option {
+  position: relative;
+  flex: 1 1 0;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 0.4rem;
-  font-size: 0.95rem;
+  text-align: center;
+  font-size: 0.88rem;
+  padding: 0.75rem 0.8rem;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-pill);
+  color: var(--color-ink-soft);
+  cursor: pointer;
+  transition: background var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.radio-option input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.radio-option:has(input:checked) {
+  background: var(--color-terracotta-deep);
+  border-color: var(--color-terracotta-deep);
+  color: var(--color-white);
+}
+
+.radio-option:has(input:focus-visible) {
+  outline: 2px solid var(--color-terracotta-deep);
+  outline-offset: 2px;
 }
 
 .field-hint {
@@ -855,20 +1008,22 @@ button {
 }
 
 .required-asterisk {
-  color: var(--color-ink);
+  color: var(--color-terracotta-deep);
   font-weight: 700;
   margin-left: 0.2em;
 }
 
-.field--invalid input,
+.field--invalid input[type='text'],
+.field--invalid input[type='tel'],
+.field--invalid input[type='number'],
 .field--invalid select,
 .field--invalid textarea {
-  border-color: var(--color-ink);
+  border-color: #9a3b30;
   border-width: 2px;
 }
 
 .field--invalid .field--radio-group {
-  outline: 2px solid var(--color-ink);
+  outline: 2px solid #9a3b30;
   outline-offset: 6px;
   border-radius: var(--radius);
 }
@@ -885,7 +1040,7 @@ button {
 }
 
 /* Success/error feedback keep a small, muted functional color — the one
-   deliberate exception to the neutral palette, since the guest needs an
+   deliberate exception to the warm palette, since the guest needs an
    instant read on whether the submission worked. Kept low-saturation so
    it still reads as part of this palette, not a bright system alert. */
 .rsvp__status[data-state='success'] {
@@ -897,7 +1052,7 @@ button {
 }
 
 .rsvp__status[data-state='required'] {
-  color: var(--color-ink);
+  color: #9a3b30;
   font-weight: 600;
 }
 
@@ -952,36 +1107,36 @@ button {
   .timeline,
   .story-timeline {
     max-width: 720px;
+  }
+
+  .timeline {
     position: relative;
   }
 
-  .timeline::before,
-  .story-timeline::before {
+  .timeline::before {
     content: '';
     position: absolute;
     left: 50%;
     top: 0;
     bottom: 0;
     width: 1px;
-    background: var(--color-line);
+    background: var(--color-terracotta);
     transform: translateX(-50%);
   }
 
-  .timeline__item,
-  .story-milestone {
+  /* Itinerary: half-width alternating columns. */
+  .timeline__item {
     border-left: none;
     width: 50%;
     padding-left: 0;
   }
 
-  .timeline__item--left,
-  .story-milestone--left {
+  .timeline__item--left {
     text-align: right;
     padding-right: 3.5rem;
   }
 
-  .timeline__item--right,
-  .story-milestone--right {
+  .timeline__item--right {
     margin-left: 50%;
     padding-left: 3.5rem;
   }
@@ -1002,57 +1157,43 @@ button {
     justify-content: flex-end;
   }
 
-  .story-milestone__dot {
-    left: auto;
-  }
+  /* Our story: deliberately NOT the same alternating-halves pattern as
+     the itinerary above. An earlier version tried a version of that
+     (dot centered on the full row) and the dot ended up landing on top
+     of the text — a flex row's horizontal midpoint isn't the same
+     point as the gap between a fixed-width photo and a flexible-width
+     text column, since the two are never equal widths. A second
+     attempt tried true 50/50 halves like the itinerary, which fixed
+     the alignment but squeezed the text column down to a few words per
+     line, since each half also had to fit a photo.
 
-  .story-milestone--left .story-milestone__dot {
-    right: -7px;
-  }
-
-  .story-milestone--right .story-milestone__dot {
-    left: -7px;
-  }
-
-  .story-milestone--left .story-milestone__photo {
-    margin-left: auto;
-  }
-
-  /* Photo and text side by side on desktop instead of stacked — text on
-     the side closer to the timeline's centerline. */
+     This keeps the exact spine + dot from the mobile rules above
+     completely unchanged (still just a left border, still just a dot
+     pulled left by half its own width) — a single straight line down
+     one fixed side, for every item, at every width. Only the CONTENT
+     inside each item changes at this breakpoint: photo and text move
+     from stacked to side-by-side, and --left/--right now only flips
+     which side the photo sits on WITHIN the row for visual rhythm —
+     neither the spine nor the dot ever depend on that. */
   .story-milestone {
     display: flex;
     align-items: center;
     gap: var(--space-lg);
-    width: 100%;
-    margin-left: 0;
-    padding-right: 0;
-  }
-
-  .story-milestone--left {
-    flex-direction: row;
-    text-align: left;
+    padding-left: var(--space-lg);
   }
 
   .story-milestone--right {
     flex-direction: row-reverse;
   }
 
-  .story-milestone__dot {
-    left: 50%;
-    right: auto;
-    transform: translateX(-50%);
-  }
-
   .story-milestone__photo {
     flex: 0 0 auto;
-    margin-left: 0;
+    margin-bottom: 0;
   }
 
   .story-milestone__text {
     flex: 1 1 auto;
     min-width: 0;
-    text-align: left;
   }
 }
 
@@ -1068,7 +1209,9 @@ button {
 
 /* Full-text header nav (6 links + language toggle) needs roughly 900px
    to fit on one line without wrapping. Below this width the nav stays
-   icon-only regardless of what the rest of the page is doing. */
+   icon-only (see .nav-label above); the "Admin" text link and the
+   centered monogram both only appear from here up — the corner
+   monogram is the way into /admin below 900px instead. */
 @media (min-width: 900px) {
   .site-header {
     padding: var(--space-sm) var(--space-md);
@@ -1084,26 +1227,25 @@ button {
 
   .nav-admin-link {
     display: inline-block;
-    border: 1px solid var(--color-ink);
+    border: 1px solid var(--color-terracotta);
+    border-radius: var(--radius-pill);
     color: var(--color-ink);
     text-decoration: none;
-    font-family: var(--font-body);
-    font-size: 0.7rem;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    padding: 0.35rem 0.7rem;
-    transition: background var(--transition-fast), color var(--transition-fast);
+    font-style: italic;
+    font-size: 0.85rem;
+    padding: 0.3rem 0.9rem;
+    transition: background var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
   }
 
   .nav-admin-link:hover {
-    background: var(--color-ink);
-    color: var(--color-paper);
+    background: var(--color-terracotta-deep);
+    border-color: var(--color-terracotta-deep);
+    color: var(--color-white);
   }
 
   .lang-toggle button {
     font-size: 0.7rem;
-    padding: 0.35rem 0.7rem;
+    padding: 0.35rem 0.75rem;
   }
 
   .nav-icon {
@@ -1120,15 +1262,21 @@ button {
     clip: auto;
     white-space: nowrap;
     border: 0;
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 0.14em;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 0.95rem;
   }
 
   .site-header__nav {
     width: 100%;
     justify-content: space-between;
     gap: var(--space-sm);
+  }
+}
+
+@media (max-width: 480px) {
+  .hero__names {
+    font-size: clamp(2.8rem, 15vw, 3.6rem);
   }
 }
 
@@ -1139,8 +1287,9 @@ a:focus-visible,
 button:focus-visible,
 input:focus-visible,
 select:focus-visible,
-textarea:focus-visible {
-  outline: 2px solid var(--color-ink);
+textarea:focus-visible,
+.btn:focus-visible {
+  outline: 2px solid var(--color-terracotta-deep);
   outline-offset: 2px;
 }
 

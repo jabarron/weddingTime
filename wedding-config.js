@@ -78,17 +78,18 @@ module.exports = {
   contactEmail: 'ismerai.jesus.boda@example.com',
 
   // ---------------------------------------------------------------------
-  // Color palette — full neutral/editorial system (no brand accent
-  // color; photography and typography carry the visual weight instead).
-  // Documented here as the single source of truth, and threaded through
-  // styles.css as CSS custom properties — update BOTH places if you
-  // change a value (see the :root block at the top of styles.css).
+  // Color palette — V3 redesign: warm cream base + dusty terracotta
+  // accent (sampled from the couple's reference photo). Documented here
+  // as the single source of truth, and threaded through styles.css as
+  // CSS custom properties — update BOTH places if you change a value
+  // (see the :root block at the top of styles.css).
   // ---------------------------------------------------------------------
   colors: {
-    paper: '#F4EFE6', // base background
-    parchment: '#EAE3D3', // alternate section background, cards
-    taupe: '#B9AE99', // decorative borders, dots, dividers
-    ink: '#2B2621', // headings, primary text, filled buttons
-    inkSoft: '#6B6255', // secondary text, eyebrows, captions
+    paper: '#F7F1E7', // base background
+    parchment: '#EEE3D2', // alternate section background, cards
+    terracotta: '#BC8060', // light accent: borders, icons, dots, dates — decorative only, not small text
+    terracottaDeep: '#96603C', // filled buttons — passes WCAG AA with white text on top
+    ink: '#3C332B', // headings, primary text
+    inkSoft: '#6E6156', // secondary text, eyebrows, captions
   },
 };

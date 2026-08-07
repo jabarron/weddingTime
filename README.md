@@ -21,6 +21,9 @@ wedding-website/
 ├── db-pool.js            PostgreSQL connection + schema init.
 ├── schema.sql            Table definition.
 ├── adminAuth.js          /admin login form, session check, lockout page.
+├── page-shell.js         Shared HTML/CSS chrome for login, lockout, and
+│                         404 pages (so all three match visually).
+├── notFoundPage.js       Styled public 404 page.
 ├── session.js            In-memory session store (login state).
 ├── loginAttempts.js      Tracks failed logins per IP (for the lockout page).
 ├── rateLimiter.js        Reusable rate limiting (RSVP spam + login abuse).
@@ -113,31 +116,41 @@ migration step needed (see `db-pool.js` → `initDb()`).
 | Names, wedding date/time, venue        | `wedding-config.js`                            |
 | RSVP deadline                          | `wedding-config.js`                            |
 | Itinerary (event list, times)          | `wedding-config.js` (`itinerary` array — add/remove/reorder freely) |
-| Colors                                 | `wedding-config.js` **and** the `:root` block at the top of `styles.css` (both must match — see comment in the config file) |
+| Colors                                 | `wedding-config.js` **and** the `:root` block at the top of `styles.css` (both must match — see comment in the config file). `page-shell.js` (login/lockout/404 pages) hard-codes the same hex values separately, since those pages can be reached before `styles.css` ever loads — update it too if you change the palette. |
 | "Our story" paragraph (ES & EN)        | `i18n.js`                                      |
 | Dress code paragraph (ES & EN)         | `i18n.js`                                      |
 | Gifts / envelope box message (ES & EN) | `i18n.js`                                      |
 | Interface button/label text            | `i18n.js`                                      |
-| Engagement / story photos               | Drop image files into the `photos/` folder, then swap each placeholder `<div class="story__photo">` or `<div class="story-milestone__photo">` in `index.html` for an `<img src="/photos/your-file.jpg" alt="...">` tag (instructions are commented right above each one) |
+| Engagement / story photos               | Already real `<img>` tags in `index.html` (`story__photo`, `story-milestone__photo`, and the hero's single background photo) using photos already in `photos/` — swap each `src` for a professional one when you have it, same folder, no other change needed |
 | Admin login credentials                | `.env` locally, or Railway's Variables tab in production — never commit these |
 
 ---
 
 ## 5. Notes on current setup
 
-- **V2 visual redesign:** the site's structure, routes, and features are
-  unchanged from V1 — this was a styling-only pass. What changed:
-  a full neutral/editorial color palette (no wine/terracotta accent —
-  see the color note below), the hero is now a full-bleed three-photo
-  band with the names/date/countdown below it instead of a single dark
-  panel, the desktop "framed card" layout and the mobile/desktop sand
-  margins are gone (the site runs edge-to-edge at every width now), and
-  the ambient firefly/constellation canvas animations were removed
-  site-wide (including on `/admin` and the login/lockout pages) in favor
-  of a static, photography-led look. `monogram-ink.png` (a dark
-  recolor of `monogram.png`) is now used everywhere the monogram sits on
-  a light background — regenerate it the same way if you ever replace
-  the source monogram artwork.
+- **V3 visual redesign:** the site's structure, routes, and features are
+  unchanged from V2 — this was another styling-only pass. What changed:
+  a warm cream + dusty terracotta accent palette (see the color note
+  below), the hero is now a single full-bleed photo with the
+  names/date/countdown overlaid directly on it (instead of V2's 3-photo
+  band with content below), buttons are fully rounded pills instead of
+  square, and a script accent font (Alex Brush) is used for the couple's
+  names in the hero — every other heading stays the elegant serif
+  (Cormorant Garamond) from V2. The public site also has a styled 404
+  page now (`notFoundPage.js`) — V2 had none, just a bare JSON response.
+  `favicon-32.png`, `apple-touch-icon.png`, and `og-image.jpg` were
+  regenerated to match; `monogram.png` / `monogram-ink.png` are unchanged
+  (their existing cream/ink colors still work with the new palette).
+- **Our Story timeline (desktop layout):** the dotted line connecting
+  each milestone is intentionally NOT the same "centered line, alternating
+  halves" pattern as the Itinerary timeline below it, even though they
+  look similar. An early version of this redesign tried that and the dot
+  landed on top of the text, because a flex row's horizontal midpoint
+  isn't the same point as the gap between a fixed-width photo and a
+  flexible-width text column. The Our Story timeline instead keeps a
+  single fixed spine on the left (same math as its own mobile layout,
+  just wider) — see the comment above `.story-milestone` in `styles.css`
+  before changing this section.
 - **RSVP access:** the form is open to anyone with the site link — there is
   no guest-list validation. If you want to restrict who can submit later,
   that logic belongs in `routes-rsvp.js`.
@@ -151,7 +164,8 @@ migration step needed (see `db-pool.js` → `initDb()`).
   - **Wrong password:** the 1st failed attempt from an IP just re-shows
     the login form with an error message. The 2nd (and any further)
     failed attempt within a 10-minute window shows the styled "access
-    denied" page instead (`admin-error-es.jpg` / `admin-error-en.jpg`).
+    denied" page instead (reusing `admin-error-es.jpg` / `admin-error-en.jpg`,
+    unchanged since V1 — it's a personal photo, not a style element).
     This is **not a lockout** — a correct password logs you in
     immediately no matter how many times you got it wrong first.
   - **Sessions live in server memory**, not the database — simplest
@@ -189,16 +203,15 @@ migration step needed (see `db-pool.js` → `initDb()`).
   site's own colors/fonts (not real photos yet). When you have engagement
   photos, regenerate `og-image.jpg` with one of them for a more personal
   link preview on WhatsApp/iMessage — it should stay 1200×630px.
-- **Color palette (V2 redesign):** the site now uses a full neutral,
-  editorial palette — `paper`/`parchment` backgrounds, `ink`/`ink-soft`
-  text, `taupe` for hairline borders and dots — with no brand accent
-  color; photography and typography carry the visual weight instead.
-  All five variables live in the `:root` block at the top of
-  `styles.css` and are documented in `wedding-config.js` -> `colors`.
-  Contrast is comfortably within WCAG AA as-is (`ink`/`ink-soft` on
-  `paper`/`parchment` both clear 4.5:1), so there are no separate
-  "text-only" variants to remember — just use `--color-ink` or
-  `--color-ink-soft` for any text color.
+- **Color palette (V3 redesign):** warm cream + dusty terracotta —
+  `paper`/`parchment` backgrounds, `ink`/`ink-soft` text, and two
+  terracotta tones: `terracotta` (light, decorative — borders, icons,
+  dots; not for small text, it's only ~2.9:1 on `paper`) and
+  `terracotta-deep` (filled buttons, links — passes WCAG AA at ~4.9:1
+  with white text on top). All variables live in the `:root` block at
+  the top of `styles.css` and are documented in `wedding-config.js` ->
+  `colors`. `ink`/`ink-soft` on `paper`/`parchment` both clear 4.5:1 for
+  normal text.
 - **Form limits:** name (100 chars), phone (30), song request (150), and
   message (500) all have a `maxlength` in `index.html` and a matching
   server-side cap in `routes-rsvp.js` — adjust both together if you change
